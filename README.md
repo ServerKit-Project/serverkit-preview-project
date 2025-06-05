@@ -1,54 +1,60 @@
-# React + TypeScript + Vite
+# ServerKit IDE Preview Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+이 프로젝트는 ServerKit IDE에서 프리뷰 페이지를 표시하기 위한 기본 템플릿입니다.
 
-Currently, two official plugins are available:
+## 기술 스택
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **프레임워크**: React 18 + TypeScript + Vite
+- **스타일링**: Tailwind CSS v4
+- **UI 컴포넌트**: shadcn/ui
+- **테마**: CSS 변수 기반
 
-## Expanding the ESLint configuration
+## 주요 기능
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- HMR (Hot Module Replacement) 지원
+- TypeScript 타입 체킹
+- ESLint 설정 (타입 체크 포함)
+- 반응형 디자인
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 프로젝트 구조
+
+```
+preview-project/
+├── src/
+│   ├── components/     # 공통 컴포넌트
+│   ├── App.tsx        # 메인 애플리케이션 컴포넌트
+│   └── main.tsx       # 진입점
+├── public/            # 정적 파일
+├── index.html         # HTML 템플릿
+└── package.json       # 프로젝트 의존성
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 개발 환경 설정
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# 의존성 설치
+npm install
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+# 개발 서버 실행
+npm run dev
+
+# 프로덕션 빌드
+npm run build
 ```
+
+## ESLint 설정
+
+프로젝트는 타입 체크를 포함한 ESLint 규칙을 사용합니다:
+
+- TypeScript 타입 체크 규칙
+- React 관련 린트 규칙
+- 코드 스타일 규칙
+
+## 브라우저 지원
+
+- 모던 브라우저 (Chrome, Firefox, Safari, Edge)
+- ES6+ 지원
+
+## 라이선스
+
+MIT License
