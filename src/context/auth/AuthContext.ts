@@ -3,9 +3,7 @@ import { WidgetAuthSDK } from "./WidgetAuthSDK";
 
 export interface User {
   id: string;
-  email: string;
   name: string;
-  roles?: string[];
 }
 
 export type AuthProviderType = "email-password" | "google" | "apple" | "kakao";
@@ -16,7 +14,7 @@ export interface AuthContextType {
   signupWithEmailPassword: (
     email: string,
     password: string,
-    name: string
+    data: Omit<User, "id">
   ) => Promise<User>;
   logout: () => Promise<void>;
   loading: boolean;

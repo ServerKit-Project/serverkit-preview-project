@@ -15,7 +15,7 @@ interface AuthContextType {
   signupWithEmailPassword: (
     email: string,
     password: string,
-    name: string
+    data: Omit<User, "id">
   ) => Promise<User>;
   logout: () => Promise<void>;
   loading: boolean;
@@ -37,7 +37,7 @@ const loginWithEmailPasswordAPI = async (
 const signupWithEmailPasswordAPI = async (
   email: string,
   password: string,
-  name: string
+  data: Omit<User, "id">
 ): Promise<{ user: User; token: TokenPayload }> => {
   // 실제 API 호출로 대체해야 함
   throw new Error("API not implemented");
@@ -111,11 +111,11 @@ export const AuthProvider = ({
   const signupWithEmailPassword = async (
     email: string,
     password: string,
-    name: string
+    data: Omit<User, "id">
   ): Promise<User> => {
     setLoading(true);
     try {
-      const result = await signupWithEmailPasswordAPI(email, password, name);
+      const result = await signupWithEmailPasswordAPI(email, password, data);
       setUser(result.user);
       sdk.setToken(result.token);
       return result.user;
