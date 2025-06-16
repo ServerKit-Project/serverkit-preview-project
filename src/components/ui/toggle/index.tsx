@@ -1,0 +1,113 @@
+import React from 'react';
+import styled from 'styled-components';
+
+const ToggleRoot = styled.button<{ $pressed?: boolean; $size?: 'sm' | 'default' | 'lg'; $variant?: 'default' | 'outline' }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  
+  /* Size variants */
+  ${props => props.$size === 'sm' && `
+    padding: 0.375rem 0.625rem;
+    font-size: 0.875rem;
+    height: 2rem;
+  `}
+  
+  ${props => (!props.$size || props.$size === 'default') && `
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    height: 2.5rem;
+  `}
+  
+  ${props => props.$size === 'lg' && `
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    height: 2.75rem;
+  `}
+
+  /* Style variants */
+  ${props => (!props.$variant || props.$variant === 'default') && `
+    background-color: ${props.$pressed ? '#E5E7EB' : 'transparent'};
+    color: ${props.$pressed ? '#111827' : '#6B7280'};
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: #F3F4F6;
+      color: #111827;
+    }
+  `}
+
+  ${props => props.$variant === 'outline' && `
+    background-color: ${props.$pressed ? '#F3F4F6' : 'transparent'};
+    border: 1px solid #E5E7EB;
+    color: ${props.$pressed ? '#111827' : '#6B7280'};
+
+    &:hover {
+      background-color: #F9FAFB;
+      color: #111827;
+    }
+  `}
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #2563EB;
+    outline-offset: 2px;
+  }
+`;
+
+export interface ToggleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  defaultPressed?: boolean;
+  pressed?: boolean;
+  onPressedChange?: (pressed: boolean) => void;
+  size?: 'sm' | 'default' | 'lg';
+  variant?: 'default' | 'outline';
+}
+
+export const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(
+  (
+    {
+      className,
+      defaultPressed = false,
+      pressed,
+      onPressedChange,
+      size = 'default',
+      variant = 'default',
+      ...props
+    },
+    ref
+  ) => {
+    const [isPressed, setIsPressed] = React.useState(defaultPressed);
+
+    const handleClick = () => {
+      const newPressed = !isPressed;
+      setIsPressed(newPressed);
+      onPressedChange?.(newPressed);
+    };
+
+    const buttonPressed = pressed !== undefined ? pressed : isPressed;
+
+    return (
+      <ToggleRoot
+        type="button"
+        aria-pressed={buttonPressed}
+        data-state={buttonPressed ? 'on' : 'off'}
+        $pressed={buttonPressed}
+        $size={size}
+        $variant={variant}
+        onClick={handleClick}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+
+Toggle.displayName = 'Toggle'; 
