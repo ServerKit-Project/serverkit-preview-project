@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { WidgetAuthSDK, type TokenPayload } from "./WidgetAuthSDK";
 import { type User, type AuthProviderType, AuthContext } from "./AuthContext";
+import { publicApi } from "../../utils/publicApi";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -30,8 +31,16 @@ const loginWithEmailPasswordAPI = async (
   email: string,
   password: string
 ): Promise<{ user: User; token: TokenPayload }> => {
-  // 실제 API 호출로 대체해야 함
-  throw new Error("API not implemented");
+  // 예시: publicApi를 사용한 로그인 API 호출
+  const response = await publicApi.post("/auth/login", {
+    email,
+    password,
+  });
+
+  return response.data;
+
+  // 현재는 구현되지 않음
+  // throw new Error("API not implemented");
 };
 
 const signupWithEmailPasswordAPI = async (
@@ -39,8 +48,17 @@ const signupWithEmailPasswordAPI = async (
   password: string,
   data: Omit<User, "id">
 ): Promise<{ user: User; token: TokenPayload }> => {
-  // 실제 API 호출로 대체해야 함
-  throw new Error("API not implemented");
+  // 예시: publicApi를 사용한 회원가입 API 호출
+  const response = await publicApi.post("/auth/signup", {
+    email,
+    password,
+    ...data,
+  });
+
+  return response.data;
+
+  // 현재는 구현되지 않음
+  // throw new Error("API not implemented");
 };
 
 const logoutAPI = async (): Promise<void> => {
@@ -51,8 +69,12 @@ const logoutAPI = async (): Promise<void> => {
 const tokenRefreshAPI = async (
   refreshToken: string
 ): Promise<{ token: TokenPayload }> => {
-  // 실제 API 호출로 대체해야 함
-  throw new Error("API not implemented");
+  // publicApi를 사용한 토큰 리프레시 API 호출
+  const response = await publicApi.post("/auth/refresh", {
+    refreshToken,
+  });
+
+  return response.data;
 };
 
 const getUserInfoAPI = async (accessToken: string): Promise<User> => {
