@@ -7,21 +7,13 @@ export interface User {
 }
 
 export type AuthProviderType = "email-password" | "google" | "apple" | "kakao";
+export type StorageType = "localStorage" | "sessionStorage" | "cookie";
 
 export interface AuthContextType {
   user: User | null;
-  loginWithEmailPassword: (email: string, password: string) => Promise<User>;
-  signupWithEmailPassword: (
-    email: string,
-    password: string,
-    data: Omit<User, "id">
-  ) => Promise<User>;
-  logout: () => Promise<void>;
-  loading: boolean;
+  setUser: (user: User | null) => void;
   isAuthenticated: boolean;
   authProvider: AuthProviderType[];
-  storageType: string;
-  tokenRefresh: () => Promise<void>;
   sdk: WidgetAuthSDK;
 }
 

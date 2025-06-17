@@ -9,10 +9,7 @@ import { AuthProvider } from "./context/auth/AuthProvider.tsx";
 createRoot(document.getElementById("root")!).render(
   <>
     <ThemeProvider theme={defaultTheme}>
-      <AuthProvider
-        projectId={import.meta.env.VITE_PROJECT_ID}
-        authProvider={import.meta.env.VITE_AUTH_PROVIDER.split(",")}
-      >
+      <AuthProvider projectId={import.meta.env.VITE_PROJECT_ID}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
