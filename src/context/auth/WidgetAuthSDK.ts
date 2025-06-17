@@ -48,13 +48,23 @@ export class WidgetAuthSDK {
     localStorage.removeItem(this.storageKey);
   }
 
-  public hasRole(role: string): boolean {
+  public isAuthorized(authAssetId: string | null, role: string): boolean {
+    if (authAssetId === null) {
+      return true;
+    }
+
     const token = this.getToken();
     if (!token) {
       return false;
     }
 
-    const decoded = jwtDecode<{ roles: string[] }>(token.accessToken);
+    const decoded = jwtDecode<{ authAsset: string | null; roles: string[] }>(
+      token.accessToken
+    );
+
+    if (decoded.authAsset !== authAssetId) {
+      return false;
+    }
 
     if (decoded.roles && Array.isArray(decoded.roles)) {
       return decoded.roles.includes(role);
