@@ -1,57 +1,53 @@
-import { Navigate, useLocation, Route } from "react-router-dom";
-import type { PathRouteProps } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useAuth } from "@/sdk/useAuth";
-import { useMemo } from "react";
 import type { ReactNode } from "react";
 
-interface ProtectedRouteProps extends Omit<PathRouteProps, "element"> {
-  enabled: string[]; // roleId
+interface ProtectedRouteProps {
+  enabled: string[];
   authAssetId: string | null;
-  component?: ReactNode;
-  children?: ReactNode;
   fallback?: ReactNode;
+  children: ReactNode;
 }
 
 export const ProtectedRoute = ({
-  authAssetId,
   enabled,
-  component,
-  children,
+  authAssetId,
   fallback,
-  ...routeProps
+  children,
 }: ProtectedRouteProps) => {
   const { sdk } = useAuth();
   const location = useLocation();
+  const history = useHistory();
 
-  const content = component || children;
+  const redirectToLogin = () => {
+    history.replace({
+      pathname: "/login",
+      state: { from: location },
+    });
+    return null;
+  };
 
-  const ProtectedElement = useMemo(() => {
-    return () => {
-      // 로그인 체크
-      if (!sdk.getAccessToken()) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
+  // 로그인 체크
+  if (!sdk.getAccessToken()) {
+    return redirectToLogin();
+  }
+
+  // 권한 체크
+  try {
+    const hasRequiredRoles = enabled.every((roleId) =>
+      sdk.isAuthorized(authAssetId, roleId)
+    );
+
+    if (!hasRequiredRoles) {
+      if (fallback) {
+        return <>{fallback}</>;
       }
+      return redirectToLogin();
+    }
 
-      // 권한 체크
-      try {
-        const hasRequiredRoles = enabled.every((roleId) =>
-          sdk.isAuthorized(authAssetId, roleId)
-        );
-
-        if (!hasRequiredRoles) {
-          if (fallback) {
-            return <>{fallback}</>;
-          }
-          return <Navigate to="/login" state={{ from: location }} replace />;
-        }
-
-        return <>{content}</>;
-      } catch (error) {
-        console.error("권한 확인 중 오류 발생:", error);
-        return <Navigate to="/login" state={{ from: location }} replace />;
-      }
-    };
-  }, [sdk, content, location, enabled, authAssetId, fallback]);
-
-  return <Route {...routeProps} element={<ProtectedElement />} />;
+    return <>{children}</>;
+  } catch (error) {
+    console.error("권한 확인 중 오류 발생:", error);
+    return redirectToLogin();
+  }
 };
