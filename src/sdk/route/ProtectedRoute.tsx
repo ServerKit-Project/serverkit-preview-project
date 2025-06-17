@@ -1,6 +1,6 @@
 import { Navigate, useLocation, Route } from "react-router-dom";
 import type { PathRouteProps } from "react-router-dom";
-import { useAuth } from "@/context/auth/useAuth";
+import { useAuth } from "@/sdk/useAuth";
 
 interface ProtectedRouteProps extends Omit<PathRouteProps, "element"> {
   enabled: string[];
