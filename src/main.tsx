@@ -20,6 +20,10 @@ const router = createBrowserRouter([
         element: <WelcomeServerkit />,
       },
       {
+        path: "404",
+        element: <NotFound />,
+      },
+      {
         path: "500",
         element: <ServerError />,
       },
