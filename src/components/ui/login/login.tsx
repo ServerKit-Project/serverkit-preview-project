@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import {
   Card,
@@ -64,36 +63,7 @@ const StyledLink = styled.a`
   }
 `;
 
-export interface LoginProps {
-  onLogin?: (email: string, password: string) => Promise<void>;
-  onRegister?: () => void;
-}
-
-export const Login = ({ onLogin, onRegister }: LoginProps) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleLogin = async () => {
-    if (!email || !password) return;
-
-    setIsLoading(true);
-    try {
-      if (onLogin) {
-        await onLogin(email, password);
-      } else {
-        // 기본 로그인 로직
-        console.log("로그인 시도:", { email, password });
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log("로그인 성공");
-      }
-    } catch (error) {
-      console.error("로그인 실패:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+export const Login = () => {
   return (
     <StyledCard>
       <StyledCardHeader>
@@ -106,14 +76,7 @@ export const Login = ({ onLogin, onRegister }: LoginProps) => {
       <FormGrid>
         <FormGroup>
           <Label htmlFor="email">이메일</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="이메일을 입력하세요"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-          />
+          <Input id="email" type="email" placeholder="이메일을 입력하세요" />
         </FormGroup>
 
         <FormGroup>
@@ -122,30 +85,19 @@ export const Login = ({ onLogin, onRegister }: LoginProps) => {
             id="password"
             type="password"
             placeholder="비밀번호를 입력하세요"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isLoading}
           />
         </FormGroup>
 
         <CheckboxContainer>
-          <input type="checkbox" id="remember" disabled={isLoading} />
+          <input type="checkbox" id="remember" />
           <Label htmlFor="remember">로그인 상태 유지</Label>
         </CheckboxContainer>
       </FormGrid>
 
       <StyledCardFooter>
-        <StyledButton
-          onClick={handleLogin}
-          disabled={isLoading || !email || !password}
-        >
-          {isLoading ? "로그인 중..." : "로그인"}
-        </StyledButton>
+        <StyledButton>로그인</StyledButton>
         <FooterText>
-          계정이 없으신가요?{" "}
-          <StyledLink href="#" onClick={onRegister}>
-            회원가입
-          </StyledLink>
+          계정이 없으신가요? <StyledLink href="#">회원가입</StyledLink>
         </FooterText>
       </StyledCardFooter>
     </StyledCard>

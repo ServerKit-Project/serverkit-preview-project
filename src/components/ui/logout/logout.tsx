@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import {
   Card,
@@ -70,74 +69,7 @@ const StyledButton = styled(Button)<{ $fullWidth?: boolean }>`
   width: ${(props) => (props.$fullWidth ? "100%" : "auto")};
 `;
 
-export interface LogoutProps {
-  userName?: string;
-  userEmail?: string;
-  onLogout?: () => Promise<void>;
-}
-
-export const Logout = ({
-  userName = "사용자",
-  userEmail = "user@example.com",
-  onLogout,
-}: LogoutProps) => {
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      if (onLogout) {
-        await onLogout();
-      } else {
-        // 기본 로그아웃 로직
-        console.log("로그아웃 중...");
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log("로그아웃 성공");
-      }
-    } catch (error) {
-      console.error("로그아웃 실패:", error);
-    } finally {
-      setIsLoggingOut(false);
-      setShowConfirmation(false);
-    }
-  };
-
-  const handleConfirmLogout = () => {
-    setShowConfirmation(true);
-  };
-
-  const handleCancel = () => {
-    setShowConfirmation(false);
-  };
-
-  if (showConfirmation) {
-    return (
-      <StyledCard>
-        <StyledCardHeader>
-          <StyledCardTitle>로그아웃 확인</StyledCardTitle>
-          <CardDescription>정말로 로그아웃 하시겠습니까?</CardDescription>
-        </StyledCardHeader>
-        <StyledCardFooter $hasGap>
-          <StyledButton
-            variant="secondary"
-            onClick={handleCancel}
-            disabled={isLoggingOut}
-          >
-            취소
-          </StyledButton>
-          <StyledButton
-            variant="danger"
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-          >
-            {isLoggingOut ? "로그아웃 중..." : "로그아웃"}
-          </StyledButton>
-        </StyledCardFooter>
-      </StyledCard>
-    );
-  }
-
+export const Logout = () => {
   return (
     <StyledCard>
       <StyledCardHeader>
@@ -146,19 +78,15 @@ export const Logout = ({
       </StyledCardHeader>
       <StyledCardContent>
         <UserContainer>
-          <UserAvatar>{userName[0].toUpperCase()}</UserAvatar>
+          <UserAvatar>U</UserAvatar>
           <UserInfo>
-            <UserName>{userName}</UserName>
-            <UserEmail>{userEmail}</UserEmail>
+            <UserName>사용자</UserName>
+            <UserEmail>user@example.com</UserEmail>
           </UserInfo>
         </UserContainer>
       </StyledCardContent>
       <StyledCardFooter>
-        <StyledButton
-          variant="secondary"
-          $fullWidth
-          onClick={handleConfirmLogout}
-        >
+        <StyledButton variant="secondary" $fullWidth>
           로그아웃
         </StyledButton>
       </StyledCardFooter>
