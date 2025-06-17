@@ -21,13 +21,13 @@ function App() {
     <Container>
       <Main>
         <Switch>
-          <Route path="/" element={<WelcomeServerkit />} />
+          <Route exact path="/" component={WelcomeServerkit} />
           {/*PackageRoutes*/}
-          <Route path="/500" element={<ServerError />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/500" component={ServerError} />
+          <Route path="*" component={NotFound} />
           <Route
             path="/admin"
-            element={
+            render={() => (
               <ProtectedRoute
                 enabled={["role-id"]}
                 authAssetId="auth-asset-id"
@@ -35,7 +35,7 @@ function App() {
               >
                 <div>Admin Dashboard</div>
               </ProtectedRoute>
-            }
+            )}
           />
         </Switch>
       </Main>
