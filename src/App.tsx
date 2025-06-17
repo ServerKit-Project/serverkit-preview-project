@@ -15,7 +15,10 @@ const Main = styled.main`
 
 function App() {
   return (
-    <AuthProvider projectId="1234567890" authProvider={["email-password"]}>
+    <AuthProvider
+      projectId={import.meta.env.VITE_PROJECT_ID}
+      authProvider={["email-password"]}
+    >
       <Container>
         <Main>
           <Outlet />
