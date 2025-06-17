@@ -21,9 +21,9 @@ function App() {
       <Main>
         <Routes>
           <Route path="/" element={<WelcomeServerkit />} />
+          {/*PackageRoutes*/}
           <Route path="/500" element={<ServerError />} />
           <Route path="*" element={<NotFound />} />
-          {/*PackageRoutes*/}
         </Routes>
       </Main>
     </Container>
