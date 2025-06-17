@@ -12,7 +12,6 @@ export type StorageType = "localStorage" | "sessionStorage" | "cookie";
 export interface AuthContextType {
   user: User | null;
   setUser: (user: User | null) => void;
-  isAuthenticated: boolean;
   authProvider: AuthProviderType[];
   sdk: WidgetAuthSDK;
 }

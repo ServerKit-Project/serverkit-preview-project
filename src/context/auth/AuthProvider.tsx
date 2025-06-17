@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { WidgetAuthSDK, type TokenPayload } from "./WidgetAuthSDK";
+import { useState, useMemo } from "react";
+import { WidgetAuthSDK } from "./WidgetAuthSDK";
 import {
   type User,
   type AuthProviderType,
@@ -25,7 +25,6 @@ export const AuthProvider = ({
   const value: AuthContextType = {
     user,
     setUser,
-    isAuthenticated: !!user,
     authProvider,
     sdk,
   };
