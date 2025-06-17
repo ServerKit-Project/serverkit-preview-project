@@ -17,7 +17,7 @@ function App() {
   return (
     <AuthProvider
       projectId={import.meta.env.VITE_PROJECT_ID}
-      authProvider={["email-password"]}
+      authProvider={import.meta.env.VITE_AUTH_PROVIDER.split(",")}
     >
       <Container>
         <Main>
