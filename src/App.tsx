@@ -1,6 +1,8 @@
-import { Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import styled from "styled-components";
-import { AuthProvider } from "./context/auth/AuthProvider";
+import WelcomeServerkit from "./pages/welcome-serverkit";
+import NotFound from "./pages/404";
+import ServerError from "./pages/500";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -15,16 +17,15 @@ const Main = styled.main`
 
 function App() {
   return (
-    <AuthProvider
-      projectId={import.meta.env.VITE_PROJECT_ID}
-      authProvider={import.meta.env.VITE_AUTH_PROVIDER.split(",")}
-    >
-      <Container>
-        <Main>
-          <Outlet />
-        </Main>
-      </Container>
-    </AuthProvider>
+    <Container>
+      <Main>
+        <Routes>
+          <Route path="/" element={<WelcomeServerkit />} />
+          <Route path="/500" element={<ServerError />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Main>
+    </Container>
   );
 }
 
