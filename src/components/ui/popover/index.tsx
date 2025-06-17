@@ -1,7 +1,21 @@
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import type { PopoverProps, PopoverTriggerProps, PopoverContentProps } from './types';
-import { StyledPopoverContent, StyledPopoverArrow, StyledPopoverTrigger } from './styles';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+} from "react";
+import { createPortal } from "react-dom";
+import type {
+  PopoverProps,
+  PopoverTriggerProps,
+  PopoverContentProps,
+} from "./types";
+import {
+  StyledPopoverContent,
+  StyledPopoverArrow,
+  StyledPopoverTrigger,
+} from "./styles";
 
 interface PopoverContextType {
   open: boolean;
@@ -15,13 +29,18 @@ const PopoverContext = createContext<PopoverContextType>({
   triggerRef: { current: null },
 });
 
-export const Popover = ({ children, defaultOpen = false, open: controlledOpen, onOpenChange }: PopoverProps) => {
+export const Popover = ({
+  children,
+  defaultOpen = false,
+  open: controlledOpen,
+  onOpenChange,
+}: PopoverProps) => {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const triggerRef = useRef<HTMLElement>(null);
-  
+
   const isControlled = controlledOpen !== undefined;
   const open = isControlled ? controlledOpen : uncontrolledOpen;
-  
+
   const setOpen = (value: boolean) => {
     if (!isControlled) {
       setUncontrolledOpen(value);
@@ -41,9 +60,9 @@ export const Popover = ({ children, defaultOpen = false, open: controlledOpen, o
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open, setOpen]);
 
@@ -66,8 +85,8 @@ export const PopoverTrigger = ({ children, asChild }: PopoverTriggerProps) => {
     return React.cloneElement(children as React.ReactElement, {
       ref: triggerRef,
       onClick: handleClick,
-      'aria-expanded': open,
-      'aria-haspopup': true,
+      "aria-expanded": open,
+      "aria-haspopup": true,
     });
   }
 
@@ -86,7 +105,7 @@ export const PopoverTrigger = ({ children, asChild }: PopoverTriggerProps) => {
 const getOptimalPosition = (
   triggerRect: DOMRect,
   contentRect: DOMRect,
-  preferredSide: PopoverContentProps['side'],
+  preferredSide: PopoverContentProps["side"],
   collisionPadding: number = 8
 ) => {
   const viewport = {
@@ -96,27 +115,29 @@ const getOptimalPosition = (
     bottom: window.innerHeight - collisionPadding,
   };
 
-  const getPositionForSide = (side: NonNullable<PopoverContentProps['side']>) => {
+  const getPositionForSide = (
+    side: NonNullable<PopoverContentProps["side"]>
+  ) => {
     const positions = {
       top: {
         top: triggerRect.top - contentRect.height - 5,
         left: triggerRect.left + (triggerRect.width - contentRect.width) / 2,
-        side: 'top' as const,
+        side: "top" as const,
       },
       right: {
         top: triggerRect.top + (triggerRect.height - contentRect.height) / 2,
         left: triggerRect.right + 5,
-        side: 'right' as const,
+        side: "right" as const,
       },
       bottom: {
         top: triggerRect.bottom + 5,
         left: triggerRect.left + (triggerRect.width - contentRect.width) / 2,
-        side: 'bottom' as const,
+        side: "bottom" as const,
       },
       left: {
         top: triggerRect.top + (triggerRect.height - contentRect.height) / 2,
         left: triggerRect.left - contentRect.width - 5,
-        side: 'left' as const,
+        side: "left" as const,
       },
     };
 
@@ -133,27 +154,32 @@ const getOptimalPosition = (
   };
 
   // Try preferred side first
-  const preferred = getPositionForSide(preferredSide || 'bottom');
+  const preferred = getPositionForSide(preferredSide || "bottom");
   if (checkFits(preferred)) {
     return preferred;
   }
 
   // Try opposite side
   const opposites = {
-    top: 'bottom',
-    bottom: 'top',
-    left: 'right',
-    right: 'left',
+    top: "bottom",
+    bottom: "top",
+    left: "right",
+    right: "left",
   } as const;
 
-  const oppositeSide = opposites[preferredSide || 'bottom'];
+  const oppositeSide = opposites[preferredSide || "bottom"];
   const oppositePosition = getPositionForSide(oppositeSide);
   if (checkFits(oppositePosition)) {
     return oppositePosition;
   }
 
   // Try remaining sides
-  const allSides: NonNullable<PopoverContentProps['side']>[] = ['top', 'right', 'bottom', 'left'];
+  const allSides: NonNullable<PopoverContentProps["side"]>[] = [
+    "top",
+    "right",
+    "bottom",
+    "left",
+  ];
   for (const side of allSides) {
     if (side === preferredSide || side === oppositeSide) continue;
     const position = getPositionForSide(side);
@@ -165,23 +191,29 @@ const getOptimalPosition = (
   // If no perfect position found, adjust the preferred position to fit within viewport
   return {
     ...preferred,
-    top: Math.max(viewport.top, Math.min(preferred.top, viewport.bottom - contentRect.height)),
-    left: Math.max(viewport.left, Math.min(preferred.left, viewport.right - contentRect.width)),
+    top: Math.max(
+      viewport.top,
+      Math.min(preferred.top, viewport.bottom - contentRect.height)
+    ),
+    left: Math.max(
+      viewport.left,
+      Math.min(preferred.left, viewport.right - contentRect.width)
+    ),
   };
 };
 
 export const PopoverContent = ({
   children,
-  align = 'center',
-  side = 'bottom',
+  align = "center",
+  side = "bottom",
   sideOffset,
   alignOffset,
   hideArrow,
   className,
   avoidCollisions = true,
   collisionPadding = 8,
-  sticky = 'partial',
-  hideWhenDetached = false,
+  sticky = "partial",
+
   portalContainer,
   animation,
 }: PopoverContentProps) => {
@@ -201,7 +233,12 @@ export const PopoverContent = ({
       const contentRect = content.getBoundingClientRect();
 
       if (avoidCollisions) {
-        const optimalPosition = getOptimalPosition(triggerRect, contentRect, side, collisionPadding);
+        const optimalPosition = getOptimalPosition(
+          triggerRect,
+          contentRect,
+          side,
+          collisionPadding
+        );
         setPosition(optimalPosition);
       } else {
         const offset = sideOffset || 5;
@@ -209,33 +246,37 @@ export const PopoverContent = ({
         let left = 0;
 
         switch (side) {
-          case 'top':
+          case "top":
             top = triggerRect.top - contentRect.height - offset;
-            left = triggerRect.left + (triggerRect.width - contentRect.width) / 2;
+            left =
+              triggerRect.left + (triggerRect.width - contentRect.width) / 2;
             break;
-          case 'right':
-            top = triggerRect.top + (triggerRect.height - contentRect.height) / 2;
+          case "right":
+            top =
+              triggerRect.top + (triggerRect.height - contentRect.height) / 2;
             left = triggerRect.right + offset;
             break;
-          case 'left':
-            top = triggerRect.top + (triggerRect.height - contentRect.height) / 2;
+          case "left":
+            top =
+              triggerRect.top + (triggerRect.height - contentRect.height) / 2;
             left = triggerRect.left - contentRect.width - offset;
             break;
           default: // bottom
             top = triggerRect.bottom + offset;
-            left = triggerRect.left + (triggerRect.width - contentRect.width) / 2;
+            left =
+              triggerRect.left + (triggerRect.width - contentRect.width) / 2;
         }
 
         // Apply alignment offset
         if (alignOffset) {
-          if (align === 'start') {
-            if (side === 'top' || side === 'bottom') {
+          if (align === "start") {
+            if (side === "top" || side === "bottom") {
               left = triggerRect.left + alignOffset;
             } else {
               top = triggerRect.top + alignOffset;
             }
-          } else if (align === 'end') {
-            if (side === 'top' || side === 'bottom') {
+          } else if (align === "end") {
+            if (side === "top" || side === "bottom") {
               left = triggerRect.right - contentRect.width - alignOffset;
             } else {
               top = triggerRect.bottom - contentRect.height - alignOffset;
@@ -249,16 +290,29 @@ export const PopoverContent = ({
 
     updatePosition();
 
-    if (sticky === 'always' || (sticky === 'partial' && position.side === side)) {
-      window.addEventListener('resize', updatePosition);
-      window.addEventListener('scroll', updatePosition, true);
+    if (
+      sticky === "always" ||
+      (sticky === "partial" && position.side === side)
+    ) {
+      window.addEventListener("resize", updatePosition);
+      window.addEventListener("scroll", updatePosition, true);
 
       return () => {
-        window.removeEventListener('resize', updatePosition);
-        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener("resize", updatePosition);
+        window.removeEventListener("scroll", updatePosition, true);
       };
     }
-  }, [open, side, align, sideOffset, alignOffset, avoidCollisions, collisionPadding, sticky, position.side]);
+  }, [
+    open,
+    side,
+    align,
+    sideOffset,
+    alignOffset,
+    avoidCollisions,
+    collisionPadding,
+    sticky,
+    position.side,
+  ]);
 
   if (!open) return null;
 
@@ -273,11 +327,11 @@ export const PopoverContent = ({
       sticky={sticky}
       animation={animation}
       style={{
-        position: 'fixed',
+        position: "fixed",
         top: `${position.top}px`,
         left: `${position.left}px`,
       }}
-      data-state={open ? 'open' : 'closed'}
+      data-state={open ? "open" : "closed"}
     >
       {children}
       {!hideArrow && <StyledPopoverArrow side={position.side} />}
@@ -285,4 +339,4 @@ export const PopoverContent = ({
   );
 
   return portalContainer ? createPortal(content, portalContainer) : content;
-}; 
+};

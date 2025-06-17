@@ -13,6 +13,7 @@ export interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  id?: string;
 }
 
 const StyledInput = styled.input<InputProps>`
@@ -99,10 +100,12 @@ export const Input: React.FC<InputProps> = ({
   fullWidth = false,
   error = false,
   disabled = false,
+  id,
   ...props
 }) => {
   return (
     <StyledInput
+      id={id}
       type={type}
       size={size}
       fullWidth={fullWidth}

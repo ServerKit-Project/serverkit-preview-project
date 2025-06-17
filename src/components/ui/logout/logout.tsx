@@ -1,0 +1,167 @@
+import { useState } from "react";
+import styled from "styled-components";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../../Card";
+import { Button } from "../../Button";
+
+const StyledCard = styled(Card)`
+  width: 350px;
+`;
+
+const StyledCardHeader = styled(CardHeader)`
+  margin-bottom: 1rem;
+`;
+
+const StyledCardTitle = styled(CardTitle)`
+  font-size: 1.5rem;
+`;
+
+const StyledCardContent = styled(CardContent)`
+  padding: 1rem;
+`;
+
+const UserContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const UserAvatar = styled.div`
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: ${({ theme }) => theme.colors.primary};
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const UserName = styled.p`
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.text.primary};
+  margin: 0;
+`;
+
+const UserEmail = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.small};
+  color: ${({ theme }) => theme.colors.lightGray};
+  margin: 0;
+`;
+
+const StyledCardFooter = styled(CardFooter)<{ $hasGap?: boolean }>`
+  display: flex;
+  justify-content: ${(props) => (props.$hasGap ? "space-between" : "stretch")};
+`;
+
+const StyledButton = styled(Button)<{ $fullWidth?: boolean }>`
+  width: ${(props) => (props.$fullWidth ? "100%" : "auto")};
+`;
+
+export interface LogoutProps {
+  userName?: string;
+  userEmail?: string;
+  onLogout?: () => Promise<void>;
+}
+
+export const Logout = ({
+  userName = "사용자",
+  userEmail = "user@example.com",
+  onLogout,
+}: LogoutProps) => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      if (onLogout) {
+        await onLogout();
+      } else {
+        // 기본 로그아웃 로직
+        console.log("로그아웃 중...");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log("로그아웃 성공");
+      }
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+    } finally {
+      setIsLoggingOut(false);
+      setShowConfirmation(false);
+    }
+  };
+
+  const handleConfirmLogout = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
+
+  if (showConfirmation) {
+    return (
+      <StyledCard>
+        <StyledCardHeader>
+          <StyledCardTitle>로그아웃 확인</StyledCardTitle>
+          <CardDescription>정말로 로그아웃 하시겠습니까?</CardDescription>
+        </StyledCardHeader>
+        <StyledCardFooter $hasGap>
+          <StyledButton
+            variant="secondary"
+            onClick={handleCancel}
+            disabled={isLoggingOut}
+          >
+            취소
+          </StyledButton>
+          <StyledButton
+            variant="danger"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+          >
+            {isLoggingOut ? "로그아웃 중..." : "로그아웃"}
+          </StyledButton>
+        </StyledCardFooter>
+      </StyledCard>
+    );
+  }
+
+  return (
+    <StyledCard>
+      <StyledCardHeader>
+        <StyledCardTitle>계정 관리</StyledCardTitle>
+        <CardDescription>현재 로그인된 상태입니다.</CardDescription>
+      </StyledCardHeader>
+      <StyledCardContent>
+        <UserContainer>
+          <UserAvatar>{userName[0].toUpperCase()}</UserAvatar>
+          <UserInfo>
+            <UserName>{userName}</UserName>
+            <UserEmail>{userEmail}</UserEmail>
+          </UserInfo>
+        </UserContainer>
+      </StyledCardContent>
+      <StyledCardFooter>
+        <StyledButton
+          variant="secondary"
+          $fullWidth
+          onClick={handleConfirmLogout}
+        >
+          로그아웃
+        </StyledButton>
+      </StyledCardFooter>
+    </StyledCard>
+  );
+};

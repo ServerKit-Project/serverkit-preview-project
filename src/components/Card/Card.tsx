@@ -1,111 +1,95 @@
-import styled from "styled-components";
 import React from "react";
+import styled from "styled-components";
 
-interface CardProps {
-  children: React.ReactNode;
-  variant?: "elevated" | "outlined";
-  padding?: "none" | "small" | "medium" | "large";
-  isHoverable?: boolean;
+const StyledCard = styled.div`
+  background: ${({ theme }) => theme.colors.background};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: ${({ theme }) => theme.shadows.sm};
+`;
+
+const StyledCardHeader = styled.div`
+  padding: 1.5rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const StyledCardTitle = styled.h3`
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const StyledCardDescription = styled.p`
+  margin: 0.5rem 0 0;
+  color: ${({ theme }) => theme.colors.lightGray};
+  font-size: ${({ theme }) => theme.fontSize.small};
+`;
+
+const StyledCardContent = styled.div`
+  padding: 1.5rem;
+`;
+
+const StyledCardFooter = styled.div<{ $hasGap?: boolean }>`
+  padding: 1.5rem;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  display: flex;
+  gap: ${({ $hasGap }) => ($hasGap ? "0.5rem" : "0")};
+`;
+
+export type CardProps = React.HTMLAttributes<HTMLDivElement>;
+export type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>;
+export type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
+export type CardDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
+export type CardContentProps = React.HTMLAttributes<HTMLDivElement>;
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  $hasGap?: boolean;
 }
 
-type PaddingSize = "none" | "small" | "medium" | "large";
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, ...props }, ref) => (
+    <StyledCard className={className} ref={ref} {...props} />
+  )
+);
+Card.displayName = "Card";
 
-const getPadding = (padding: PaddingSize) => {
-  switch (padding) {
-    case "none":
-      return "0";
-    case "small":
-      return "0.75rem";
-    case "large":
-      return "1.5rem";
-    default:
-      return "1rem";
-  }
-};
+export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
+  ({ className, ...props }, ref) => (
+    <StyledCardHeader className={className} ref={ref} {...props} />
+  )
+);
+CardHeader.displayName = "CardHeader";
 
-const CardContainer = styled.div<{
-  $variant: "elevated" | "outlined";
-  $padding: PaddingSize;
-  $isHoverable: boolean;
-}>`
-  background: white;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  padding: ${(props) => getPadding(props.$padding)};
-  transition: all 0.2s ease-in-out;
+export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+  ({ className, ...props }, ref) => (
+    <StyledCardTitle className={className} ref={ref} {...props} />
+  )
+);
+CardTitle.displayName = "CardTitle";
 
-  ${(props) =>
-    props.$variant === "elevated"
-      ? `
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-      border: none;
-    `
-      : `
-      border: 1px solid #e2e8f0;
-    `}
+export const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  CardDescriptionProps
+>(({ className, ...props }, ref) => (
+  <StyledCardDescription className={className} ref={ref} {...props} />
+));
+CardDescription.displayName = "CardDescription";
 
-  ${(props) =>
-    props.$isHoverable &&
-    `
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
-    }
-  `}
-`;
+export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
+  ({ className, ...props }, ref) => (
+    <StyledCardContent className={className} ref={ref} {...props} />
+  )
+);
+CardContent.displayName = "CardContent";
 
-interface CardSubComponentProps {
-  children: React.ReactNode;
-  padding: PaddingSize;
-}
-
-const CardHeader = styled(({ padding, ...props }: CardSubComponentProps) => (
-  <div {...props} />
-))`
-  margin: -${(props) => getPadding(props.padding)};
-  margin-bottom: 1rem;
-  padding: ${(props) => getPadding(props.padding)};
-  border-bottom: 1px solid #e2e8f0;
-`;
-
-const CardFooter = styled(({ padding, ...props }: CardSubComponentProps) => (
-  <div {...props} />
-))`
-  margin: -${(props) => getPadding(props.padding)};
-  margin-top: 1rem;
-  padding: ${(props) => getPadding(props.padding)};
-  border-top: 1px solid #e2e8f0;
-`;
-
-export const Card: React.FC<CardProps> & {
-  Header: typeof CardHeader;
-  Footer: typeof CardFooter;
-} = ({
-  children,
-  variant = "elevated",
-  padding = "medium",
-  isHoverable = false,
-}) => {
-  const childrenWithPadding = React.Children.map(children, (child) => {
-    if (
-      React.isValidElement(child) &&
-      (child.type === CardHeader || child.type === CardFooter)
-    ) {
-      return React.cloneElement(child, { padding } as CardSubComponentProps);
-    }
-    return child;
-  });
-
-  return (
-    <CardContainer
-      $variant={variant}
-      $padding={padding}
-      $isHoverable={isHoverable}
-    >
-      {childrenWithPadding}
-    </CardContainer>
-  );
-};
-
-Card.Header = CardHeader;
-Card.Footer = CardFooter;
+export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
+  ({ className, $hasGap, ...props }, ref) => (
+    <StyledCardFooter
+      className={className}
+      $hasGap={$hasGap}
+      ref={ref}
+      {...props}
+    />
+  )
+);
+CardFooter.displayName = "CardFooter";
