@@ -2,7 +2,7 @@ import { jwtDecode } from "jwt-decode";
 
 export type TokenPayload = {
   accessToken: string;
-  refreshToken: string;
+  refreshToken: string | null;
 };
 
 // Context로 만들어
