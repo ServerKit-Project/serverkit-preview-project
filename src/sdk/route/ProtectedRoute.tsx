@@ -25,9 +25,7 @@ export const ProtectedRoute = ({
 
   // 권한 체크
   try {
-    const hasRequiredRoles = enabled.every((roleId) =>
-      sdk.isAuthorized(authAssetId, roleId)
-    );
+    const hasRequiredRoles = sdk.isAuthorized(authAssetId, enabled);
 
     if (!hasRequiredRoles) {
       if (fallback) {
