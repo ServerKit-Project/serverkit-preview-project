@@ -4,9 +4,7 @@ import WelcomeServerkit from "./pages/welcome-serverkit";
 import NotFound from "./pages/404";
 import ServerError from "./pages/500";
 import { ProtectedRoute } from "@/sdk/route/ProtectedRoute";
-{
-  /*PackageImport*/
-}
+/*PackageImport*/
 
 const Container = styled.div`
   min-height: 100vh;
