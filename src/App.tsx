@@ -22,22 +22,10 @@ function App() {
     <Container>
       <Main>
         <Routes>
-          <Route path="/" element={<WelcomeServerkit />} />
           {/*PackageRoutes*/}
 
+          <Route path="/" element={<WelcomeServerkit />} />
           <Route path="/500" element={<ServerError />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute
-                enabled={["role-id"]}
-                authAssetId="auth-asset-id"
-                fallback={<div>Access Denied</div>}
-              >
-                <div>Admin Dashboard</div>
-              </ProtectedRoute>
-            }
-          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Main>
