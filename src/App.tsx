@@ -23,6 +23,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={WelcomeServerkit} />
           {/*PackageRoutes*/}
+
           <Route path="/500" component={ServerError} />
           <Route path="*" component={NotFound} />
           <Route

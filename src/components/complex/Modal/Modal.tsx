@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
-import { defaultTheme } from "../../theme";
+import {
+  CardRoot,
+  CardHeaderRoot,
+  CardContentRoot,
+} from "../../primitive/Card/Card";
+import { Text } from "../../primitive/Text/Text";
+import { Button } from "../../primitive/Button/Button";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -28,11 +34,7 @@ const ModalBackdrop = styled.div<{ $isOpen: boolean }>`
   transition: all 0.3s ease;
 `;
 
-const ModalContainer = styled.div<{ $size?: string; $isOpen: boolean }>`
-  background-color: white;
-  border-radius: ${({ theme }) =>
-    theme?.borderRadius || defaultTheme.borderRadius};
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+const ModalContainer = styled(CardRoot)<{ $size?: string; $isOpen: boolean }>`
   transform: ${({ $isOpen }) => ($isOpen ? "scale(1)" : "scale(0.95)")};
   transition: transform 0.3s ease;
   max-height: 90vh;
@@ -66,47 +68,33 @@ const ModalContainer = styled.div<{ $size?: string; $isOpen: boolean }>`
   }}
 `;
 
-const ModalHeader = styled.div`
+const ModalHeader = styled(CardHeaderRoot)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px;
-  border-bottom: 1px solid
-    ${({ theme }) =>
-      theme?.colors.border.default || defaultTheme.colors.border.default};
 `;
 
-const ModalTitle = styled.h2`
+const ModalTitle = styled(Text)`
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: ${({ theme }) =>
-    theme?.colors.text.primary || defaultTheme.colors.text.primary};
 `;
 
-const CloseButton = styled.button`
+const CloseButton = styled(Button)`
   background: none;
   border: none;
   font-size: 1.5rem;
-  cursor: pointer;
-  color: ${({ theme }) =>
-    theme?.colors.text.secondary || defaultTheme.colors.text.secondary};
   padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  min-width: auto;
+  min-height: auto;
 
   &:hover {
-    background-color: ${({ theme }) =>
-      theme?.colors.background.hover.secondary ||
-      defaultTheme.colors.background.hover.secondary};
-    color: ${({ theme }) =>
-      theme?.colors.text.primary || defaultTheme.colors.text.primary};
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 `;
 
-const ModalBody = styled.div`
-  padding: 24px;
-`;
+const ModalBody = styled(CardContentRoot)``;
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,

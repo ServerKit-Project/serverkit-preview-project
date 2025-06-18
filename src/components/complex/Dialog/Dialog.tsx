@@ -1,5 +1,12 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
+import {
+  CardRoot,
+  CardHeaderRoot,
+  CardContentRoot,
+} from "../../primitive/Card/Card";
+import { Text } from "../../primitive/Text/Text";
+import { Button } from "../../primitive/Button/Button";
 
 interface DialogProps {
   isOpen: boolean;
@@ -23,11 +30,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   z-index: 50;
 `;
 
-const DialogContainer = styled.div`
-  background: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+const DialogContainer = styled(CardRoot)`
   width: 100%;
   max-width: 28rem;
   max-height: 90vh;
@@ -47,54 +50,47 @@ const DialogContainer = styled.div`
   }
 `;
 
-const Header = styled.div`
-  padding: 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
+const Header = styled(CardHeaderRoot)`
   position: relative;
 `;
 
-const Title = styled.h2`
+const Title = styled(Text)`
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #2d3748;
 `;
 
-const Description = styled.p`
+const Description = styled(Text)`
   margin: 0.5rem 0 0;
   font-size: 0.875rem;
-  color: #718096;
+  color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
-const CloseButton = styled.button`
+const CloseButton = styled(Button)`
   position: absolute;
   top: 1rem;
   right: 1rem;
   padding: 0.5rem;
   background: none;
   border: none;
-  color: #a0aec0;
-  cursor: pointer;
-  border-radius: 0.375rem;
+  min-width: auto;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
 
   &:hover {
-    color: #4a5568;
-    background-color: #f7fafc;
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #e2e8f0;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.border.default};
   }
 `;
 
-const Content = styled.div`
-  padding: 1.5rem;
-`;
+const Content = styled(CardContentRoot)``;
 
 export const Dialog: React.FC<DialogProps> = ({
   isOpen,

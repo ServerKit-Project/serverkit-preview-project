@@ -1,34 +1,40 @@
 import styled from "styled-components";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../Card";
-import { Button } from "../../Button";
-import { Input } from "../../Input";
-import { Label } from "../label";
+  CardRoot,
+  CardContentRoot,
+  CardDescriptionRoot,
+  CardFooterRoot,
+  CardHeaderRoot,
+  CardTitleRoot,
+} from "../../primitive/Card/Card";
+import { Button } from "../../primitive/Button/Button";
+import { Input } from "../../primitive/Input/Input";
+import { Text } from "../../primitive/Text/Text";
+import { FormItemRoot, FormLabelRoot } from "../../primitive/Form/Form";
+import {
+  CheckboxInput,
+  CheckboxBox,
+  CheckboxLabel,
+} from "../../primitive/Checkbox/Checkbox";
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(CardRoot)`
   width: 400px;
 `;
 
-const StyledCardHeader = styled(CardHeader)`
+const StyledCardHeader = styled(CardHeaderRoot)`
   margin-bottom: 1rem;
 `;
 
-const StyledCardTitle = styled(CardTitle)`
+const StyledCardTitle = styled(CardTitleRoot)`
   font-size: 1.5rem;
 `;
 
-const FormGrid = styled(CardContent)`
+const FormGrid = styled(CardContentRoot)`
   display: grid;
   gap: 1rem;
 `;
 
-const FormGroup = styled.div`
+const FormGroup = styled(FormItemRoot)`
   display: grid;
   gap: 0.5rem;
 `;
@@ -37,9 +43,10 @@ const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 `;
 
-const StyledCardFooter = styled(CardFooter)`
+const StyledCardFooter = styled(CardFooterRoot)`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -49,13 +56,13 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
-const FooterText = styled.div`
+const FooterText = styled(Text)`
   text-align: center;
   font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme }) => theme.colors.lightGray};
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled(Text)`
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
   &:hover {
@@ -68,22 +75,24 @@ export const Signup = () => {
     <StyledCard>
       <StyledCardHeader>
         <StyledCardTitle>회원가입</StyledCardTitle>
-        <CardDescription>새 계정을 만들어 서비스를 시작하세요.</CardDescription>
+        <CardDescriptionRoot>
+          새 계정을 만들어 서비스를 시작하세요.
+        </CardDescriptionRoot>
       </StyledCardHeader>
 
       <FormGrid>
         <FormGroup>
-          <Label htmlFor="name">이름</Label>
+          <FormLabelRoot htmlFor="name">이름</FormLabelRoot>
           <Input id="name" type="text" placeholder="이름을 입력하세요" />
         </FormGroup>
 
         <FormGroup>
-          <Label htmlFor="email">이메일</Label>
+          <FormLabelRoot htmlFor="email">이메일</FormLabelRoot>
           <Input id="email" type="email" placeholder="이메일을 입력하세요" />
         </FormGroup>
 
         <FormGroup>
-          <Label htmlFor="password">비밀번호</Label>
+          <FormLabelRoot htmlFor="password">비밀번호</FormLabelRoot>
           <Input
             id="password"
             type="password"
@@ -92,7 +101,7 @@ export const Signup = () => {
         </FormGroup>
 
         <FormGroup>
-          <Label htmlFor="confirmPassword">비밀번호 확인</Label>
+          <FormLabelRoot htmlFor="confirmPassword">비밀번호 확인</FormLabelRoot>
           <Input
             id="confirmPassword"
             type="password"
@@ -101,17 +110,24 @@ export const Signup = () => {
         </FormGroup>
 
         <CheckboxContainer>
-          <input type="checkbox" id="terms" />
-          <Label htmlFor="terms">
-            <StyledLink href="#">이용약관</StyledLink>에 동의합니다
-          </Label>
+          <CheckboxLabel htmlFor="terms">
+            <CheckboxInput id="terms" />
+            <CheckboxBox />
+            <StyledLink as="a" href="#">
+              이용약관
+            </StyledLink>
+            에 동의합니다
+          </CheckboxLabel>
         </CheckboxContainer>
       </FormGrid>
 
       <StyledCardFooter>
         <StyledButton>회원가입</StyledButton>
         <FooterText>
-          이미 계정이 있으신가요? <StyledLink href="#">로그인</StyledLink>
+          이미 계정이 있으신가요?{" "}
+          <StyledLink as="a" href="#">
+            로그인
+          </StyledLink>
         </FooterText>
       </StyledCardFooter>
     </StyledCard>

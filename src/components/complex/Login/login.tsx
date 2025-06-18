@@ -1,34 +1,40 @@
 import styled from "styled-components";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../Card";
-import { Button } from "../../Button";
-import { Input } from "../../Input";
-import { Label } from "../label";
+  CardRoot,
+  CardContentRoot,
+  CardDescriptionRoot,
+  CardFooterRoot,
+  CardHeaderRoot,
+  CardTitleRoot,
+} from "../../primitive/Card/Card";
+import { Button } from "../../primitive/Button/Button";
+import { Input } from "../../primitive/Input/Input";
+import { Text } from "../../primitive/Text/Text";
+import { FormItemRoot, FormLabelRoot } from "../../primitive/Form/Form";
+import {
+  CheckboxInput,
+  CheckboxBox,
+  CheckboxLabel,
+} from "../../primitive/Checkbox/Checkbox";
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(CardRoot)`
   width: 400px;
 `;
 
-const StyledCardHeader = styled(CardHeader)`
+const StyledCardHeader = styled(CardHeaderRoot)`
   margin-bottom: 1rem;
 `;
 
-const StyledCardTitle = styled(CardTitle)`
+const StyledCardTitle = styled(CardTitleRoot)`
   font-size: 1.5rem;
 `;
 
-const FormGrid = styled(CardContent)`
+const FormGrid = styled(CardContentRoot)`
   display: grid;
   gap: 1rem;
 `;
 
-const FormGroup = styled.div`
+const FormGroup = styled(FormItemRoot)`
   display: grid;
   gap: 0.5rem;
 `;
@@ -37,9 +43,10 @@ const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 `;
 
-const StyledCardFooter = styled(CardFooter)`
+const StyledCardFooter = styled(CardFooterRoot)`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -49,13 +56,13 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
-const FooterText = styled.div`
+const FooterText = styled(Text)`
   text-align: center;
   font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme }) => theme.colors.lightGray};
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled(Text)`
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
   &:hover {
@@ -68,19 +75,19 @@ export const Login = () => {
     <StyledCard>
       <StyledCardHeader>
         <StyledCardTitle>로그인</StyledCardTitle>
-        <CardDescription>
+        <CardDescriptionRoot>
           계정에 로그인하여 서비스를 이용하세요.
-        </CardDescription>
+        </CardDescriptionRoot>
       </StyledCardHeader>
 
       <FormGrid>
         <FormGroup>
-          <Label htmlFor="email">이메일</Label>
+          <FormLabelRoot htmlFor="email">이메일</FormLabelRoot>
           <Input id="email" type="email" placeholder="이메일을 입력하세요" />
         </FormGroup>
 
         <FormGroup>
-          <Label htmlFor="password">비밀번호</Label>
+          <FormLabelRoot htmlFor="password">비밀번호</FormLabelRoot>
           <Input
             id="password"
             type="password"
@@ -89,15 +96,21 @@ export const Login = () => {
         </FormGroup>
 
         <CheckboxContainer>
-          <input type="checkbox" id="remember" />
-          <Label htmlFor="remember">로그인 상태 유지</Label>
+          <CheckboxLabel htmlFor="remember">
+            <CheckboxInput id="remember" />
+            <CheckboxBox />
+            로그인 상태 유지
+          </CheckboxLabel>
         </CheckboxContainer>
       </FormGrid>
 
       <StyledCardFooter>
         <StyledButton>로그인</StyledButton>
         <FooterText>
-          계정이 없으신가요? <StyledLink href="#">회원가입</StyledLink>
+          계정이 없으신가요?{" "}
+          <StyledLink as="a" href="#">
+            회원가입
+          </StyledLink>
         </FooterText>
       </StyledCardFooter>
     </StyledCard>

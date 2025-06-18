@@ -1,5 +1,17 @@
 import styled from "styled-components";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, type ChangeEvent } from "react";
+import {
+  TableRoot,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableHeader,
+  TableCell,
+} from "../../primitive/Table/Table";
+import { Button } from "../../primitive/Button/Button";
+import { Text } from "../../primitive/Text/Text";
+import { CheckboxBox } from "../../primitive/Checkbox/Checkbox";
 
 interface Column<T> {
   key: string;
@@ -20,35 +32,21 @@ interface DataTableProps<T> {
   pageSize?: number;
 }
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #e2e8f0;
-  background-color: white;
-`;
+interface SortButtonProps {
+  $direction?: "asc" | "desc";
+}
 
-const Th = styled.th<{ $width?: string }>`
-  padding: 0.75rem 1rem;
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: #4a5568;
-  background-color: #f7fafc;
-  border-bottom: 1px solid #e2e8f0;
-  width: ${(props) => props.$width || "auto"};
-  position: relative;
-`;
-
-const SortButton = styled.button<{ $direction?: "asc" | "desc" }>`
+const SortButton = styled(Button)<SortButtonProps>`
   background: none;
   border: none;
   padding: 0;
   margin-left: 0.5rem;
-  cursor: pointer;
-  color: #a0aec0;
+  min-width: auto;
+  min-height: auto;
+  color: ${({ theme }) => theme.colors.text.secondary};
 
   &:hover {
-    color: #4a5568;
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 
   &::after {
@@ -61,57 +59,36 @@ const SortButton = styled.button<{ $direction?: "asc" | "desc" }>`
   }
 `;
 
-const Td = styled.td`
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  color: #2d3748;
-  border-bottom: 1px solid #e2e8f0;
-`;
-
-const Tr = styled.tr<{ $isSelected?: boolean }>`
-  background-color: ${(props) => (props.$isSelected ? "#ebf8ff" : "white")};
-
-  &:hover {
-    background-color: ${(props) => (props.$isSelected ? "#bee3f8" : "#f7fafc")};
-  }
-`;
-
-const Checkbox = styled.input.attrs({ type: "checkbox" })`
-  margin: 0;
-`;
-
 const PaginationContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  background-color: #f7fafc;
-  border: 1px solid #e2e8f0;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
   border-top: none;
 `;
 
-const PageInfo = styled.span`
+const PageInfo = styled(Text)`
   font-size: 0.875rem;
-  color: #4a5568;
 `;
 
-const PageButton = styled.button<{ $disabled?: boolean }>`
+const PageButton = styled(Button)<{ $disabled?: boolean }>`
   padding: 0.375rem 0.75rem;
-  border: 1px solid #e2e8f0;
-  background-color: white;
-  color: ${(props) => (props.$disabled ? "#a0aec0" : "#4a5568")};
-  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
-  font-size: 0.875rem;
-  border-radius: 0.25rem;
   margin: 0 0.25rem;
+  min-width: auto;
+  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+`;
 
-  &:hover:not(:disabled) {
-    background-color: #f7fafc;
-  }
+interface StyledTableRowProps {
+  $striped?: boolean;
+  $hoverable?: boolean;
+  $selected?: boolean;
+}
 
-  &:disabled {
-    opacity: 0.6;
-  }
+const StyledTableRow = styled(TableRow)<StyledTableRowProps>`
+  background-color: ${({ theme, $selected }) =>
+    $selected ? theme.colors.background.primary : "inherit"};
 `;
 
 export function DataTable<T extends { id: string | number }>({
@@ -144,7 +121,7 @@ export function DataTable<T extends { id: string | number }>({
     onSort?.(key, direction);
   };
 
-  const handleSelectAll = (checked: boolean) => {
+  const handleSelectAll = (checked: boolean, paginatedData: T[]) => {
     const newSelectedRows = new Set<string | number>();
     if (checked) {
       paginatedData.forEach((row) => newSelectedRows.add(row.id));
@@ -190,94 +167,104 @@ export function DataTable<T extends { id: string | number }>({
 
   return (
     <div>
-      <Table>
-        <thead>
-          <tr>
-            {selectable && (
-              <Th>
-                <Checkbox
-                  checked={paginatedData.every((row) =>
-                    selectedRows.has(row.id)
-                  )}
-                  onChange={(e) => handleSelectAll(e.target.checked)}
-                />
-              </Th>
-            )}
-            {columns.map((column) => (
-              <Th key={column.key} $width={column.width}>
-                {column.header}
-                {sortable && column.sortable !== false && (
-                  <SortButton
-                    onClick={() => handleSort(column.key)}
-                    $direction={
-                      sortConfig?.key === column.key
-                        ? sortConfig.direction
-                        : undefined
+      <TableContainer>
+        <TableRoot>
+          <TableHead>
+            <TableRow>
+              {selectable && (
+                <TableHeader>
+                  <CheckboxBox
+                    $checked={Array.from(selectedRows).every((row) =>
+                      paginatedData.some((pRow) => pRow.id === row)
+                    )}
+                    onClick={() =>
+                      handleSelectAll(
+                        Array.from(selectedRows).every((row) =>
+                          paginatedData.some((pRow) => pRow.id === row)
+                        ),
+                        paginatedData
+                      )
                     }
                   />
-                )}
-              </Th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((row) => (
-            <Tr
-              key={row.id}
-              $isSelected={selectedRows.has(row.id)}
-              onClick={() => selectable && handleSelectRow(row.id)}
-              style={{ cursor: selectable ? "pointer" : "default" }}
-            >
-              {selectable && (
-                <Td>
-                  <Checkbox
-                    checked={selectedRows.has(row.id)}
-                    onChange={(e) => e.stopPropagation()}
-                  />
-                </Td>
+                </TableHeader>
               )}
               {columns.map((column) => (
-                <Td key={column.key}>
-                  {column.render
-                    ? column.render((row as any)[column.key], row)
-                    : (row as any)[column.key]}
-                </Td>
+                <TableHeader key={column.key} $width={column.width}>
+                  {column.header}
+                  {sortable && column.sortable !== false && (
+                    <SortButton
+                      onClick={() => handleSort(column.key)}
+                      $direction={
+                        sortConfig?.key === column.key
+                          ? sortConfig.direction
+                          : undefined
+                      }
+                    >
+                      {column.header}
+                    </SortButton>
+                  )}
+                </TableHeader>
               ))}
-            </Tr>
-          ))}
-        </tbody>
-      </Table>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((row) => (
+              <StyledTableRow
+                key={row.id}
+                $striped={true}
+                $hoverable={true}
+                $selected={selectedRows.has(row.id)}
+              >
+                {selectable && (
+                  <TableCell>
+                    <CheckboxBox
+                      $checked={selectedRows.has(row.id)}
+                      onClick={() => handleSelectRow(row.id)}
+                    />
+                  </TableCell>
+                )}
+                {columns.map((column) => (
+                  <TableCell key={column.key}>
+                    {column.render
+                      ? column.render(row[column.key as keyof T], row)
+                      : String(row[column.key as keyof T])}
+                  </TableCell>
+                ))}
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </TableRoot>
+      </TableContainer>
+
       {pagination && totalPages > 1 && (
         <PaginationContainer>
           <PageInfo>
-            {(currentPage - 1) * pageSize + 1} -{" "}
-            {Math.min(currentPage * pageSize, sortedData.length)} of{" "}
-            {sortedData.length}
+            Page {currentPage} of {totalPages}
           </PageInfo>
           <div>
             <PageButton
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
             >
-              ≪
+              First
             </PageButton>
             <PageButton
-              onClick={() => setCurrentPage((p) => p - 1)}
+              onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              ‹
+              Previous
             </PageButton>
             <PageButton
-              onClick={() => setCurrentPage((p) => p + 1)}
+              onClick={() => setCurrentPage(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              ›
+              Next
             </PageButton>
             <PageButton
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
             >
-              ≫
+              Last
             </PageButton>
           </div>
         </PaginationContainer>
