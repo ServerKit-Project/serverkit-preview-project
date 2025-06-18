@@ -18,12 +18,12 @@ export interface TabsProps {
   size?: "small" | "medium" | "large";
 }
 
-const TabsContainer = styled.div`
+export const TabsContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const TabsList = styled.div<{ $variant?: string }>`
+export const TabsList = styled.div<{ $variant?: string }>`
   display: flex;
   border-bottom: ${({ $variant, theme }) =>
     $variant === "card"
@@ -42,7 +42,7 @@ const TabsList = styled.div<{ $variant?: string }>`
     `}
 `;
 
-const TabButton = styled.button<{
+export const TabButton = styled.button<{
   $active?: boolean;
   $variant?: string;
   $size?: string;
@@ -116,7 +116,7 @@ const TabButton = styled.button<{
   }
 `;
 
-const TabContent = styled.div`
+export const TabContent = styled.div`
   padding: 16px 0;
 `;
 

@@ -16,7 +16,7 @@ export interface KeyValueProps {
   striped?: boolean;
 }
 
-const KeyValueContainer = styled.div<{ $bordered?: boolean }>`
+export const KeyValueContainer = styled.div<{ $bordered?: boolean }>`
   ${({ $bordered, theme }) =>
     $bordered &&
     css`
@@ -27,7 +27,7 @@ const KeyValueContainer = styled.div<{ $bordered?: boolean }>`
     `}
 `;
 
-const KeyValueItem = styled.div<{
+export const KeyValueItem = styled.div<{
   $layout?: string;
   $size?: string;
   $striped?: boolean;
@@ -67,7 +67,7 @@ const KeyValueItem = styled.div<{
   }}
 `;
 
-const KeyLabel = styled.div<{ $layout?: string; $size?: string }>`
+export const KeyLabel = styled.div<{ $layout?: string; $size?: string }>`
   font-weight: 500;
   color: ${({ theme }) =>
     theme?.colors.text.primary || defaultTheme.colors.text.primary};
@@ -92,7 +92,7 @@ const KeyLabel = styled.div<{ $layout?: string; $size?: string }>`
   }}
 `;
 
-const ValueContent = styled.div<{ $layout?: string; $size?: string }>`
+export const ValueContent = styled.div<{ $layout?: string; $size?: string }>`
   color: ${({ theme }) =>
     theme?.colors.text.primary || defaultTheme.colors.text.primary};
   display: flex;
@@ -117,7 +117,7 @@ const ValueContent = styled.div<{ $layout?: string; $size?: string }>`
   }}
 `;
 
-const CopyButton = styled.button`
+export const CopyButton = styled.button`
   background: none;
   border: 1px solid
     ${({ theme }) =>

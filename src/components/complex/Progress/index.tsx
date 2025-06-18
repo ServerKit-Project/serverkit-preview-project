@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { keyframes, css } from 'styled-components';
+import React from "react";
+import styled, { keyframes, css } from "styled-components";
 
 const indeterminateAnim = keyframes`
   from {
@@ -10,7 +10,7 @@ const indeterminateAnim = keyframes`
   }
 `;
 
-const ProgressRoot = styled.div`
+export const ProgressRoot = styled.div`
   position: relative;
   width: 100%;
   height: 8px;
@@ -19,8 +19,8 @@ const ProgressRoot = styled.div`
   overflow: hidden;
 `;
 
-const ProgressIndicator = styled.div<{ 
-  $value: number; 
+export const ProgressIndicator = styled.div<{
+  $value: number;
   $max: number;
   $indeterminate: boolean;
 }>`
@@ -29,21 +29,24 @@ const ProgressIndicator = styled.div<{
   background-color: #000000;
   transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  ${props => !props.$indeterminate && css`
-    transform: translateX(-${100 - ((props.$value / props.$max) * 100)}%);
-  `}
+  ${(props) =>
+    !props.$indeterminate &&
+    css`
+      transform: translateX(-${100 - (props.$value / props.$max) * 100}%);
+    `}
 
-  ${props => props.$indeterminate && css`
-    position: absolute;
-    left: 0;
-    right: 0;
-    transform-origin: left;
-    animation: ${indeterminateAnim} 1s infinite linear;
-  `}
+  ${(props) =>
+    props.$indeterminate &&
+    css`
+      position: absolute;
+      left: 0;
+      right: 0;
+      transform-origin: left;
+      animation: ${indeterminateAnim} 1s infinite linear;
+    `}
 `;
 
-export interface ProgressProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * The value of the progress indicator.
    * If null, the progress bar will be indeterminate
@@ -61,7 +64,8 @@ export interface ProgressProps
 
 export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
   ({ value, max = 100, indeterminate = false, className, ...props }, ref) => {
-    const determinateValue = value !== null ? Math.min(Math.max(value || 0, 0), max) : 0;
+    const determinateValue =
+      value !== null ? Math.min(Math.max(value || 0, 0), max) : 0;
     const isIndeterminate = indeterminate || value === null;
 
     return (
@@ -74,7 +78,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         className={className}
         {...props}
       >
-        <ProgressIndicator 
+        <ProgressIndicator
           $value={determinateValue}
           $max={max}
           $indeterminate={isIndeterminate}
@@ -84,4 +88,4 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
   }
 );
 
-Progress.displayName = 'Progress'; 
+Progress.displayName = "Progress";

@@ -8,18 +8,18 @@ export interface AccordionProps {
   }>;
 }
 
-const AccordionContainer = styled.div`
+export const AccordionContainer = styled.div`
   width: 100%;
   border-radius: 4px;
   overflow: hidden;
 `;
 
-const AccordionItem = styled.div`
+export const AccordionItem = styled.div`
   border: 1px solid #e2e8f0;
   margin-bottom: -1px;
 `;
 
-const AccordionHeader = styled.button<{ isOpen: boolean }>`
+export const AccordionHeader = styled.button<{ isOpen: boolean }>`
   width: 100%;
   padding: 1rem;
   background: ${(props) => (props.isOpen ? "#f7fafc" : "white")};
@@ -35,7 +35,7 @@ const AccordionHeader = styled.button<{ isOpen: boolean }>`
   }
 `;
 
-const AccordionContent = styled.div<{ isOpen: boolean }>`
+export const AccordionContent = styled.div<{ isOpen: boolean }>`
   padding: ${(props) => (props.isOpen ? "1rem" : "0")};
   height: ${(props) => (props.isOpen ? "auto" : "0")};
   overflow: hidden;

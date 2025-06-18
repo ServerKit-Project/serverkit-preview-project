@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-const SliderRoot = styled.div`
+export const SliderRoot = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -16,7 +16,7 @@ const SliderRoot = styled.div`
   }
 `;
 
-const SliderTrack = styled.div`
+export const SliderTrack = styled.div`
   position: relative;
   flex-grow: 1;
   height: 2px;
@@ -25,13 +25,13 @@ const SliderTrack = styled.div`
   overflow: hidden;
 `;
 
-const SliderRange = styled.div`
+export const SliderRange = styled.div`
   position: absolute;
   height: 100%;
   background-color: hsl(240 5% 26%);
 `;
 
-const SliderThumb = styled.div`
+export const SliderThumb = styled.div`
   position: absolute;
   display: block;
   width: 16px;
@@ -51,7 +51,8 @@ const SliderThumb = styled.div`
   }
 `;
 
-interface SliderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+interface SliderProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   value: number;
   min?: number;
   max?: number;
@@ -62,7 +63,19 @@ interface SliderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChan
 }
 
 export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
-  ({ value, min = 0, max = 100, step = 1, disabled = false, onChange, onChangeEnd, ...props }, ref) => {
+  (
+    {
+      value,
+      min = 0,
+      max = 100,
+      step = 1,
+      disabled = false,
+      onChange,
+      onChangeEnd,
+      ...props
+    },
+    ref
+  ) => {
     const [isDragging, setIsDragging] = React.useState(false);
     const sliderRef = React.useRef<HTMLDivElement>(null);
 
@@ -90,8 +103,8 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       if (!isDragging) return;
       setIsDragging(false);
       onChangeEnd?.(value);
-      document.removeEventListener('pointermove', handlePointerMove);
-      document.removeEventListener('pointerup', handlePointerUp);
+      document.removeEventListener("pointermove", handlePointerMove);
+      document.removeEventListener("pointerup", handlePointerUp);
     };
 
     const handlePointerDown = (event: React.PointerEvent) => {
@@ -99,8 +112,8 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
       const newValue = getValueFromPosition(event.clientX);
       onChange?.(newValue);
       setIsDragging(true);
-      document.addEventListener('pointermove', handlePointerMove);
-      document.addEventListener('pointerup', handlePointerUp);
+      document.addEventListener("pointermove", handlePointerMove);
+      document.addEventListener("pointerup", handlePointerUp);
     };
 
     const percentage = ((value - min) / (max - min)) * 100;
@@ -128,4 +141,4 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
   }
 );
 
-Slider.displayName = 'Slider'; 
+Slider.displayName = "Slider";

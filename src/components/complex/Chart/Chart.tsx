@@ -17,7 +17,7 @@ export interface ChartProps {
   showValues?: boolean;
 }
 
-const ChartContainer = styled.div<{
+export const ChartContainer = styled.div<{
   $width?: string | number;
   $height?: string | number;
 }>`
@@ -39,14 +39,14 @@ const ChartContainer = styled.div<{
       : `height: ${$height};`)}
 `;
 
-const BarChart = styled.div`
+export const BarChart = styled.div`
   display: flex;
   align-items: flex-end;
   gap: 8px;
   height: 200px;
 `;
 
-const BarItem = styled.div<{ $height: number; $color?: string }>`
+export const BarItem = styled.div<{ $height: number; $color?: string }>`
   flex: 1;
   background-color: ${({ $color, theme }) =>
     $color || theme?.colors.primary || defaultTheme.colors.primary};
@@ -60,13 +60,13 @@ const BarItem = styled.div<{ $height: number; $color?: string }>`
   }
 `;
 
-const ChartLabels = styled.div`
+export const ChartLabels = styled.div`
   display: flex;
   gap: 8px;
   margin-top: 8px;
 `;
 
-const ChartLabel = styled.div`
+export const ChartLabel = styled.div`
   flex: 1;
   text-align: center;
   font-size: 0.875rem;
@@ -75,20 +75,20 @@ const ChartLabel = styled.div`
   min-width: 20px;
 `;
 
-const ChartLegend = styled.div`
+export const ChartLegend = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 16px;
 `;
 
-const LegendItem = styled.div`
+export const LegendItem = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
 `;
 
-const LegendColor = styled.div<{ $color?: string }>`
+export const LegendColor = styled.div<{ $color?: string }>`
   width: 12px;
   height: 12px;
   border-radius: 2px;
@@ -96,20 +96,20 @@ const LegendColor = styled.div<{ $color?: string }>`
     $color || theme?.colors.primary || defaultTheme.colors.primary};
 `;
 
-const LegendLabel = styled.span`
+export const LegendLabel = styled.span`
   font-size: 0.875rem;
   color: ${({ theme }) =>
     theme?.colors.text.primary || defaultTheme.colors.text.primary};
 `;
 
-const ChartTitle = styled.h3`
+export const ChartTitle = styled.h3`
   margin: 0 0 16px 0;
   font-size: 1.125rem;
   color: ${({ theme }) =>
     theme?.colors.text.primary || defaultTheme.colors.text.primary};
 `;
 
-const PieChart = styled.div`
+export const PieChart = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,7 +118,7 @@ const PieChart = styled.div`
   margin: 0 auto;
 `;
 
-const PieSlice = styled.div<{
+export const PieSlice = styled.div<{
   $percentage: number;
   $color?: string;
   $rotation: number;

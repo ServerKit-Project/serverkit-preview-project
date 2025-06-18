@@ -22,7 +22,7 @@ const sizes: SpinnerSize = {
   lg: "3rem",
 };
 
-const StyledSpinner = styled.div<{ $size: keyof SpinnerSize }>`
+export const StyledSpinner = styled.div<{ $size: keyof SpinnerSize }>`
   width: ${({ $size }) => sizes[$size]};
   height: ${({ $size }) => sizes[$size]};
   border: 4px solid ${({ theme }) => theme.colors.primary};

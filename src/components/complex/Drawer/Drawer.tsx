@@ -30,7 +30,7 @@ const getSize = (size: DrawerSize) => {
   }
 };
 
-const Overlay = styled.div<{ $isOpen: boolean }>`
+export const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -41,7 +41,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   z-index: 50;
 `;
 
-const DrawerContainer = styled.div<{
+export const DrawerContainer = styled.div<{
   $isOpen: boolean;
   $placement: DrawerPlacement;
   $size: DrawerSize;
@@ -92,7 +92,7 @@ const DrawerContainer = styled.div<{
   }}
 `;
 
-const CloseButton = styled.button`
+export const CloseButton = styled.button`
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -118,7 +118,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   padding: 1.5rem;
   height: 100%;
   overflow-y: auto;

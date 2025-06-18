@@ -19,7 +19,7 @@ export interface NavigationProps {
   background?: boolean;
 }
 
-const NavContainer = styled.nav<{
+export const NavContainer = styled.nav<{
   $variant?: string;
   $background?: boolean;
 }>`
@@ -39,7 +39,7 @@ const NavContainer = styled.nav<{
     `}
 `;
 
-const NavItem = styled.a<{
+export const NavItem = styled.a<{
   $active?: boolean;
   $variant?: string;
   $size?: string;
@@ -120,13 +120,13 @@ const NavItem = styled.a<{
   }
 `;
 
-const NavIcon = styled.span`
+export const NavIcon = styled.span`
   display: flex;
   align-items: center;
   font-size: 1em;
 `;
 
-const NavLabel = styled.span`
+export const NavLabel = styled.span`
   font-weight: 500;
 `;
 

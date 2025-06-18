@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const DropdownMenuShortcut = styled.span`
   margin-left: auto;

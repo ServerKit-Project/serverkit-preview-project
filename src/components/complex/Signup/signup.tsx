@@ -39,7 +39,7 @@ const FormGroup = styled(FormItemRoot)`
   gap: 0.5rem;
 `;
 
-const CheckboxContainer = styled.div`
+export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;

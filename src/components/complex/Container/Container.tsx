@@ -22,7 +22,7 @@ export interface ContainerProps {
   gap?: "none" | "small" | "medium" | "large" | string;
 }
 
-const StyledContainer = styled.div<ContainerProps>`
+export const StyledContainer = styled.div<ContainerProps>`
   ${({ maxWidth }) => {
     if (
       typeof maxWidth === "string" &&

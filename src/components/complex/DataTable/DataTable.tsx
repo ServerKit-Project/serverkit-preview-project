@@ -59,7 +59,7 @@ const SortButton = styled(Button)<SortButtonProps>`
   }
 `;
 
-const PaginationContainer = styled.div`
+export const PaginationContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

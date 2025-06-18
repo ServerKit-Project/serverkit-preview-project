@@ -21,7 +21,7 @@ const getAlertColor = (variant: AlertVariant) => {
   }
 };
 
-const AlertContainer = styled.div<{ variant: AlertVariant }>`
+export const AlertContainer = styled.div<{ variant: AlertVariant }>`
   width: 100%;
   padding: 1rem;
   border-radius: 4px;

@@ -9,24 +9,24 @@ interface CarouselProps {
   showArrows?: boolean;
 }
 
-const CarouselContainer = styled.div`
+export const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
 `;
 
-const CarouselTrack = styled.div<{ $currentIndex: number }>`
+export const CarouselTrack = styled.div<{ $currentIndex: number }>`
   display: flex;
   transition: transform 0.3s ease-in-out;
   transform: translateX(-${(props) => props.$currentIndex * 100}%);
 `;
 
-const CarouselSlide = styled.div`
+export const CarouselSlide = styled.div`
   flex: 0 0 100%;
   width: 100%;
 `;
 
-const CarouselButton = styled.button<{ $direction: "prev" | "next" }>`
+export const CarouselButton = styled.button<{ $direction: "prev" | "next" }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -52,7 +52,7 @@ const CarouselButton = styled.button<{ $direction: "prev" | "next" }>`
   }
 `;
 
-const DotsContainer = styled.div`
+export const DotsContainer = styled.div`
   position: absolute;
   bottom: 1rem;
   left: 50%;
@@ -62,7 +62,7 @@ const DotsContainer = styled.div`
   z-index: 1;
 `;
 
-const Dot = styled.button<{ $isActive: boolean }>`
+export const Dot = styled.button<{ $isActive: boolean }>`
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;

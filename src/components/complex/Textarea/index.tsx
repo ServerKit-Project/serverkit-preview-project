@@ -1,7 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   /**
    * When true, shows error styling
    * @default false
@@ -14,12 +15,12 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
   className?: string;
 }
 
-const StyledTextarea = styled.textarea<{ $error?: boolean }>`
+export const StyledTextarea = styled.textarea<{ $error?: boolean }>`
   width: 100%;
   min-height: 80px;
   padding: 0.5rem 0.75rem;
   background-color: white;
-  border: 1px solid ${props => props.$error ? '#ef4444' : '#e5e7eb'};
+  border: 1px solid ${(props) => (props.$error ? "#ef4444" : "#e5e7eb")};
   border-radius: 0.375rem;
   color: #1f2937;
   font-size: 0.875rem;
@@ -32,8 +33,10 @@ const StyledTextarea = styled.textarea<{ $error?: boolean }>`
 
   &:focus {
     outline: none;
-    border-color: ${props => props.$error ? '#ef4444' : '#3b82f6'};
-    box-shadow: 0 0 0 2px ${props => props.$error ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)'};
+    border-color: ${(props) => (props.$error ? "#ef4444" : "#3b82f6")};
+    box-shadow: 0 0 0 2px
+      ${(props) =>
+        props.$error ? "rgba(239, 68, 68, 0.2)" : "rgba(59, 130, 246, 0.2)"};
   }
 
   &:disabled {
@@ -57,21 +60,21 @@ const StyledTextarea = styled.textarea<{ $error?: boolean }>`
 
 /**
  * A textarea component for multi-line text input.
- * 
+ *
  * @example
  * ```tsx
  * // Basic textarea
  * <Textarea placeholder="Type your message here." />
- * 
+ *
  * // With error state
  * <Textarea error placeholder="Please enter a valid message." />
- * 
+ *
  * // Disabled textarea
  * <Textarea disabled value="This content cannot be edited." />
- * 
+ *
  * // Read-only textarea
  * <Textarea readOnly value="This content can be read but not edited." />
- * 
+ *
  * // Controlled textarea
  * const [value, setValue] = React.useState('');
  * <Textarea
@@ -94,4 +97,4 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   }
 );
 
-Textarea.displayName = 'Textarea'; 
+Textarea.displayName = "Textarea";

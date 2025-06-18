@@ -1,7 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+interface SwitchProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   /**
    * Optional CSS class name
    */
@@ -11,35 +12,35 @@ interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 
    * The size of the switch
    * @default "md"
    */
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 const sizes = {
   sm: {
-    width: '32px',
-    height: '18px',
-    thumbSize: '14px',
+    width: "32px",
+    height: "18px",
+    thumbSize: "14px",
   },
   md: {
-    width: '40px',
-    height: '22px',
-    thumbSize: '18px',
+    width: "40px",
+    height: "22px",
+    thumbSize: "18px",
   },
   lg: {
-    width: '48px',
-    height: '26px',
-    thumbSize: '22px',
+    width: "48px",
+    height: "26px",
+    thumbSize: "22px",
   },
 } as const;
 
-const SwitchContainer = styled.label<{ size: 'sm' | 'md' | 'lg' }>`
+export const SwitchContainer = styled.label<{ size: "sm" | "md" | "lg" }>`
   position: relative;
   display: inline-block;
-  width: ${props => sizes[props.size].width};
-  height: ${props => sizes[props.size].height};
+  width: ${(props) => sizes[props.size].width};
+  height: ${(props) => sizes[props.size].height};
 `;
 
-const SwitchInput = styled.input<{ $size: 'sm' | 'md' | 'lg' }>`
+export const SwitchInput = styled.input<{ $size: "sm" | "md" | "lg" }>`
   opacity: 0;
   width: 0;
   height: 0;
@@ -50,7 +51,10 @@ const SwitchInput = styled.input<{ $size: 'sm' | 'md' | 'lg' }>`
 
   &:checked + span:before {
     transform: translateX(
-      calc(${props => sizes[props.$size].width} - ${props => sizes[props.$size].thumbSize} - 2px)
+      calc(
+        ${(props) => sizes[props.$size].width} -
+          ${(props) => sizes[props.$size].thumbSize} - 2px
+      )
     );
   }
 
@@ -64,7 +68,7 @@ const SwitchInput = styled.input<{ $size: 'sm' | 'md' | 'lg' }>`
   }
 `;
 
-const SwitchSlider = styled.span<{ size: 'sm' | 'md' | 'lg' }>`
+export const SwitchSlider = styled.span<{ size: "sm" | "md" | "lg" }>`
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -78,8 +82,8 @@ const SwitchSlider = styled.span<{ size: 'sm' | 'md' | 'lg' }>`
   &:before {
     position: absolute;
     content: "";
-    height: ${props => sizes[props.size].thumbSize};
-    width: ${props => sizes[props.size].thumbSize};
+    height: ${(props) => sizes[props.size].thumbSize};
+    width: ${(props) => sizes[props.size].thumbSize};
     left: 2px;
     bottom: 2px;
     background-color: white;
@@ -94,43 +98,38 @@ const SwitchSlider = styled.span<{ size: 'sm' | 'md' | 'lg' }>`
 
 /**
  * A switch component used as an alternative to checkbox.
- * 
+ *
  * @example
  * ```tsx
  * // Basic switch
  * <Switch />
- * 
+ *
  * // Different sizes
  * <Switch size="sm" />
  * <Switch size="md" />
  * <Switch size="lg" />
- * 
+ *
  * // Controlled switch
  * const [checked, setChecked] = React.useState(false);
- * <Switch 
- *   checked={checked} 
- *   onChange={(e) => setChecked(e.target.checked)} 
+ * <Switch
+ *   checked={checked}
+ *   onChange={(e) => setChecked(e.target.checked)}
  * />
- * 
+ *
  * // Disabled switch
  * <Switch disabled />
  * <Switch disabled checked />
  * ```
  */
 export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, size = 'md', ...props }, ref) => {
+  ({ className, size = "md", ...props }, ref) => {
     return (
       <SwitchContainer className={className} size={size}>
-        <SwitchInput
-          type="checkbox"
-          ref={ref}
-          $size={size}
-          {...props}
-        />
+        <SwitchInput type="checkbox" ref={ref} $size={size} {...props} />
         <SwitchSlider size={size} />
       </SwitchContainer>
     );
   }
 );
 
-Switch.displayName = 'Switch'; 
+Switch.displayName = "Switch";

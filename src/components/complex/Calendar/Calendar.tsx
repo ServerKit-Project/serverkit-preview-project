@@ -8,7 +8,7 @@ interface CalendarProps {
   maxDate?: Date;
 }
 
-const CalendarContainer = styled.div`
+export const CalendarContainer = styled.div`
   width: 100%;
   max-width: 300px;
   background: white;
@@ -18,19 +18,19 @@ const CalendarContainer = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
-const Header = styled.div`
+export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 `;
 
-const MonthYear = styled.div`
+export const MonthYear = styled.div`
   font-weight: 600;
   font-size: 1rem;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
@@ -47,7 +47,7 @@ const Button = styled.button`
   }
 `;
 
-const WeekDays = styled.div`
+export const WeekDays = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.25rem;
@@ -58,13 +58,13 @@ const WeekDays = styled.div`
   color: #718096;
 `;
 
-const Days = styled.div`
+export const Days = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.25rem;
 `;
 
-const Day = styled.button<{
+export const Day = styled.button<{
   $isToday?: boolean;
   $isSelected?: boolean;
   $isOutsideMonth?: boolean;

@@ -8,11 +8,11 @@ interface CollapsibleProps {
   disabled?: boolean;
 }
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
 `;
 
-const Trigger = styled.button<{ $disabled: boolean }>`
+export const Trigger = styled.button<{ $disabled: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
@@ -36,18 +36,18 @@ const Trigger = styled.button<{ $disabled: boolean }>`
   }
 `;
 
-const Icon = styled.span<{ $isOpen: boolean }>`
+export const Icon = styled.span<{ $isOpen: boolean }>`
   transform: rotate(${(props) => (props.$isOpen ? "180deg" : "0deg")});
   transition: transform 0.2s ease-in-out;
 `;
 
-const Content = styled.div<{ $height: number }>`
+export const Content = styled.div<{ $height: number }>`
   overflow: hidden;
   transition: height 0.3s ease-in-out;
   height: ${(props) => props.$height}px;
 `;
 
-const ContentInner = styled.div`
+export const ContentInner = styled.div`
   padding: 1rem;
   border: 1px solid #e2e8f0;
   border-top: none;

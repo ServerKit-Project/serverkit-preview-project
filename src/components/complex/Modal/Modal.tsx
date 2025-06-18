@@ -18,7 +18,7 @@ export interface ModalProps {
   showCloseButton?: boolean;
 }
 
-const ModalBackdrop = styled.div<{ $isOpen: boolean }>`
+export const ModalBackdrop = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;

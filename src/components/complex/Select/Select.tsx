@@ -20,13 +20,13 @@ export interface SelectProps {
   onChange?: (value: string | number) => void;
 }
 
-const SelectContainer = styled.div<{ $fullWidth?: boolean }>`
+export const SelectContainer = styled.div<{ $fullWidth?: boolean }>`
   position: relative;
   display: inline-block;
   ${({ $fullWidth }) => $fullWidth && "width: 100%;"}
 `;
 
-const SelectButton = styled.button<{
+export const SelectButton = styled.button<{
   $error?: boolean;
   $size?: string;
   $fullWidth?: boolean;
@@ -100,7 +100,7 @@ const SelectButton = styled.button<{
   }
 `;
 
-const SelectIcon = styled.span<{ $isOpen?: boolean }>`
+export const SelectIcon = styled.span<{ $isOpen?: boolean }>`
   margin-left: 8px;
   transition: transform 0.2s ease;
   transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0deg)")};
@@ -112,7 +112,10 @@ const SelectIcon = styled.span<{ $isOpen?: boolean }>`
   }
 `;
 
-const SelectDropdown = styled.div<{ $isOpen?: boolean; $fullWidth?: boolean }>`
+export const SelectDropdown = styled.div<{
+  $isOpen?: boolean;
+  $fullWidth?: boolean;
+}>`
   position: absolute;
   top: 100%;
   left: 0;
@@ -135,7 +138,10 @@ const SelectDropdown = styled.div<{ $isOpen?: boolean; $fullWidth?: boolean }>`
   overflow-y: auto;
 `;
 
-const SelectOption = styled.div<{ $disabled?: boolean; $selected?: boolean }>`
+export const SelectOption = styled.div<{
+  $disabled?: boolean;
+  $selected?: boolean;
+}>`
   padding: 8px 12px;
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   color: ${({ $disabled, theme }) =>
@@ -166,7 +172,7 @@ const SelectOption = styled.div<{ $disabled?: boolean; $selected?: boolean }>`
   }
 `;
 
-const PlaceholderText = styled.span`
+export const PlaceholderText = styled.span`
   color: ${({ theme }) =>
     theme?.colors.text.secondary || defaultTheme.colors.text.secondary};
 `;

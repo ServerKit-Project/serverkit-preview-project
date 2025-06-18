@@ -1,16 +1,16 @@
-import React, { useState, Children, useRef } from 'react';
-import type { DropdownMenuSubProps } from './types';
-import { DropdownMenuSubTrigger } from './DropdownMenuSubTrigger';
-import styled from 'styled-components';
+import React, { useState, Children, useRef } from "react";
+import type { DropdownMenuSubProps } from "./types";
+import { DropdownMenuSubTrigger } from "./DropdownMenuSubTrigger";
+import styled from "styled-components";
 
-const SubWrapper = styled.div`
+export const SubWrapper = styled.div`
   position: relative;
 `;
 
 export const DropdownMenuSub = ({ children }: DropdownMenuSubProps) => {
   const [open, setOpen] = useState(false);
   const timeoutRef = useRef<number>();
-  
+
   const handleMouseLeave = () => {
     timeoutRef.current = window.setTimeout(() => {
       setOpen(false);
@@ -22,9 +22,9 @@ export const DropdownMenuSub = ({ children }: DropdownMenuSubProps) => {
       clearTimeout(timeoutRef.current);
     }
   };
-  
+
   const childArray = Children.toArray(children);
-  
+
   return (
     <SubWrapper onMouseLeave={handleMouseLeave} onMouseEnter={handleMouseEnter}>
       {childArray.map((child) => {

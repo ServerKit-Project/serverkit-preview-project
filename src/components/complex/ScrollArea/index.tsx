@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 
-const StyledScrollArea = styled.div<{ className?: string }>`
+export const StyledScrollArea = styled.div<{ className?: string }>`
   position: relative;
   overflow: auto;
   width: 100%;
@@ -30,15 +30,10 @@ export interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
   ({ children, className, style, ...props }, ref) => (
-    <StyledScrollArea
-      ref={ref}
-      className={className}
-      style={style}
-      {...props}
-    >
+    <StyledScrollArea ref={ref} className={className} style={style} {...props}>
       {children}
     </StyledScrollArea>
   )
 );
 
-ScrollArea.displayName = "ScrollArea"; 
+ScrollArea.displayName = "ScrollArea";

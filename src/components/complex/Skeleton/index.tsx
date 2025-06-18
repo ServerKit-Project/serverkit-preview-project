@@ -1,5 +1,5 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -14,7 +14,7 @@ const pulse = keyframes`
   }
 `;
 
-const StyledSkeleton = styled.div`
+export const StyledSkeleton = styled.div`
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
   width: 100%;
@@ -28,15 +28,15 @@ const StyledSkeleton = styled.div`
 
 /**
  * A skeleton placeholder component used to indicate a loading state.
- * 
+ *
  * @example
  * ```tsx
  * // Basic skeleton
  * <Skeleton />
- * 
+ *
  * // Custom sized skeleton
  * <Skeleton style={{ width: '64px', height: '64px', borderRadius: '9999px' }} />
- * 
+ *
  * // Multiple skeletons
  * <div>
  *   <Skeleton style={{ marginBottom: '0.5rem' }} />
@@ -47,14 +47,9 @@ const StyledSkeleton = styled.div`
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   ({ className, ...props }, ref) => {
     return (
-      <StyledSkeleton
-        ref={ref}
-        className={className}
-        data-loading
-        {...props}
-      />
+      <StyledSkeleton ref={ref} className={className} data-loading {...props} />
     );
   }
 );
 
-Skeleton.displayName = 'Skeleton'; 
+Skeleton.displayName = "Skeleton";

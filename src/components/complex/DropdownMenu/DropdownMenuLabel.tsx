@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import type { DropdownMenuLabelProps } from './types';
+import styled from "styled-components";
+import type { DropdownMenuLabelProps } from "./types";
 
 export const DropdownMenuLabel = styled.div<DropdownMenuLabelProps>`
   font-size: 0.75rem;

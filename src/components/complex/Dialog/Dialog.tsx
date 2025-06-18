@@ -17,7 +17,7 @@ interface DialogProps {
   showCloseButton?: boolean;
 }
 
-const Overlay = styled.div<{ $isOpen: boolean }>`
+export const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;

@@ -31,7 +31,7 @@ const slideUpAndFade = keyframes`
   }
 `;
 
-const MenuContainer = styled.div<{ $position: Position }>`
+export const MenuContainer = styled.div<{ $position: Position }>`
   position: fixed;
   left: ${(props) => props.$position.x}px;
   top: ${(props) => props.$position.y}px;
@@ -39,9 +39,7 @@ const MenuContainer = styled.div<{ $position: Position }>`
   background: white;
   border-radius: 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.05),
-    0 4px 8px -2px rgba(0, 0, 0, 0.1),
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 8px -2px rgba(0, 0, 0, 0.1),
     0 10px 20px -5px rgba(0, 0, 0, 0.08);
   padding: 0.375rem;
   z-index: 50;
@@ -50,7 +48,7 @@ const MenuContainer = styled.div<{ $position: Position }>`
   will-change: transform, opacity;
 `;
 
-const MenuItem = styled.div<{
+export const MenuItem = styled.div<{
   $disabled?: boolean;
   $danger?: boolean;
   $hasSubmenu?: boolean;
@@ -69,17 +67,21 @@ const MenuItem = styled.div<{
   user-select: none;
 
   &:hover {
-    background-color: ${(props) => !props.$disabled && (props.$danger ? "rgba(220, 38, 38, 0.04)" : "rgba(0, 0, 0, 0.04)")};
+    background-color: ${(props) =>
+      !props.$disabled &&
+      (props.$danger ? "rgba(220, 38, 38, 0.04)" : "rgba(0, 0, 0, 0.04)")};
   }
 
   &:active {
-    background-color: ${(props) => !props.$disabled && (props.$danger ? "rgba(220, 38, 38, 0.08)" : "rgba(0, 0, 0, 0.08)")};
+    background-color: ${(props) =>
+      !props.$disabled &&
+      (props.$danger ? "rgba(220, 38, 38, 0.08)" : "rgba(0, 0, 0, 0.08)")};
   }
 
-  opacity: ${(props) => props.$disabled ? "0.4" : "1"};
+  opacity: ${(props) => (props.$disabled ? "0.4" : "1")};
 `;
 
-const IconWrapper = styled.div`
+export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,11 +92,11 @@ const IconWrapper = styled.div`
   color: #6b7280;
 `;
 
-const Label = styled.span`
+export const Label = styled.span`
   flex: 1;
 `;
 
-const Submenu = styled.div<{ $isOpen: boolean }>`
+export const Submenu = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   left: calc(100% + 4px);
   top: -0.375rem;
@@ -103,9 +105,7 @@ const Submenu = styled.div<{ $isOpen: boolean }>`
   background: white;
   border-radius: 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.05),
-    0 4px 8px -2px rgba(0, 0, 0, 0.1),
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 8px -2px rgba(0, 0, 0, 0.1),
     0 10px 20px -5px rgba(0, 0, 0, 0.08);
   padding: 0.375rem;
   animation: ${slideUpAndFade} 0.15s cubic-bezier(0.16, 1, 0.3, 1);
@@ -113,13 +113,13 @@ const Submenu = styled.div<{ $isOpen: boolean }>`
   will-change: transform, opacity;
 `;
 
-const Divider = styled.div`
+export const Divider = styled.div`
   height: 1px;
   margin: 0.375rem -0.375rem;
   background-color: rgba(0, 0, 0, 0.06);
 `;
 
-const SubMenuIcon = styled.span`
+export const SubMenuIcon = styled.span`
   margin-left: 0.75rem;
   color: #6b7280;
   font-size: 0.75rem;
@@ -165,7 +165,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ items, onClose }) => {
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose?.();
       }
     };
@@ -209,7 +209,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ items, onClose }) => {
             {item.items.map((subItem, subIndex) => (
               <React.Fragment key={subIndex}>
                 {subIndex > 0 && <Divider />}
-                {renderMenuItem(subItem, -1)} {/* -1 to avoid submenu conflicts */}
+                {renderMenuItem(subItem, -1)}{" "}
+                {/* -1 to avoid submenu conflicts */}
               </React.Fragment>
             ))}
           </Submenu>

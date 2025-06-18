@@ -1,25 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-const InputOTPRoot = styled.div`
+export const InputOTPRoot = styled.div`
   display: flex;
   gap: 12px;
   align-items: center;
 `;
 
-const InputOTPGroupRoot = styled.div`
+export const InputOTPGroupRoot = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
 `;
 
-const InputOTPSlotRoot = styled.div`
+export const InputOTPSlotRoot = styled.div`
   position: relative;
   width: 40px;
   height: 40px;
 `;
 
-const InputOTPSlotInput = styled.input`
+export const InputOTPSlotInput = styled.input`
   width: 100%;
   height: 100%;
   padding: 0;
@@ -53,7 +53,7 @@ const InputOTPSlotInput = styled.input`
   }
 `;
 
-const InputOTPSeparatorRoot = styled.div`
+export const InputOTPSeparatorRoot = styled.div`
   display: flex;
   align-items: center;
   padding: 0 6px;
@@ -71,12 +71,16 @@ interface InputOTPContextValue {
   inputRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
 }
 
-const InputOTPContext = React.createContext<InputOTPContextValue | undefined>(undefined);
+const InputOTPContext = React.createContext<InputOTPContextValue | undefined>(
+  undefined
+);
 
 function useInputOTPContext() {
   const context = React.useContext(InputOTPContext);
   if (!context) {
-    throw new Error('useInputOTPContext must be used within an InputOTP provider');
+    throw new Error(
+      "useInputOTPContext must be used within an InputOTP provider"
+    );
   }
   return context;
 }
@@ -94,7 +98,7 @@ interface InputOTPProps {
 
 export function InputOTP({
   value: controlledValue,
-  defaultValue = '',
+  defaultValue = "",
   maxLength,
   disabled = false,
   error = false,
@@ -102,24 +106,28 @@ export function InputOTP({
   onComplete,
   children,
 }: InputOTPProps) {
-  const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue);
+  const [uncontrolledValue, setUncontrolledValue] =
+    React.useState(defaultValue);
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : uncontrolledValue;
   const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
-  
-  const setValue = React.useCallback((newValue: string) => {
-    if (!isControlled) {
-      setUncontrolledValue(newValue);
-    }
-    onChange?.(newValue);
-    if (newValue.length === maxLength) {
-      onComplete?.(newValue);
-    }
-  }, [isControlled, maxLength, onChange, onComplete]);
+
+  const setValue = React.useCallback(
+    (newValue: string) => {
+      if (!isControlled) {
+        setUncontrolledValue(newValue);
+      }
+      onChange?.(newValue);
+      if (newValue.length === maxLength) {
+        onComplete?.(newValue);
+      }
+    },
+    [isControlled, maxLength, onChange, onComplete]
+  );
 
   // Focus on first empty slot
   React.useEffect(() => {
-    const firstEmptyIndex = value.split('').findIndex(char => !char);
+    const firstEmptyIndex = value.split("").findIndex((char) => !char);
     if (firstEmptyIndex !== -1 && firstEmptyIndex < maxLength) {
       inputRefs.current[firstEmptyIndex]?.focus();
     }
@@ -150,41 +158,46 @@ export function InputOTPGroup({ children }: InputOTPGroupProps) {
   return <InputOTPGroupRoot>{children}</InputOTPGroupRoot>;
 }
 
-interface InputOTPSlotProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
+interface InputOTPSlotProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "value" | "onChange"
+  > {
   index: number;
 }
 
 export function InputOTPSlot({ index, ...props }: InputOTPSlotProps) {
-  const { maxLength, value, disabled, error, setValue, inputRefs } = useInputOTPContext();
-  const digits = value.split('');
+  const { maxLength, value, disabled, error, setValue, inputRefs } =
+    useInputOTPContext();
+  const digits = value.split("");
   const isComplete = digits.length === maxLength;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace') {
+    if (e.key === "Backspace") {
       e.preventDefault();
       const newValue = digits.slice();
-      
+
       if (digits[index]) {
         // If current slot has a value, clear it
-        newValue[index] = '';
-        setValue(newValue.join(''));
+        newValue[index] = "";
+        setValue(newValue.join(""));
       } else if (index > 0) {
         // If current slot is empty and not first slot, clear previous slot and move focus
-        newValue[index - 1] = '';
-        setValue(newValue.join(''));
+        newValue[index - 1] = "";
+        setValue(newValue.join(""));
         inputRefs.current[index - 1]?.focus();
       }
-    } else if (e.key === 'Delete') {
+    } else if (e.key === "Delete") {
       e.preventDefault();
       const newValue = digits.slice();
-      newValue[index] = '';
-      setValue(newValue.join(''));
-    } else if (e.key === 'ArrowLeft') {
+      newValue[index] = "";
+      setValue(newValue.join(""));
+    } else if (e.key === "ArrowLeft") {
       e.preventDefault();
       if (index > 0) {
         inputRefs.current[index - 1]?.focus();
       }
-    } else if (e.key === 'ArrowRight') {
+    } else if (e.key === "ArrowRight") {
       e.preventDefault();
       if (index < maxLength - 1) {
         inputRefs.current[index + 1]?.focus();
@@ -197,7 +210,7 @@ export function InputOTPSlot({ index, ...props }: InputOTPSlotProps) {
     if (newChar.match(/[0-9]/)) {
       const newValue = digits.slice();
       newValue[index] = newChar;
-      const nextValue = newValue.join('');
+      const nextValue = newValue.join("");
       setValue(nextValue);
 
       // Automatically focus next empty slot
@@ -210,21 +223,25 @@ export function InputOTPSlot({ index, ...props }: InputOTPSlotProps) {
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData('text/plain').slice(0, maxLength);
+    const pastedData = e.clipboardData
+      .getData("text/plain")
+      .slice(0, maxLength);
     if (pastedData.match(/^[0-9]+$/)) {
       // Fill from current position
-      const currentValue = value.split('');
-      const pastedChars = pastedData.split('');
-      
+      const currentValue = value.split("");
+      const pastedChars = pastedData.split("");
+
       for (let i = 0; i < pastedChars.length && index + i < maxLength; i++) {
         currentValue[index + i] = pastedChars[i];
       }
-      
-      const nextValue = currentValue.join('');
+
+      const nextValue = currentValue.join("");
       setValue(nextValue);
 
       // Focus the next empty slot after pasted data
-      const nextEmptyIndex = currentValue.findIndex((char, i) => !char && i >= index);
+      const nextEmptyIndex = currentValue.findIndex(
+        (char, i) => !char && i >= index
+      );
       if (nextEmptyIndex !== -1 && nextEmptyIndex < maxLength) {
         inputRefs.current[nextEmptyIndex]?.focus();
       }
@@ -234,8 +251,8 @@ export function InputOTPSlot({ index, ...props }: InputOTPSlotProps) {
   return (
     <InputOTPSlotRoot>
       <InputOTPSlotInput
-        ref={el => inputRefs.current[index] = el}
-        value={digits[index] || ''}
+        ref={(el) => (inputRefs.current[index] = el)}
+        value={digits[index] || ""}
         disabled={disabled}
         data-error={error}
         data-complete={isComplete}
@@ -253,11 +270,11 @@ interface InputOTPSeparatorProps {
   children?: React.ReactNode;
 }
 
-export function InputOTPSeparator({ children = '•' }: InputOTPSeparatorProps) {
+export function InputOTPSeparator({ children = "•" }: InputOTPSeparatorProps) {
   return <InputOTPSeparatorRoot>{children}</InputOTPSeparatorRoot>;
 }
 
-InputOTP.displayName = 'InputOTP';
-InputOTPGroup.displayName = 'InputOTPGroup';
-InputOTPSlot.displayName = 'InputOTPSlot';
-InputOTPSeparator.displayName = 'InputOTPSeparator'; 
+InputOTP.displayName = "InputOTP";
+InputOTPGroup.displayName = "InputOTPGroup";
+InputOTPSlot.displayName = "InputOTPSlot";
+InputOTPSeparator.displayName = "InputOTPSeparator";

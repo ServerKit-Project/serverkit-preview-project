@@ -25,13 +25,13 @@ const StyledCardContent = styled(CardContent)`
   padding: 1rem;
 `;
 
-const UserContainer = styled.div`
+export const UserContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
 `;
 
-const UserAvatar = styled.div`
+export const UserAvatar = styled.div`
   width: 2.5rem;
   height: 2.5rem;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -43,18 +43,18 @@ const UserAvatar = styled.div`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
-const UserInfo = styled.div`
+export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const UserName = styled.p`
+export const UserName = styled.p`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: ${({ theme }) => theme.colors.text.primary};
   margin: 0;
 `;
 
-const UserEmail = styled.p`
+export const UserEmail = styled.p`
   font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme }) => theme.colors.lightGray};
   margin: 0;

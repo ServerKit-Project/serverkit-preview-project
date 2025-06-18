@@ -15,12 +15,12 @@ interface ComboboxProps {
   error?: string;
 }
 
-const Container = styled.div`
+export const Container = styled.div`
   position: relative;
   width: 100%;
 `;
 
-const Input = styled.input<{ $hasError: boolean }>`
+export const Input = styled.input<{ $hasError: boolean }>`
   width: 100%;
   padding: 0.625rem 2.5rem 0.625rem 0.75rem;
   border: 1px solid ${(props) => (props.$hasError ? "#e53e3e" : "#e2e8f0")};
@@ -48,7 +48,7 @@ const Input = styled.input<{ $hasError: boolean }>`
   }
 `;
 
-const ToggleButton = styled.button`
+export const ToggleButton = styled.button`
   position: absolute;
   right: 0.5rem;
   top: 50%;
@@ -72,7 +72,7 @@ const ToggleButton = styled.button`
   }
 `;
 
-const OptionsList = styled.ul<{ $isOpen: boolean }>`
+export const OptionsList = styled.ul<{ $isOpen: boolean }>`
   position: absolute;
   top: 100%;
   left: 0;
@@ -89,7 +89,7 @@ const OptionsList = styled.ul<{ $isOpen: boolean }>`
   display: ${(props) => (props.$isOpen ? "block" : "none")};
 `;
 
-const Option = styled.li<{ $isSelected: boolean }>`
+export const Option = styled.li<{ $isSelected: boolean }>`
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   background-color: ${(props) =>
@@ -101,7 +101,7 @@ const Option = styled.li<{ $isSelected: boolean }>`
   }
 `;
 
-const ErrorText = styled.span`
+export const ErrorText = styled.span`
   color: #e53e3e;
   font-size: 0.875rem;
   margin-top: 0.25rem;

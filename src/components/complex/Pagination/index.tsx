@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 // Root Pagination Component
-const StyledPagination = styled.nav`
+export const StyledPagination = styled.nav`
   display: flex;
   justify-content: center;
 `;
@@ -17,7 +17,7 @@ export const Pagination = ({ children, className }: PaginationProps) => {
 };
 
 // Pagination Content
-const StyledContent = styled.ul`
+export const StyledContent = styled.ul`
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -31,7 +31,7 @@ export const PaginationContent = ({ children, className }: PaginationProps) => {
 };
 
 // Pagination Item
-const StyledItem = styled.li`
+export const StyledItem = styled.li`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -68,11 +68,11 @@ const baseLinkStyles = `
 `;
 
 // Pagination Link
-const StyledLink = styled.a<{ $isActive?: boolean }>`
+export const StyledLink = styled.a<{ $isActive?: boolean }>`
   ${baseLinkStyles}
-  font-weight: ${props => props.$isActive ? '600' : '400'};
-  background-color: ${props => props.$isActive ? '#F3F4F6' : 'transparent'};
-  color: ${props => props.$isActive ? '#111827' : '#374151'};
+  font-weight: ${(props) => (props.$isActive ? "600" : "400")};
+  background-color: ${(props) => (props.$isActive ? "#F3F4F6" : "transparent")};
+  color: ${(props) => (props.$isActive ? "#111827" : "#374151")};
 `;
 
 export interface PaginationLinkProps extends PaginationProps {
@@ -80,7 +80,12 @@ export interface PaginationLinkProps extends PaginationProps {
   isActive?: boolean;
 }
 
-export const PaginationLink = ({ children, href, isActive, className }: PaginationLinkProps) => {
+export const PaginationLink = ({
+  children,
+  href,
+  isActive,
+  className,
+}: PaginationLinkProps) => {
   return (
     <StyledLink href={href} $isActive={isActive} className={className}>
       {children}
@@ -89,12 +94,15 @@ export const PaginationLink = ({ children, href, isActive, className }: Paginati
 };
 
 // Pagination Previous
-const StyledPrevious = styled.a`
+export const StyledPrevious = styled.a`
   ${baseLinkStyles}
   gap: 0.5rem;
 `;
 
-export const PaginationPrevious = ({ href, className }: Omit<PaginationLinkProps, 'children'>) => {
+export const PaginationPrevious = ({
+  href,
+  className,
+}: Omit<PaginationLinkProps, "children">) => {
   return (
     <StyledPrevious href={href} className={className}>
       <svg
@@ -108,7 +116,7 @@ export const PaginationPrevious = ({ href, className }: Omit<PaginationLinkProps
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="m15 18-6-6 6-6"/>
+        <path d="m15 18-6-6 6-6" />
       </svg>
       <span>Previous</span>
     </StyledPrevious>
@@ -116,12 +124,15 @@ export const PaginationPrevious = ({ href, className }: Omit<PaginationLinkProps
 };
 
 // Pagination Next
-const StyledNext = styled.a`
+export const StyledNext = styled.a`
   ${baseLinkStyles}
   gap: 0.5rem;
 `;
 
-export const PaginationNext = ({ href, className }: Omit<PaginationLinkProps, 'children'>) => {
+export const PaginationNext = ({
+  href,
+  className,
+}: Omit<PaginationLinkProps, "children">) => {
   return (
     <StyledNext href={href} className={className}>
       <span>Next</span>
@@ -136,14 +147,14 @@ export const PaginationNext = ({ href, className }: Omit<PaginationLinkProps, 'c
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="m9 18 6-6-6-6"/>
+        <path d="m9 18 6-6-6-6" />
       </svg>
     </StyledNext>
   );
 };
 
 // Pagination Ellipsis
-const StyledEllipsis = styled.span`
+export const StyledEllipsis = styled.span`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +163,9 @@ const StyledEllipsis = styled.span`
   color: #6B7280;
 `;
 
-export const PaginationEllipsis = ({ className }: Omit<PaginationProps, 'children'>) => {
+export const PaginationEllipsis = ({
+  className,
+}: Omit<PaginationProps, "children">) => {
   return (
     <StyledEllipsis className={className}>
       <svg
@@ -172,4 +185,4 @@ export const PaginationEllipsis = ({ className }: Omit<PaginationProps, 'childre
       </svg>
     </StyledEllipsis>
   );
-}; 
+};

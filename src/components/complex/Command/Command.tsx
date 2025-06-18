@@ -15,7 +15,7 @@ interface CommandProps {
   onClose?: () => void;
 }
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -28,7 +28,7 @@ const Overlay = styled.div`
   z-index: 50;
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
   max-width: 640px;
   background: white;
@@ -38,7 +38,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const SearchInput = styled.input`
+export const SearchInput = styled.input`
   width: 100%;
   padding: 1rem;
   border: none;
@@ -56,12 +56,12 @@ const SearchInput = styled.input`
   }
 `;
 
-const ItemsList = styled.div`
+export const ItemsList = styled.div`
   max-height: 400px;
   overflow-y: auto;
 `;
 
-const Item = styled.div<{ $isSelected: boolean }>`
+export const Item = styled.div<{ $isSelected: boolean }>`
   display: flex;
   align-items: center;
   padding: 0.75rem 1rem;
@@ -74,7 +74,7 @@ const Item = styled.div<{ $isSelected: boolean }>`
   }
 `;
 
-const IconWrapper = styled.div`
+export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,18 +84,18 @@ const IconWrapper = styled.div`
   color: #4a5568;
 `;
 
-const Label = styled.div`
+export const Label = styled.div`
   flex: 1;
   font-size: 0.875rem;
   color: #2d3748;
 `;
 
-const Shortcut = styled.div`
+export const Shortcut = styled.div`
   display: flex;
   gap: 0.25rem;
 `;
 
-const ShortcutKey = styled.kbd`
+export const ShortcutKey = styled.kbd`
   padding: 0.125rem 0.375rem;
   font-size: 0.75rem;
   font-family: monospace;

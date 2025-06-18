@@ -1,5 +1,5 @@
-import * as React from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import * as React from "react";
+import styled, { css, keyframes } from "styled-components";
 
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -18,42 +18,42 @@ const fadeInScale = keyframes`
 `;
 
 const getPosition = ($side: string, $sideOffset: number) => {
-    switch ($side) {
-      case 'top':
-        return css`
-          left: 50%;
-          bottom: calc(100% + ${$sideOffset}px);
-          transform: translateX(-50%);
-          transform-origin: bottom center;
-        `;
-      case 'right':
-        return css`
-          left: calc(100% + ${$sideOffset}px);
-          top: 50%;
-          transform: translateY(-50%);
-          transform-origin: left center;
-        `;
-      case 'bottom':
-        return css`
-          left: 50%;
-          top: calc(100% + ${$sideOffset}px);
-          transform: translateX(-50%);
-          transform-origin: top center;
-        `;
-      case 'left':
-        return css`
-          right: calc(100% + ${$sideOffset}px);
-          top: 50%;
-          transform: translateY(-50%);
-          transform-origin: right center;
-        `;
-      default:
-        return '';
-    }
-  };
+  switch ($side) {
+    case "top":
+      return css`
+        left: 50%;
+        bottom: calc(100% + ${$sideOffset}px);
+        transform: translateX(-50%);
+        transform-origin: bottom center;
+      `;
+    case "right":
+      return css`
+        left: calc(100% + ${$sideOffset}px);
+        top: 50%;
+        transform: translateY(-50%);
+        transform-origin: left center;
+      `;
+    case "bottom":
+      return css`
+        left: 50%;
+        top: calc(100% + ${$sideOffset}px);
+        transform: translateX(-50%);
+        transform-origin: top center;
+      `;
+    case "left":
+      return css`
+        right: calc(100% + ${$sideOffset}px);
+        top: 50%;
+        transform: translateY(-50%);
+        transform-origin: right center;
+      `;
+    default:
+      return "";
+  }
+};
 
-const TooltipContentStyled = styled.div<{
-  $side?: 'top' | 'right' | 'bottom' | 'left';
+export const TooltipContentStyled = styled.div<{
+  $side?: "top" | "right" | "bottom" | "left";
   $sideOffset: number;
 }>`
   z-index: 50;
@@ -67,17 +67,17 @@ const TooltipContentStyled = styled.div<{
   color: #fff;
   background: #18181b;
   border-radius: 8px;
-  box-shadow: 0px 4px 16px rgba(0,0,0,0.12);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
   opacity: 1;
-  animation: ${fadeIn} 0.16s cubic-bezier(0.16,1,0.3,1);
+  animation: ${fadeIn} 0.16s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
-  ${({ $side, $sideOffset }) => getPosition($side || 'top', $sideOffset)}
+  ${({ $side, $sideOffset }) => getPosition($side || "top", $sideOffset)}
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 8px;
     height: 8px;
@@ -85,32 +85,32 @@ const TooltipContentStyled = styled.div<{
     z-index: 51;
     ${({ $side }) => {
       switch ($side) {
-        case 'top':
+        case "top":
           return css`
             top: 92%;
             left: 50%;
             transform: translateX(-50%) rotate(45deg);
           `;
-        case 'right':
+        case "right":
           return css`
             left: -4px;
             top: 50%;
             transform: translateY(-50%) rotate(45deg);
           `;
-        case 'bottom':
+        case "bottom":
           return css`
             bottom: 92%;
             left: 50%;
             transform: translateX(-50%) rotate(45deg);
           `;
-        case 'left':
+        case "left":
           return css`
             right: -4px;
             top: 50%;
             transform: translateY(-50%) rotate(45deg);
           `;
         default:
-          return '';
+          return "";
       }
     }}
   }
@@ -119,7 +119,7 @@ const TooltipContentStyled = styled.div<{
 const TooltipProvider = React.createContext<{
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: "top" | "right" | "bottom" | "left";
   sideOffset: number;
 }>({
   isOpen: false,
@@ -130,7 +130,7 @@ const TooltipProvider = React.createContext<{
 interface TooltipProps {
   children: React.ReactNode;
   delayDuration?: number;
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: "top" | "right" | "bottom" | "left";
   sideOffset?: number;
   className?: string;
 }
@@ -138,7 +138,7 @@ interface TooltipProps {
 export function Tooltip({
   children,
   delayDuration = 200,
-  side = 'top',
+  side = "top",
   sideOffset = 8,
   className,
 }: TooltipProps) {
@@ -160,7 +160,7 @@ export function Tooltip({
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{ position: 'relative', display: 'inline-block' }}
+        style={{ position: "relative", display: "inline-block" }}
         className={className}
       >
         {children}
@@ -175,12 +175,16 @@ interface TooltipTriggerProps {
   className?: string;
 }
 
-export function TooltipTrigger({ children, asChild, className }: TooltipTriggerProps) {
+export function TooltipTrigger({
+  children,
+  asChild,
+  className,
+}: TooltipTriggerProps) {
   if (asChild) {
     return children;
   }
   return (
-    <span className={className} style={{ display: 'inline-block' }}>
+    <span className={className} style={{ display: "inline-block" }}>
       {children}
     </span>
   );
@@ -213,6 +217,6 @@ export function TooltipContent({ children, className }: TooltipContentProps) {
   );
 }
 
-Tooltip.displayName = 'Tooltip';
-TooltipTrigger.displayName = 'TooltipTrigger';
-TooltipContent.displayName = 'TooltipContent'; 
+Tooltip.displayName = "Tooltip";
+TooltipTrigger.displayName = "TooltipTrigger";
+TooltipContent.displayName = "TooltipContent";

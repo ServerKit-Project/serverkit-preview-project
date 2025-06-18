@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-const NavigationMenuRoot = styled.nav`
+export const NavigationMenuRoot = styled.nav`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@ const NavigationMenuRoot = styled.nav`
   z-index: 10;
 `;
 
-const NavigationMenuList = styled.ul`
+export const NavigationMenuList = styled.ul`
   display: flex;
   flex-direction: row;
   gap: 4px;
@@ -21,13 +21,13 @@ const NavigationMenuList = styled.ul`
   background-color: transparent;
 `;
 
-const NavigationMenuItem = styled.li`
+export const NavigationMenuItem = styled.li`
   position: relative;
   display: flex;
   align-items: center;
 `;
 
-const NavigationMenuTrigger = styled.button`
+export const NavigationMenuTrigger = styled.button`
   all: unset;
   padding: 8px 12px;
   font-size: 14px;
@@ -57,7 +57,7 @@ const NavigationMenuTrigger = styled.button`
   }
 `;
 
-const NavigationMenuContent = styled.div<{ $isOpen?: boolean }>`
+export const NavigationMenuContent = styled.div<{ $isOpen?: boolean }>`
   position: absolute;
   left: 0;
   top: 100%;
@@ -69,7 +69,7 @@ const NavigationMenuContent = styled.div<{ $isOpen?: boolean }>`
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
   animation: scale-in 0.2s ease-out;
   transform-origin: top center;
-  display: ${props => props.$isOpen ? 'block' : 'none'};
+  display: ${(props) => (props.$isOpen ? "block" : "none")};
   z-index: 20;
 
   @keyframes scale-in {
@@ -84,7 +84,7 @@ const NavigationMenuContent = styled.div<{ $isOpen?: boolean }>`
   }
 `;
 
-const NavigationMenuLink = styled.a`
+export const NavigationMenuLink = styled.a`
   display: block;
   padding: 8px 12px;
   text-decoration: none;
@@ -107,7 +107,7 @@ const NavigationMenuLink = styled.a`
   }
 `;
 
-const NavigationMenuViewport = styled.div`
+export const NavigationMenuViewport = styled.div`
   position: relative;
   transform-origin: top center;
   margin-top: 10px;
@@ -116,8 +116,8 @@ const NavigationMenuViewport = styled.div`
   overflow: hidden;
 `;
 
-const NavigationMenuIndicator = styled.div<{ $isVisible?: boolean }>`
-  display: ${props => props.$isVisible ? 'block' : 'none'};
+export const NavigationMenuIndicator = styled.div<{ $isVisible?: boolean }>`
+  display: ${(props) => (props.$isVisible ? "block" : "none")};
   height: 2px;
   background-color: hsl(240 4% 16%);
   position: absolute;
@@ -135,109 +135,121 @@ interface NavigationMenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
   children: React.ReactNode;
 }
 
-interface NavigationMenuTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface NavigationMenuTriggerProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
-interface NavigationMenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
+interface NavigationMenuContentProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   isOpen?: boolean;
 }
 
-interface NavigationMenuLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface NavigationMenuLinkProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   children: React.ReactNode;
 }
 
-interface NavigationMenuIndicatorProps extends React.HTMLAttributes<HTMLDivElement> {
+interface NavigationMenuIndicatorProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   isVisible?: boolean;
 }
 
-export const NavigationMenu = React.forwardRef<HTMLElement, NavigationMenuProps>(
-  ({ children, ...props }, ref) => {
-    return (
-      <NavigationMenuRoot ref={ref as any} {...props}>
-        {children}
-      </NavigationMenuRoot>
-    );
-  }
-);
+export const NavigationMenu = React.forwardRef<
+  HTMLElement,
+  NavigationMenuProps
+>(({ children, ...props }, ref) => {
+  return (
+    <NavigationMenuRoot ref={ref as any} {...props}>
+      {children}
+    </NavigationMenuRoot>
+  );
+});
 
-export const NavigationMenuListComponent = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
-  ({ children, ...props }, ref) => {
-    return (
-      <NavigationMenuList ref={ref} {...props}>
-        {children}
-      </NavigationMenuList>
-    );
-  }
-);
+export const NavigationMenuListComponent = React.forwardRef<
+  HTMLUListElement,
+  React.HTMLAttributes<HTMLUListElement>
+>(({ children, ...props }, ref) => {
+  return (
+    <NavigationMenuList ref={ref} {...props}>
+      {children}
+    </NavigationMenuList>
+  );
+});
 
-export const NavigationMenuItemComponent = React.forwardRef<HTMLLIElement, NavigationMenuItemProps>(
-  ({ children, ...props }, ref) => {
-    return (
-      <NavigationMenuItem ref={ref} {...props}>
-        {children}
-      </NavigationMenuItem>
-    );
-  }
-);
+export const NavigationMenuItemComponent = React.forwardRef<
+  HTMLLIElement,
+  NavigationMenuItemProps
+>(({ children, ...props }, ref) => {
+  return (
+    <NavigationMenuItem ref={ref} {...props}>
+      {children}
+    </NavigationMenuItem>
+  );
+});
 
-export const NavigationMenuTriggerComponent = React.forwardRef<HTMLButtonElement, NavigationMenuTriggerProps>(
-  ({ children, ...props }, ref) => {
-    return (
-      <NavigationMenuTrigger ref={ref} {...props}>
-        {children}
-      </NavigationMenuTrigger>
-    );
-  }
-);
+export const NavigationMenuTriggerComponent = React.forwardRef<
+  HTMLButtonElement,
+  NavigationMenuTriggerProps
+>(({ children, ...props }, ref) => {
+  return (
+    <NavigationMenuTrigger ref={ref} {...props}>
+      {children}
+    </NavigationMenuTrigger>
+  );
+});
 
-export const NavigationMenuContentComponent = React.forwardRef<HTMLDivElement, NavigationMenuContentProps>(
-  ({ children, isOpen, ...props }, ref) => {
-    return (
-      <NavigationMenuContent ref={ref} $isOpen={isOpen} {...props}>
-        {children}
-      </NavigationMenuContent>
-    );
-  }
-);
+export const NavigationMenuContentComponent = React.forwardRef<
+  HTMLDivElement,
+  NavigationMenuContentProps
+>(({ children, isOpen, ...props }, ref) => {
+  return (
+    <NavigationMenuContent ref={ref} $isOpen={isOpen} {...props}>
+      {children}
+    </NavigationMenuContent>
+  );
+});
 
-export const NavigationMenuLinkComponent = React.forwardRef<HTMLAnchorElement, NavigationMenuLinkProps>(
-  ({ children, ...props }, ref) => {
-    return (
-      <NavigationMenuLink ref={ref} {...props}>
-        {children}
-      </NavigationMenuLink>
-    );
-  }
-);
+export const NavigationMenuLinkComponent = React.forwardRef<
+  HTMLAnchorElement,
+  NavigationMenuLinkProps
+>(({ children, ...props }, ref) => {
+  return (
+    <NavigationMenuLink ref={ref} {...props}>
+      {children}
+    </NavigationMenuLink>
+  );
+});
 
-export const NavigationMenuViewportComponent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ children, ...props }, ref) => {
-    return (
-      <NavigationMenuViewport ref={ref} {...props}>
-        {children}
-      </NavigationMenuViewport>
-    );
-  }
-);
+export const NavigationMenuViewportComponent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ children, ...props }, ref) => {
+  return (
+    <NavigationMenuViewport ref={ref} {...props}>
+      {children}
+    </NavigationMenuViewport>
+  );
+});
 
-export const NavigationMenuIndicatorComponent = React.forwardRef<HTMLDivElement, NavigationMenuIndicatorProps>(
-  ({ isVisible, ...props }, ref) => {
-    return (
-      <NavigationMenuIndicator ref={ref} $isVisible={isVisible} {...props} />
-    );
-  }
-);
+export const NavigationMenuIndicatorComponent = React.forwardRef<
+  HTMLDivElement,
+  NavigationMenuIndicatorProps
+>(({ isVisible, ...props }, ref) => {
+  return (
+    <NavigationMenuIndicator ref={ref} $isVisible={isVisible} {...props} />
+  );
+});
 
-NavigationMenu.displayName = 'NavigationMenu';
-NavigationMenuListComponent.displayName = 'NavigationMenuList';
-NavigationMenuItemComponent.displayName = 'NavigationMenuItem';
-NavigationMenuTriggerComponent.displayName = 'NavigationMenuTrigger';
-NavigationMenuContentComponent.displayName = 'NavigationMenuContent';
-NavigationMenuLinkComponent.displayName = 'NavigationMenuLink';
-NavigationMenuViewportComponent.displayName = 'NavigationMenuViewport';
-NavigationMenuIndicatorComponent.displayName = 'NavigationMenuIndicator';
+NavigationMenu.displayName = "NavigationMenu";
+NavigationMenuListComponent.displayName = "NavigationMenuList";
+NavigationMenuItemComponent.displayName = "NavigationMenuItem";
+NavigationMenuTriggerComponent.displayName = "NavigationMenuTrigger";
+NavigationMenuContentComponent.displayName = "NavigationMenuContent";
+NavigationMenuLinkComponent.displayName = "NavigationMenuLink";
+NavigationMenuViewportComponent.displayName = "NavigationMenuViewport";
+NavigationMenuIndicatorComponent.displayName = "NavigationMenuIndicator";
 
 export {
   NavigationMenuListComponent as NavigationMenuList,
@@ -247,4 +259,4 @@ export {
   NavigationMenuLinkComponent as NavigationMenuLink,
   NavigationMenuViewportComponent as NavigationMenuViewport,
   NavigationMenuIndicatorComponent as NavigationMenuIndicator,
-}; 
+};

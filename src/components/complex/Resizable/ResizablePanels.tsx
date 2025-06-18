@@ -1,45 +1,54 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Resizable } from './index';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Resizable } from "./index";
 
 interface ResizablePanelsProps {
   children: React.ReactNode[];
-  direction?: 'horizontal' | 'vertical';
+  direction?: "horizontal" | "vertical";
   defaultSizes?: number[];
   minSizes?: number[];
   className?: string;
 }
 
-const Container = styled.div<{ direction: 'horizontal' | 'vertical' }>`
+export const Container = styled.div<{ direction: "horizontal" | "vertical" }>`
   display: flex;
-  flex-direction: ${props => props.direction === 'horizontal' ? 'row' : 'column'};
+  flex-direction: ${(props) =>
+    props.direction === "horizontal" ? "row" : "column"};
   width: 100%;
   height: 100%;
   overflow: hidden;
 `;
 
-const Panel = styled.div<{ size: number; direction: 'horizontal' | 'vertical' }>`
-  flex: ${props => props.size} 0 0;
+export const Panel = styled.div<{
+  size: number;
+  direction: "horizontal" | "vertical";
+}>`
+  flex: ${(props) => props.size} 0 0;
   overflow: hidden;
   position: relative;
-  ${props => props.direction === 'horizontal' 
-    ? 'height: 100%; border-right: 1px solid rgba(0, 0, 0, 0.1);'
-    : 'width: 100%; border-bottom: 1px solid rgba(0, 0, 0, 0.1);'
-  }
+  ${(props) =>
+    props.direction === "horizontal"
+      ? "height: 100%; border-right: 1px solid rgba(0, 0, 0, 0.1);"
+      : "width: 100%; border-bottom: 1px solid rgba(0, 0, 0, 0.1);"}
 
   &:last-child {
     border: none;
   }
 `;
 
-const ResizeHandle = styled.div<{ direction: 'horizontal' | 'vertical' }>`
+export const ResizeHandle = styled.div<{
+  direction: "horizontal" | "vertical";
+}>`
   position: absolute;
-  ${props => props.direction === 'horizontal' ? `
+  ${(props) =>
+    props.direction === "horizontal"
+      ? `
     right: -3px;
     width: 6px;
     height: 100%;
     cursor: col-resize;
-  ` : `
+  `
+      : `
     bottom: -3px;
     height: 6px;
     width: 100%;
@@ -60,7 +69,7 @@ const ResizeHandle = styled.div<{ direction: 'horizontal' | 'vertical' }>`
 
 export const ResizablePanels: React.FC<ResizablePanelsProps> = ({
   children,
-  direction = 'horizontal',
+  direction = "horizontal",
   defaultSizes,
   minSizes,
   className,
@@ -74,19 +83,22 @@ export const ResizablePanels: React.FC<ResizablePanelsProps> = ({
     e.preventDefault();
     setIsResizing(true);
 
-    const startPos = direction === 'horizontal' ? e.clientX : e.clientY;
+    const startPos = direction === "horizontal" ? e.clientX : e.clientY;
     const startSizes = [...sizes];
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing) return;
 
-      const currentPos = direction === 'horizontal' ? e.clientX : e.clientY;
+      const currentPos = direction === "horizontal" ? e.clientX : e.clientY;
       const delta = currentPos - startPos;
-      
-      const containerRect = (e.currentTarget as HTMLElement)?.parentElement?.getBoundingClientRect();
+
+      const containerRect = (
+        e.currentTarget as HTMLElement
+      )?.parentElement?.getBoundingClientRect();
       if (!containerRect) return;
-      
-      const containerSize = direction === 'horizontal' ? containerRect.width : containerRect.height;
+
+      const containerSize =
+        direction === "horizontal" ? containerRect.width : containerRect.height;
       const deltaPct = delta / containerSize;
 
       const newSizes = [...startSizes];
@@ -95,8 +107,11 @@ export const ResizablePanels: React.FC<ResizablePanelsProps> = ({
 
       // Apply minimum size constraints
       if (minSizes) {
-        const minPct = minSizes.map(size => size / containerSize);
-        if (newSizes[index] < minPct[index] || newSizes[index + 1] < minPct[index + 1]) {
+        const minPct = minSizes.map((size) => size / containerSize);
+        if (
+          newSizes[index] < minPct[index] ||
+          newSizes[index + 1] < minPct[index + 1]
+        ) {
           return;
         }
       }
@@ -106,12 +121,12 @@ export const ResizablePanels: React.FC<ResizablePanelsProps> = ({
 
     const handleMouseUp = () => {
       setIsResizing(false);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
   };
 
   return (
@@ -129,4 +144,4 @@ export const ResizablePanels: React.FC<ResizablePanelsProps> = ({
       ))}
     </Container>
   );
-}; 
+};
