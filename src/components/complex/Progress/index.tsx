@@ -61,31 +61,3 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   indeterminate?: boolean;
 }
-
-export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
-  ({ value, max = 100, indeterminate = false, className, ...props }, ref) => {
-    const determinateValue =
-      value !== null ? Math.min(Math.max(value || 0, 0), max) : 0;
-    const isIndeterminate = indeterminate || value === null;
-
-    return (
-      <ProgressRoot
-        ref={ref}
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={max}
-        aria-valuenow={!isIndeterminate ? determinateValue : undefined}
-        className={className}
-        {...props}
-      >
-        <ProgressIndicator
-          $value={determinateValue}
-          $max={max}
-          $indeterminate={isIndeterminate}
-        />
-      </ProgressRoot>
-    );
-  }
-);
-
-Progress.displayName = "Progress";

@@ -1,1 +1,47 @@
-export * from "./Collapsible";
+import styled from "styled-components";
+
+export const Container = styled.div`
+  width: 100%;
+`;
+
+export const Trigger = styled.button<{ $disabled: boolean }>`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  color: #2d3748;
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background: #f7fafc;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3182ce;
+  }
+`;
+
+export const Icon = styled.span<{ $isOpen: boolean }>`
+  transform: rotate(${(props) => (props.$isOpen ? "180deg" : "0deg")});
+  transition: transform 0.2s ease-in-out;
+`;
+
+export const Content = styled.div<{ $height: number }>`
+  overflow: hidden;
+  transition: height 0.3s ease-in-out;
+  height: ${(props) => props.$height}px;
+`;
+
+export const ContentInner = styled.div`
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+`;

@@ -1,20 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  /**
-   * When true, shows error styling
-   * @default false
-   */
-  error?: boolean;
-
-  /**
-   * Optional CSS class name
-   */
-  className?: string;
-}
-
 export const StyledTextarea = styled.textarea<{ $error?: boolean }>`
   width: 100%;
   min-height: 80px;
@@ -57,44 +43,3 @@ export const StyledTextarea = styled.textarea<{ $error?: boolean }>`
     border-color: transparent #e5e7eb #e5e7eb transparent;
   }
 `;
-
-/**
- * A textarea component for multi-line text input.
- *
- * @example
- * ```tsx
- * // Basic textarea
- * <Textarea placeholder="Type your message here." />
- *
- * // With error state
- * <Textarea error placeholder="Please enter a valid message." />
- *
- * // Disabled textarea
- * <Textarea disabled value="This content cannot be edited." />
- *
- * // Read-only textarea
- * <Textarea readOnly value="This content can be read but not edited." />
- *
- * // Controlled textarea
- * const [value, setValue] = React.useState('');
- * <Textarea
- *   value={value}
- *   onChange={(e) => setValue(e.target.value)}
- *   placeholder="Type here..."
- * />
- * ```
- */
-export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, error, ...props }, ref) => {
-    return (
-      <StyledTextarea
-        ref={ref}
-        className={className}
-        $error={error}
-        {...props}
-      />
-    );
-  }
-);
-
-Textarea.displayName = "Textarea";

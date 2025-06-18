@@ -1,247 +1,323 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import type { ResizableProps, ResizeHandleProps } from './types';
-import {
-  ResizableContainer,
-  HandleWrapper,
-  VerticalHandle,
-  HorizontalHandle,
-  CornerHandle,
-} from './styles';
+import styled, { css } from "styled-components";
+import type { ReactNode } from "react";
 
-const ResizeHandle: React.FC<ResizeHandleProps> = ({
-  direction,
-  visible = true,
-  className,
-  onMouseDown,
-  onTouchStart,
-}) => {
-  const Component = direction === 'top' || direction === 'bottom'
-    ? HorizontalHandle
-    : direction === 'corner'
-    ? CornerHandle
-    : VerticalHandle;
+export const Container = styled.div<{ direction: "horizontal" | "vertical" }>`
+  display: flex;
+  flex-direction: ${(props) =>
+    props.direction === "horizontal" ? "row" : "column"};
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`;
 
-  return (
-    <HandleWrapper position={direction} className={className}>
-      <Component visible={visible} />
-    </HandleWrapper>
-  );
-};
+export const Panel = styled.div<{
+  size: number;
+  direction: "horizontal" | "vertical";
+}>`
+  flex: ${(props) => props.size} 0 0;
+  overflow: hidden;
+  position: relative;
+  ${(props) =>
+    props.direction === "horizontal"
+      ? "height: 100%; border-right: 1px solid rgba(0, 0, 0, 0.1);"
+      : "width: 100%; border-bottom: 1px solid rgba(0, 0, 0, 0.1);"}
 
-export const Resizable: React.FC<ResizableProps> = ({
-  children,
-  direction = 'both',
-  minWidth = 100,
-  maxWidth,
-  minHeight = 100,
-  maxHeight,
-  defaultWidth,
-  defaultHeight,
-  preserveAspectRatio = false,
-  onResizeStart,
-  onResize,
-  onResizeEnd,
-  handleLocation = 'both',
-  className,
-  showHandles = true,
-  animate = true,
-}) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isResizing, setIsResizing] = useState(false);
-  const [size, setSize] = useState({
-    width: defaultWidth || 0,
-    height: defaultHeight || 0,
-  });
-  const [aspectRatio, setAspectRatio] = useState(1);
+  &:last-child {
+    border: none;
+  }
+`;
 
-  // Store resize state in refs to access in event listeners
-  const resizeState = useRef({
-    startX: 0,
-    startY: 0,
-    startWidth: 0,
-    startHeight: 0,
-    currentHandle: '' as 'left' | 'right' | 'top' | 'bottom' | 'corner' | '',
-  });
+export const ResizeHandle = styled.div<{
+  direction: "horizontal" | "vertical";
+}>`
+  position: absolute;
+  ${(props) =>
+    props.direction === "horizontal"
+      ? `
+    right: -3px;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+  `
+      : `
+    bottom: -3px;
+    height: 6px;
+    width: 100%;
+    cursor: row-resize;
+  `}
+  background-color: transparent;
+  transition: background-color 0.2s;
+  z-index: 10;
 
-  useEffect(() => {
-    if (containerRef.current && !size.width && !size.height) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setSize({
-        width: defaultWidth || rect.width,
-        height: defaultHeight || rect.height,
-      });
-      setAspectRatio(rect.width / rect.height);
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+`;
+
+export const ResizableContainer = styled.div<{
+  direction?: Direction;
+  animate?: boolean;
+}>`
+  position: relative;
+  display: flex;
+  flex-direction: ${(props) =>
+    props.direction === "vertical" ? "column" : "row"};
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  ${(props) =>
+    props.animate &&
+    css`
+      transition: width 0.2s ease, height 0.2s ease;
+    `}
+
+  &[data-resizing="true"] {
+    user-select: none;
+    * {
+      user-select: none;
     }
-  }, [defaultWidth, defaultHeight, size]);
+  }
+`;
 
-  const handleResizeStart = useCallback((
-    e: React.MouseEvent | React.TouchEvent,
-    handle: typeof resizeState.current.currentHandle
-  ) => {
-    e.preventDefault();
-    const isTouch = 'touches' in e;
-    const clientX = isTouch ? (e as React.TouchEvent).touches[0].clientX : (e as React.MouseEvent).clientX;
-    const clientY = isTouch ? (e as React.TouchEvent).touches[0].clientY : (e as React.MouseEvent).clientY;
+export const ResizablePanel = styled.div<{
+  defaultSize?: number;
+  minSize?: number;
+  maxSize?: number;
+  direction?: Direction;
+  animate?: boolean;
+}>`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: ${(props) => props.minSize || 0}px;
+  min-height: ${(props) => props.minSize || 0}px;
+  max-width: ${(props) => props.maxSize || "none"};
+  max-height: ${(props) => props.maxSize || "none"};
 
-    if (!containerRef.current) return;
+  ${(props) =>
+    props.defaultSize &&
+    css`
+      flex-basis: ${props.defaultSize}px;
+    `}
 
-    const rect = containerRef.current.getBoundingClientRect();
-    resizeState.current = {
-      startX: clientX,
-      startY: clientY,
-      startWidth: rect.width,
-      startHeight: rect.height,
-      currentHandle: handle,
-    };
+  ${(props) =>
+    props.animate &&
+    css`
+      transition: flex-basis 0.2s ease;
+    `}
 
-    setIsResizing(true);
-    onResizeStart?.();
+  &[data-resizing="true"] {
+    transition: none;
+  }
+`;
 
-    document.addEventListener('mousemove', handleResize);
-    document.addEventListener('mouseup', handleResizeEnd);
-    document.addEventListener('touchmove', handleResize);
-    document.addEventListener('touchend', handleResizeEnd);
-  }, [onResizeStart]);
+const handleBaseStyles = css`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  touch-action: none;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+  z-index: 10;
 
-  const handleResize = useCallback((e: MouseEvent | TouchEvent) => {
-    if (!isResizing) return;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
 
-    const isTouch = 'touches' in e;
-    const clientX = isTouch ? e.touches[0].clientX : (e as MouseEvent).clientX;
-    const clientY = isTouch ? e.touches[0].clientY : (e as MouseEvent).clientY;
+  &:active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+`;
 
-    const deltaX = clientX - resizeState.current.startX;
-    const deltaY = clientY - resizeState.current.startY;
+export const VerticalHandle = styled.div<{ visible?: boolean }>`
+  ${handleBaseStyles}
+  width: 8px;
+  height: 100%;
+  top: 0;
+  cursor: col-resize;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.2s, background-color 0.2s;
 
-    let newWidth = resizeState.current.startWidth;
-    let newHeight = resizeState.current.startHeight;
+  &:hover {
+    opacity: 1;
+  }
 
-    switch (resizeState.current.currentHandle) {
-      case 'right':
-        newWidth += deltaX;
-        if (preserveAspectRatio) {
-          newHeight = newWidth / aspectRatio;
-        }
-        break;
-      case 'left':
-        newWidth -= deltaX;
-        if (preserveAspectRatio) {
-          newHeight = newWidth / aspectRatio;
-        }
-        break;
-      case 'bottom':
-        newHeight += deltaY;
-        if (preserveAspectRatio) {
-          newWidth = newHeight * aspectRatio;
-        }
-        break;
-      case 'top':
-        newHeight -= deltaY;
-        if (preserveAspectRatio) {
-          newWidth = newHeight * aspectRatio;
-        }
-        break;
-      case 'corner':
-        newWidth += deltaX;
-        newHeight += deltaY;
-        if (preserveAspectRatio) {
-          if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            newHeight = newWidth / aspectRatio;
-          } else {
-            newWidth = newHeight * aspectRatio;
-          }
-        }
-        break;
+  &::after {
+    content: "";
+    width: 2px;
+    height: 24px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    transition: background-color 0.2s;
+  }
+
+  &:hover::after {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  &:active::after {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+`;
+
+export const HorizontalHandle = styled.div<{ visible?: boolean }>`
+  ${handleBaseStyles}
+  width: 100%;
+  height: 8px;
+  left: 0;
+  cursor: row-resize;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.2s, background-color 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &::after {
+    content: "";
+    width: 24px;
+    height: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    transition: background-color 0.2s;
+  }
+
+  &:hover::after {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  &:active::after {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+`;
+
+export const CornerHandle = styled.div<{ visible?: boolean }>`
+  ${handleBaseStyles}
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.2s, background-color 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    transition: background-color 0.2s;
+  }
+
+  &:hover::after {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  &:active::after {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+`;
+
+export const HandleWrapper = styled.div<{
+  position: "left" | "right" | "top" | "bottom" | "corner";
+}>`
+  position: absolute;
+  ${(props) => {
+    switch (props.position) {
+      case "left":
+        return css`
+          left: -4px;
+          top: 0;
+          bottom: 0;
+        `;
+      case "right":
+        return css`
+          right: -4px;
+          top: 0;
+          bottom: 0;
+        `;
+      case "top":
+        return css`
+          top: -4px;
+          left: 0;
+          right: 0;
+        `;
+      case "bottom":
+        return css`
+          bottom: -4px;
+          left: 0;
+          right: 0;
+        `;
+      case "corner":
+        return css`
+          right: -6px;
+          bottom: -6px;
+        `;
     }
+  }}
+`;
 
-    // Apply constraints
-    newWidth = Math.max(minWidth, Math.min(maxWidth || Infinity, newWidth));
-    newHeight = Math.max(minHeight, Math.min(maxHeight || Infinity, newHeight));
+export interface ResizableProps {
+  /** The content to be resized */
+  children: ReactNode;
+  /** The direction in which the element can be resized */
+  direction?: Direction;
+  /** The minimum width of the element (in pixels) */
+  minWidth?: number;
+  /** The maximum width of the element (in pixels) */
+  maxWidth?: number;
+  /** The minimum height of the element (in pixels) */
+  minHeight?: number;
+  /** The maximum height of the element (in pixels) */
+  maxHeight?: number;
+  /** The initial width of the element (in pixels) */
+  defaultWidth?: number;
+  /** The initial height of the element (in pixels) */
+  defaultHeight?: number;
+  /** Whether to preserve aspect ratio during resize */
+  preserveAspectRatio?: boolean;
+  /** Callback fired when resizing starts */
+  onResizeStart?: () => void;
+  /** Callback fired during resize */
+  onResize?: (width: number, height: number) => void;
+  /** Callback fired when resizing ends */
+  onResizeEnd?: (width: number, height: number) => void;
+  /** Where to place the resize handles */
+  handleLocation?: HandleLocation;
+  /** Custom class name */
+  className?: string;
+  /** Whether to show resize handles */
+  showHandles?: boolean;
+  /** Whether to animate size changes */
+  animate?: boolean;
+}
 
-    setSize({ width: newWidth, height: newHeight });
-    onResize?.(newWidth, newHeight);
-  }, [isResizing, minWidth, maxWidth, minHeight, maxHeight, preserveAspectRatio, aspectRatio, onResize]);
-
-  const handleResizeEnd = useCallback(() => {
-    setIsResizing(false);
-    onResizeEnd?.(size.width, size.height);
-
-    document.removeEventListener('mousemove', handleResize);
-    document.removeEventListener('mouseup', handleResizeEnd);
-    document.removeEventListener('touchmove', handleResize);
-    document.removeEventListener('touchend', handleResizeEnd);
-  }, [size, onResizeEnd, handleResize]);
-
-  const showHandle = (handle: 'left' | 'right' | 'top' | 'bottom') => {
-    if (!showHandles) return false;
-    if (handleLocation === 'both') return true;
-    if (handle === 'left' || handle === 'top') return handleLocation === 'start';
-    return handleLocation === 'end';
-  };
-
-  return (
-    <ResizableContainer
-      ref={containerRef}
-      className={className}
-      style={{
-        width: size.width || '100%',
-        height: size.height || '100%',
-      }}
-      data-resizing={isResizing}
-      animate={animate}
-    >
-      {children}
-
-      {(direction === 'horizontal' || direction === 'both') && (
-        <>
-          {showHandle('left') && (
-            <ResizeHandle
-              direction="left"
-              visible={showHandles}
-              onMouseDown={(e: React.MouseEvent) => handleResizeStart(e, 'left')}
-              onTouchStart={(e: React.TouchEvent) => handleResizeStart(e, 'left')}
-            />
-          )}
-          {showHandle('right') && (
-            <ResizeHandle
-              direction="right"
-              visible={showHandles}
-              onMouseDown={(e: React.MouseEvent) => handleResizeStart(e, 'right')}
-              onTouchStart={(e: React.TouchEvent) => handleResizeStart(e, 'right')}
-            />
-          )}
-        </>
-      )}
-
-      {(direction === 'vertical' || direction === 'both') && (
-        <>
-          {showHandle('top') && (
-            <ResizeHandle
-              direction="top"
-              visible={showHandles}
-              onMouseDown={(e: React.MouseEvent) => handleResizeStart(e, 'top')}
-              onTouchStart={(e: React.TouchEvent) => handleResizeStart(e, 'top')}
-            />
-          )}
-          {showHandle('bottom') && (
-            <ResizeHandle
-              direction="bottom"
-              visible={showHandles}
-              onMouseDown={(e: React.MouseEvent) => handleResizeStart(e, 'bottom')}
-              onTouchStart={(e: React.TouchEvent) => handleResizeStart(e, 'bottom')}
-            />
-          )}
-        </>
-      )}
-
-      {direction === 'both' && handleLocation !== 'start' && (
-        <ResizeHandle
-          direction="corner"
-          visible={showHandles}
-          onMouseDown={(e: React.MouseEvent) => handleResizeStart(e, 'corner')}
-          onTouchStart={(e: React.TouchEvent) => handleResizeStart(e, 'corner')}
-        />
-      )}
-    </ResizableContainer>
-  );
-}; 
+export interface ResizeHandleProps {
+  /** The direction this handle resizes */
+  direction: "left" | "right" | "top" | "bottom" | "corner";
+  /** Whether the handle is visible */
+  visible?: boolean;
+  /** Custom class name */
+  className?: string;
+  /** Mouse down event handler */
+  onMouseDown?: (e: React.MouseEvent) => void;
+  /** Touch start event handler */
+  onTouchStart?: (e: React.TouchEvent) => void;
+}
+export type Direction = "horizontal" | "vertical" | "both";
+export type HandleLocation = "start" | "end" | "both";

@@ -27,13 +27,3 @@ export interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   style?: React.CSSProperties;
 }
-
-export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
-  ({ children, className, style, ...props }, ref) => (
-    <StyledScrollArea ref={ref} className={className} style={style} {...props}>
-      {children}
-    </StyledScrollArea>
-  )
-);
-
-ScrollArea.displayName = "ScrollArea";

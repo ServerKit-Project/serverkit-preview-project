@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 export const LabelRoot = styled.label<{ $disabled?: boolean }>`
@@ -17,16 +16,3 @@ export const LabelRoot = styled.label<{ $disabled?: boolean }>`
     color: ${(props) => !props.$disabled && "#000000"};
   }
 `;
-
-export interface LabelProps
-  extends React.LabelHTMLAttributes<HTMLLabelElement> {
-  disabled?: boolean;
-}
-
-export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, disabled, ...props }, ref) => {
-    return <LabelRoot ref={ref} $disabled={disabled} {...props} />;
-  }
-);
-
-Label.displayName = "Label";

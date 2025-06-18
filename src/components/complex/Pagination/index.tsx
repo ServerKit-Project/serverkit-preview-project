@@ -12,11 +12,6 @@ export interface PaginationProps {
   className?: string;
 }
 
-export const Pagination = ({ children, className }: PaginationProps) => {
-  return <StyledPagination className={className}>{children}</StyledPagination>;
-};
-
-// Pagination Content
 export const StyledContent = styled.ul`
   display: flex;
   align-items: center;
@@ -26,20 +21,12 @@ export const StyledContent = styled.ul`
   padding: 0;
 `;
 
-export const PaginationContent = ({ children, className }: PaginationProps) => {
-  return <StyledContent className={className}>{children}</StyledContent>;
-};
-
 // Pagination Item
 export const StyledItem = styled.li`
   display: inline-flex;
   align-items: center;
   justify-content: center;
 `;
-
-export const PaginationItem = ({ children, className }: PaginationProps) => {
-  return <StyledItem className={className}>{children}</StyledItem>;
-};
 
 // Base Link Styles
 const baseLinkStyles = `
@@ -80,109 +67,14 @@ export interface PaginationLinkProps extends PaginationProps {
   isActive?: boolean;
 }
 
-export const PaginationLink = ({
-  children,
-  href,
-  isActive,
-  className,
-}: PaginationLinkProps) => {
-  return (
-    <StyledLink href={href} $isActive={isActive} className={className}>
-      {children}
-    </StyledLink>
-  );
-};
-
 // Pagination Previous
 export const StyledPrevious = styled.a`
   ${baseLinkStyles}
   gap: 0.5rem;
 `;
 
-export const PaginationPrevious = ({
-  href,
-  className,
-}: Omit<PaginationLinkProps, "children">) => {
-  return (
-    <StyledPrevious href={href} className={className}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m15 18-6-6 6-6" />
-      </svg>
-      <span>Previous</span>
-    </StyledPrevious>
-  );
-};
-
 // Pagination Next
 export const StyledNext = styled.a`
   ${baseLinkStyles}
   gap: 0.5rem;
 `;
-
-export const PaginationNext = ({
-  href,
-  className,
-}: Omit<PaginationLinkProps, "children">) => {
-  return (
-    <StyledNext href={href} className={className}>
-      <span>Next</span>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m9 18 6-6-6-6" />
-      </svg>
-    </StyledNext>
-  );
-};
-
-// Pagination Ellipsis
-export const StyledEllipsis = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-w-[2.25rem];
-  height: 2.25rem;
-  color: #6B7280;
-`;
-
-export const PaginationEllipsis = ({
-  className,
-}: Omit<PaginationProps, "children">) => {
-  return (
-    <StyledEllipsis className={className}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="1" />
-        <circle cx="19" cy="12" r="1" />
-        <circle cx="5" cy="12" r="1" />
-      </svg>
-    </StyledEllipsis>
-  );
-};

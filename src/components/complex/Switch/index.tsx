@@ -1,19 +1,4 @@
-import React from "react";
 import styled from "styled-components";
-
-interface SwitchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
-  /**
-   * Optional CSS class name
-   */
-  className?: string;
-
-  /**
-   * The size of the switch
-   * @default "md"
-   */
-  size?: "sm" | "md" | "lg";
-}
 
 const sizes = {
   sm: {
@@ -95,41 +80,3 @@ export const SwitchSlider = styled.span<{ size: "sm" | "md" | "lg" }>`
     background-color: #d1d5db;
   }
 `;
-
-/**
- * A switch component used as an alternative to checkbox.
- *
- * @example
- * ```tsx
- * // Basic switch
- * <Switch />
- *
- * // Different sizes
- * <Switch size="sm" />
- * <Switch size="md" />
- * <Switch size="lg" />
- *
- * // Controlled switch
- * const [checked, setChecked] = React.useState(false);
- * <Switch
- *   checked={checked}
- *   onChange={(e) => setChecked(e.target.checked)}
- * />
- *
- * // Disabled switch
- * <Switch disabled />
- * <Switch disabled checked />
- * ```
- */
-export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, size = "md", ...props }, ref) => {
-    return (
-      <SwitchContainer className={className} size={size}>
-        <SwitchInput type="checkbox" ref={ref} $size={size} {...props} />
-        <SwitchSlider size={size} />
-      </SwitchContainer>
-    );
-  }
-);
-
-Switch.displayName = "Switch";

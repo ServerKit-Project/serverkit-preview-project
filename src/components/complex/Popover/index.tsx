@@ -1,342 +1,350 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useRef,
-  useEffect,
-} from "react";
-import { createPortal } from "react-dom";
-import type {
-  PopoverProps,
-  PopoverTriggerProps,
-  PopoverContentProps,
-} from "./types";
-import {
-  StyledPopoverContent,
-  StyledPopoverArrow,
-  StyledPopoverTrigger,
-} from "./styles";
+import type { ReactNode } from "react";
+import styled, { css, keyframes } from "styled-components";
 
-interface PopoverContextType {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  triggerRef: React.RefObject<HTMLElement>;
-}
-
-const PopoverContext = createContext<PopoverContextType>({
-  open: false,
-  setOpen: () => {},
-  triggerRef: { current: null },
-});
-
-export const Popover = ({
-  children,
-  defaultOpen = false,
-  open: controlledOpen,
-  onOpenChange,
-}: PopoverProps) => {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const triggerRef = useRef<HTMLElement>(null);
-
-  const isControlled = controlledOpen !== undefined;
-  const open = isControlled ? controlledOpen : uncontrolledOpen;
-
-  const setOpen = (value: boolean) => {
-    if (!isControlled) {
-      setUncontrolledOpen(value);
-    }
-    onOpenChange?.(value);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        open &&
-        triggerRef.current &&
-        !triggerRef.current.contains(event.target as Node) &&
-        !event.defaultPrevented
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open, setOpen]);
-
-  return (
-    <PopoverContext.Provider value={{ open, setOpen, triggerRef }}>
-      {children}
-    </PopoverContext.Provider>
-  );
-};
-
-export const PopoverTrigger = ({ children, asChild }: PopoverTriggerProps) => {
-  const { open, setOpen, triggerRef } = useContext(PopoverContext);
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setOpen(!open);
-  };
-
-  if (asChild) {
-    return React.cloneElement(children as React.ReactElement, {
-      ref: triggerRef,
-      onClick: handleClick,
-      "aria-expanded": open,
-      "aria-haspopup": true,
-    });
+const slideUpAndFade = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-
-  return (
-    <StyledPopoverTrigger
-      ref={triggerRef as React.RefObject<HTMLButtonElement>}
-      onClick={handleClick}
-      aria-expanded={open}
-      aria-haspopup={true}
-    >
-      {children}
-    </StyledPopoverTrigger>
-  );
-};
-
-const getOptimalPosition = (
-  triggerRect: DOMRect,
-  contentRect: DOMRect,
-  preferredSide: PopoverContentProps["side"],
-  collisionPadding: number = 8
-) => {
-  const viewport = {
-    left: collisionPadding,
-    top: collisionPadding,
-    right: window.innerWidth - collisionPadding,
-    bottom: window.innerHeight - collisionPadding,
-  };
-
-  const getPositionForSide = (
-    side: NonNullable<PopoverContentProps["side"]>
-  ) => {
-    const positions = {
-      top: {
-        top: triggerRect.top - contentRect.height - 5,
-        left: triggerRect.left + (triggerRect.width - contentRect.width) / 2,
-        side: "top" as const,
-      },
-      right: {
-        top: triggerRect.top + (triggerRect.height - contentRect.height) / 2,
-        left: triggerRect.right + 5,
-        side: "right" as const,
-      },
-      bottom: {
-        top: triggerRect.bottom + 5,
-        left: triggerRect.left + (triggerRect.width - contentRect.width) / 2,
-        side: "bottom" as const,
-      },
-      left: {
-        top: triggerRect.top + (triggerRect.height - contentRect.height) / 2,
-        left: triggerRect.left - contentRect.width - 5,
-        side: "left" as const,
-      },
-    };
-
-    return positions[side];
-  };
-
-  const checkFits = (position: ReturnType<typeof getPositionForSide>) => {
-    return (
-      position.left >= viewport.left &&
-      position.left + contentRect.width <= viewport.right &&
-      position.top >= viewport.top &&
-      position.top + contentRect.height <= viewport.bottom
-    );
-  };
-
-  // Try preferred side first
-  const preferred = getPositionForSide(preferredSide || "bottom");
-  if (checkFits(preferred)) {
-    return preferred;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+`;
 
-  // Try opposite side
-  const opposites = {
+const slideRightAndFade = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const slideDownAndFade = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const slideLeftAndFade = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+type Side = NonNullable<PopoverContentProps["side"]>;
+type Align = NonNullable<PopoverContentProps["align"]>;
+
+const getTransformOrigin = (side?: Side, align?: Align) => {
+  const sides: Record<Side, string> = {
     top: "bottom",
+    right: "left",
     bottom: "top",
     left: "right",
-    right: "left",
-  } as const;
-
-  const oppositeSide = opposites[preferredSide || "bottom"];
-  const oppositePosition = getPositionForSide(oppositeSide);
-  if (checkFits(oppositePosition)) {
-    return oppositePosition;
-  }
-
-  // Try remaining sides
-  const allSides: NonNullable<PopoverContentProps["side"]>[] = [
-    "top",
-    "right",
-    "bottom",
-    "left",
-  ];
-  for (const side of allSides) {
-    if (side === preferredSide || side === oppositeSide) continue;
-    const position = getPositionForSide(side);
-    if (checkFits(position)) {
-      return position;
-    }
-  }
-
-  // If no perfect position found, adjust the preferred position to fit within viewport
-  return {
-    ...preferred,
-    top: Math.max(
-      viewport.top,
-      Math.min(preferred.top, viewport.bottom - contentRect.height)
-    ),
-    left: Math.max(
-      viewport.left,
-      Math.min(preferred.left, viewport.right - contentRect.width)
-    ),
   };
+
+  const alignments: Record<Align, string> = {
+    start: "0%",
+    center: "50%",
+    end: "100%",
+  };
+
+  const sideOrigin = sides[side || "bottom"];
+  const alignOrigin = alignments[align || "center"];
+
+  if (side === "top" || side === "bottom") {
+    return `${alignOrigin} ${sideOrigin}`;
+  }
+  return `${sideOrigin} ${alignOrigin}`;
 };
 
-export const PopoverContent = ({
-  children,
-  align = "center",
-  side = "bottom",
-  sideOffset,
-  alignOffset,
-  hideArrow,
-  className,
-  avoidCollisions = true,
-  collisionPadding = 8,
-  sticky = "partial",
+export const StyledPopoverContent = styled.div<
+  Pick<
+    PopoverContentProps,
+    "side" | "align" | "sideOffset" | "alignOffset" | "animation" | "sticky"
+  >
+>`
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  min-width: 200px;
+  max-width: 300px;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+  transform-origin: ${(props) => getTransformOrigin(props.side, props.align)};
+  animation-duration: ${(props) => props.animation?.duration || 200}ms;
+  animation-timing-function: ${(props) =>
+    props.animation?.easing || "cubic-bezier(0.16, 1, 0.3, 1)"};
+  will-change: transform, opacity;
 
-  portalContainer,
-  animation,
-}: PopoverContentProps) => {
-  const { open, triggerRef } = useContext(PopoverContext);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ top: 0, left: 0, side });
+  &[data-state="open"] {
+    opacity: 1;
+    transform: none;
+  }
 
-  useEffect(() => {
-    if (!open || !contentRef.current || !triggerRef.current) return;
+  &[data-state="closed"] {
+    opacity: 0;
+    pointer-events: none;
+  }
 
-    const updatePosition = () => {
-      const content = contentRef.current;
-      const trigger = triggerRef.current;
-      if (!content || !trigger) return;
+  ${(props) => {
+    const offset = props.sideOffset || 5;
+    const alignOffset = props.alignOffset || 0;
 
-      const triggerRect = trigger.getBoundingClientRect();
-      const contentRect = content.getBoundingClientRect();
-
-      if (avoidCollisions) {
-        const optimalPosition = getOptimalPosition(
-          triggerRect,
-          contentRect,
-          side,
-          collisionPadding
-        );
-        setPosition(optimalPosition);
-      } else {
-        const offset = sideOffset || 5;
-        let top = 0;
-        let left = 0;
-
-        switch (side) {
-          case "top":
-            top = triggerRect.top - contentRect.height - offset;
-            left =
-              triggerRect.left + (triggerRect.width - contentRect.width) / 2;
-            break;
-          case "right":
-            top =
-              triggerRect.top + (triggerRect.height - contentRect.height) / 2;
-            left = triggerRect.right + offset;
-            break;
-          case "left":
-            top =
-              triggerRect.top + (triggerRect.height - contentRect.height) / 2;
-            left = triggerRect.left - contentRect.width - offset;
-            break;
-          default: // bottom
-            top = triggerRect.bottom + offset;
-            left =
-              triggerRect.left + (triggerRect.width - contentRect.width) / 2;
-        }
-
-        // Apply alignment offset
-        if (alignOffset) {
-          if (align === "start") {
-            if (side === "top" || side === "bottom") {
-              left = triggerRect.left + alignOffset;
-            } else {
-              top = triggerRect.top + alignOffset;
-            }
-          } else if (align === "end") {
-            if (side === "top" || side === "bottom") {
-              left = triggerRect.right - contentRect.width - alignOffset;
-            } else {
-              top = triggerRect.bottom - contentRect.height - alignOffset;
-            }
-          }
-        }
-
-        setPosition({ top, left, side });
+    const getBaseStyles = (side: Side) => {
+      switch (side) {
+        case "top":
+          return css`
+            animation-name: ${slideUpAndFade};
+            ${getAlignment(props.align, alignOffset)}
+          `;
+        case "right":
+          return css`
+            animation-name: ${slideRightAndFade};
+            ${getVerticalAlignment(props.align, alignOffset)}
+          `;
+        case "left":
+          return css`
+            animation-name: ${slideLeftAndFade};
+            ${getVerticalAlignment(props.align, alignOffset)}
+          `;
+        default: // bottom
+          return css`
+            animation-name: ${slideDownAndFade};
+            ${getAlignment(props.align, alignOffset)}
+          `;
       }
     };
 
-    updatePosition();
-
-    if (
-      sticky === "always" ||
-      (sticky === "partial" && position.side === side)
-    ) {
-      window.addEventListener("resize", updatePosition);
-      window.addEventListener("scroll", updatePosition, true);
-
-      return () => {
-        window.removeEventListener("resize", updatePosition);
-        window.removeEventListener("scroll", updatePosition, true);
-      };
+    switch (props.side) {
+      case "top":
+        return css`
+          ${getBaseStyles("top")}
+          ${props.sticky && getStickyStyles("vertical")}
+        `;
+      case "right":
+        return css`
+          ${getBaseStyles("right")}
+          ${props.sticky && getStickyStyles("horizontal")}
+        `;
+      case "left":
+        return css`
+          ${getBaseStyles("left")}
+          ${props.sticky && getStickyStyles("horizontal")}
+        `;
+      default: // bottom
+        return css`
+          ${getBaseStyles("bottom")}
+          ${props.sticky && getStickyStyles("vertical")}
+        `;
     }
-  }, [
-    open,
-    side,
-    align,
-    sideOffset,
-    alignOffset,
-    avoidCollisions,
-    collisionPadding,
-    sticky,
-    position.side,
-  ]);
+  }}
+`;
 
-  if (!open) return null;
+const getStickyStyles = (direction: "horizontal" | "vertical") => css`
+  position: fixed;
+  ${direction === "vertical" ? "width: 100%;" : "height: 100%;"}
+`;
 
-  const content = (
-    <StyledPopoverContent
-      ref={contentRef}
-      side={position.side}
-      align={align}
-      sideOffset={sideOffset}
-      alignOffset={alignOffset}
-      className={className}
-      sticky={sticky}
-      animation={animation}
-      style={{
-        position: "fixed",
-        top: `${position.top}px`,
-        left: `${position.left}px`,
-      }}
-      data-state={open ? "open" : "closed"}
-    >
-      {children}
-      {!hideArrow && <StyledPopoverArrow side={position.side} />}
-    </StyledPopoverContent>
-  );
-
-  return portalContainer ? createPortal(content, portalContainer) : content;
+const getAlignment = (align?: string, offset = 0) => {
+  switch (align) {
+    case "start":
+      return css`
+        left: ${offset}px;
+      `;
+    case "end":
+      return css`
+        right: ${offset}px;
+      `;
+    default: // center
+      return css`
+        left: 50%;
+        transform: translateX(-50%);
+        ${offset && `margin-left: ${offset}px;`}
+      `;
+  }
 };
+
+const getVerticalAlignment = (align?: string, offset = 0) => {
+  switch (align) {
+    case "start":
+      return css`
+        top: ${offset}px;
+      `;
+    case "end":
+      return css`
+        bottom: ${offset}px;
+      `;
+    default: // center
+      return css`
+        top: 50%;
+        transform: translateY(-50%);
+        ${offset && `margin-top: ${offset}px;`}
+      `;
+  }
+};
+
+export const StyledPopoverArrow = styled.div<{ side?: string }>`
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: -1;
+
+  ${(props) => {
+    switch (props.side) {
+      case "top":
+        return css`
+          bottom: -5px;
+          left: 50%;
+          transform: translateX(-50%) rotate(45deg);
+          border-top: none;
+          border-left: none;
+        `;
+      case "right":
+        return css`
+          left: -5px;
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+          border-right: none;
+          border-bottom: none;
+        `;
+      case "left":
+        return css`
+          right: -5px;
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+          border-left: none;
+          border-top: none;
+        `;
+      default: // bottom
+        return css`
+          top: -5px;
+          left: 50%;
+          transform: translateX(-50%) rotate(45deg);
+          border-bottom: none;
+          border-right: none;
+        `;
+    }
+  }}
+`;
+
+export const StyledPopoverTrigger = styled.button`
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  &:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
+`;
+
+/**
+ * Props for the PopoverTrigger component
+ */
+export interface PopoverTriggerProps {
+  /** The trigger element */
+  children: ReactNode;
+  /** Whether to merge props instead of wrapping the child in a button */
+  asChild?: boolean;
+}
+
+/**
+ * Props for the PopoverContent component
+ */
+export interface PopoverContentProps {
+  /** The content to display in the popover */
+  children: ReactNode;
+
+  /** Alignment relative to the trigger
+   * @default "center"
+   */
+  align?: "start" | "center" | "end";
+
+  /** The preferred side to place the popover
+   * @default "bottom"
+   */
+  side?: "top" | "right" | "bottom" | "left";
+
+  /** Distance in pixels from the trigger
+   * @default 5
+   */
+  sideOffset?: number;
+
+  /** Offset in pixels from the alignment edge
+   * @default 0
+   */
+  alignOffset?: number;
+
+  /** Padding between arrow and edges
+   * @default 0
+   */
+  arrowPadding?: number;
+
+  /** Whether to hide the arrow indicator
+   * @default false
+   */
+  hideArrow?: boolean;
+
+  /** Optional CSS class name */
+  className?: string;
+
+  /** Whether to automatically adjust position to avoid viewport edges
+   * @default true
+   */
+  avoidCollisions?: boolean;
+
+  /** Minimum padding from viewport edges when avoiding collisions
+   * @default 8
+   */
+  collisionPadding?: number;
+
+  /** How the popover maintains position during scroll
+   * - 'partial': Only when preferred side is used
+   * - 'always': Always maintains position
+   * @default "partial"
+   */
+  sticky?: "partial" | "always";
+
+  /** Whether to hide when the trigger is not visible
+   * @default false
+   */
+  hideWhenDetached?: boolean;
+
+  /** Optional container for rendering in a portal */
+  portalContainer?: HTMLElement;
+
+  /** Animation configuration
+   * @default { duration: 200, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+   */
+  animation?: {
+    /** Animation duration in milliseconds */
+    duration?: number;
+    /** CSS easing function */
+    easing?: string;
+  };
+}
