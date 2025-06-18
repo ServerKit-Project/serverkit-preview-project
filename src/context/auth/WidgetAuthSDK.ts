@@ -48,7 +48,7 @@ export class WidgetAuthSDK {
     localStorage.removeItem(this.storageKey);
   }
 
-  public isAuthorized(authAssetId: string | null, role: string): boolean {
+  public isAuthorized(authAssetId: string | null, roles: string[]): boolean {
     if (authAssetId === null) {
       return true;
     }
@@ -67,7 +67,7 @@ export class WidgetAuthSDK {
     }
 
     if (decoded.roles && Array.isArray(decoded.roles)) {
-      return decoded.roles.includes(role);
+      return decoded.roles.some((role) => roles.includes(role));
     }
 
     return false;
