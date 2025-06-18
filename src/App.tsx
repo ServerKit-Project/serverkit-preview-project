@@ -8,13 +8,19 @@ import { ProtectedRoute } from "@/sdk/route/ProtectedRoute";
 
 const Container = styled.div`
   min-height: 100vh;
-  background-color: ${({ theme }) => theme.colors.deepNavy};
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 const Main = styled.main`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: ${({ theme }) => theme.spacing.large};
+  color: ${({ theme }) => theme.colors.text.white};
+
+  @media (max-width: 768px) {
+    padding: ${({ theme }) => theme.spacing.medium};
+  }
 `;
 
 function App() {
