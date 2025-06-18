@@ -8,7 +8,9 @@ interface AvatarProps {
   fallback?: string;
 }
 
-const getSize = (size: "sm" | "md" | "lg") => {
+type AvatarSize = "sm" | "md" | "lg";
+
+const getSize = (size: AvatarSize = "md") => {
   switch (size) {
     case "sm":
       return "32px";
@@ -19,27 +21,27 @@ const getSize = (size: "sm" | "md" | "lg") => {
   }
 };
 
-const AvatarContainer = styled.div<{ size: "sm" | "md" | "lg" }>`
-  width: ${(props) => getSize(props.size)};
-  height: ${(props) => getSize(props.size)};
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #e2e8f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: ${(props) => parseInt(getSize(props.size)) / 2.5}px;
-  font-weight: 500;
-  color: #4a5568;
-`;
-
-const Image = styled.img`
+export const AvatarImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 
-export const Avatar: React.FC<AvatarProps> = ({
+export const Avatar = styled.div<{ size?: AvatarSize }>`
+  width: ${(props) => getSize(props.size)};
+  height: ${(props) => getSize(props.size)};
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${(props) => parseInt(getSize(props.size)) / 2.5}px;
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.text.secondary};
+`;
+
+export const AvatarComponent: React.FC<AvatarProps> = ({
   src,
   alt = "",
   size = "md",
@@ -54,12 +56,12 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   return (
-    <AvatarContainer size={size}>
+    <Avatar size={size}>
       {src && !error ? (
-        <Image src={src} alt={alt} onError={() => setError(true)} />
+        <AvatarImage src={src} alt={alt} onError={() => setError(true)} />
       ) : (
         getFallback()
       )}
-    </AvatarContainer>
+    </Avatar>
   );
 };

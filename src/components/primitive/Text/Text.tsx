@@ -1,49 +1,47 @@
-import React from "react";
 import styled, { css } from "styled-components";
-import { defaultTheme } from "../../theme";
 
-export interface TextProps {
-  children: React.ReactNode;
-  variant?:
-    | "h1"
-    | "h2"
-    | "h3"
-    | "h4"
-    | "h5"
-    | "h6"
-    | "body1"
-    | "body2"
-    | "caption"
-    | "subtitle";
-  color?: "primary" | "secondary" | "danger" | "inherit";
-  align?: "left" | "center" | "right" | "justify";
-  weight?: "normal" | "medium" | "semibold" | "bold";
-  as?: keyof JSX.IntrinsicElements;
-}
+type TextVariant =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "body1"
+  | "body2"
+  | "caption"
+  | "subtitle";
 
-const StyledText = styled.span<TextProps>`
+type TextColor = "primary" | "secondary" | "danger" | "inherit";
+type TextAlign = "left" | "center" | "right" | "justify";
+type TextWeight = "normal" | "medium" | "semibold" | "bold";
+
+export const Text = styled.span<{
+  $variant?: TextVariant;
+  $color?: TextColor;
+  $align?: TextAlign;
+  $weight?: TextWeight;
+}>`
   margin: 0;
-  color: ${({ color, theme }) => {
-    switch (color) {
+  color: ${({ $color, theme }) => {
+    switch ($color) {
       case "primary":
-        return theme?.colors.primary || defaultTheme.colors.primary;
+        return theme.colors.primary;
       case "secondary":
-        return (
-          theme?.colors.text.secondary || defaultTheme.colors.text.secondary
-        );
+        return theme.colors.text.secondary;
       case "danger":
-        return theme?.colors.danger || defaultTheme.colors.danger;
+        return theme.colors.danger;
       case "inherit":
         return "inherit";
       default:
-        return theme?.colors.text.primary || defaultTheme.colors.text.primary;
+        return theme.colors.text.primary;
     }
   }};
 
-  text-align: ${({ align }) => align || "left"};
+  text-align: ${({ $align }) => $align || "left"};
 
-  font-weight: ${({ weight }) => {
-    switch (weight) {
+  font-weight: ${({ $weight }) => {
+    switch ($weight) {
       case "medium":
         return 500;
       case "semibold":
@@ -55,8 +53,8 @@ const StyledText = styled.span<TextProps>`
     }
   }};
 
-  ${({ variant, theme }) => {
-    switch (variant) {
+  ${({ $variant, theme }) => {
+    switch ($variant) {
       case "h1":
         return css`
           font-size: 2.5rem;
@@ -117,46 +115,14 @@ const StyledText = styled.span<TextProps>`
           font-size: 0.75rem;
           font-weight: 400;
           line-height: 1.4;
-          color: ${theme?.colors.text.secondary ||
-          defaultTheme.colors.text.secondary};
+          color: ${theme.colors.text.secondary};
         `;
       default: // body1
         return css`
-          font-size: ${theme?.fontSize.medium || defaultTheme.fontSize.medium};
+          font-size: ${theme.fontSize.medium};
           font-weight: 400;
           line-height: 1.5;
         `;
     }
   }}
 `;
-
-export const Text: React.FC<TextProps> = ({
-  children,
-  variant = "body1",
-  color,
-  align = "left",
-  weight = "normal",
-  as,
-  ...props
-}) => {
-  // variant에 따라 기본 HTML 태그 결정
-  const getDefaultElement = () => {
-    if (as) return as;
-    if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(variant))
-      return variant as keyof JSX.IntrinsicElements;
-    return "span";
-  };
-
-  return (
-    <StyledText
-      as={getDefaultElement()}
-      variant={variant}
-      color={color}
-      align={align}
-      weight={weight}
-      {...props}
-    >
-      {children}
-    </StyledText>
-  );
-};
