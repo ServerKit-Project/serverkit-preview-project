@@ -6,19 +6,19 @@ export const StyledScrollArea = styled.div<{ className?: string }>`
   overflow: auto;
   width: 100%;
   height: 100%;
-  border-radius: 8px;
-  background: white;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  background: ${({ theme }) => theme.colors.pureWhite};
   /* Custom scrollbar */
   &::-webkit-scrollbar {
     width: 8px;
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: hsl(240 5.9% 90%);
-    border-radius: 8px;
+    background: ${({ theme }) => theme.colors.lightGray};
+    border-radius: ${({ theme }) => theme.borderRadius};
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: hsl(240 5.9% 80%);
+    background: ${({ theme }) => theme.colors.mediumGray};
   }
 `;
 

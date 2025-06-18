@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { defaultTheme } from "@/theme";
 
 export interface SelectOption {
   value: string | number;
@@ -23,6 +22,7 @@ export const SelectContainer = styled.div<{ $fullWidth?: boolean }>`
   position: relative;
   display: inline-block;
   ${({ $fullWidth }) => $fullWidth && "width: 100%;"}
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const SelectButton = styled.button<{
@@ -36,25 +36,18 @@ export const SelectButton = styled.button<{
   justify-content: space-between;
   border: 1px solid
     ${({ theme, $error }) =>
-      $error
-        ? theme?.colors.danger || defaultTheme.colors.danger
-        : theme?.colors.border.default || defaultTheme.colors.border.default};
-  border-radius: ${({ theme }) =>
-    theme?.borderRadius || defaultTheme.borderRadius};
+      $error ? theme.colors.danger : theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
   background-color: ${({ $disabled, theme }) =>
     $disabled
-      ? `${
-          theme?.colors.background.secondary ||
-          defaultTheme.colors.background.secondary
-        }80`
-      : "#ffffff"};
+      ? `${theme.colors.background.secondary}80`
+      : theme.colors.pureWhite};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   outline: none;
   transition: all 0.2s ease;
-  color: ${({ theme }) =>
-    theme?.colors.text.primary || defaultTheme.colors.text.primary};
+  color: ${({ theme }) => theme.colors.text.primary};
   text-align: left;
-  font-family: inherit;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 
   ${({ $fullWidth }) => $fullWidth && "width: 100%;"}
 
@@ -62,20 +55,20 @@ export const SelectButton = styled.button<{
     switch ($size) {
       case "small":
         return css`
-          padding: 6px 12px;
-          font-size: ${theme?.fontSize.small || defaultTheme.fontSize.small};
+          padding: ${theme.spacing.small};
+          font-size: ${theme.fontSize.small};
           height: 32px;
         `;
       case "large":
         return css`
-          padding: 12px 16px;
-          font-size: ${theme?.fontSize.large || defaultTheme.fontSize.large};
+          padding: ${theme.spacing.large};
+          font-size: ${theme.fontSize.large};
           height: 48px;
         `;
       default:
         return css`
-          padding: 8px 12px;
-          font-size: ${theme?.fontSize.medium || defaultTheme.fontSize.medium};
+          padding: ${theme.spacing.medium};
+          font-size: ${theme.fontSize.medium};
           height: 40px;
         `;
     }
@@ -83,26 +76,22 @@ export const SelectButton = styled.button<{
 
   &:focus {
     border-color: ${({ theme, $error }) =>
-      $error
-        ? theme?.colors.danger || defaultTheme.colors.danger
-        : theme?.colors.primary || defaultTheme.colors.primary};
+      $error ? theme.colors.danger : theme.colors.primary};
     box-shadow: 0 0 0 3px
       ${({ theme, $error }) =>
-        $error
-          ? `${theme?.colors.danger || defaultTheme.colors.danger}20`
-          : `${theme?.colors.primary || defaultTheme.colors.primary}20`};
+        $error ? `${theme.colors.danger}20` : `${theme.colors.primary}20`};
   }
 
   &:hover:not(:disabled) {
-    border-color: ${({ theme }) =>
-      theme?.colors.border.hover || defaultTheme.colors.border.hover};
+    border-color: ${({ theme }) => theme.colors.border.hover};
   }
 `;
 
 export const SelectIcon = styled.span<{ $isOpen?: boolean }>`
-  margin-left: 8px;
+  margin-left: ${({ theme }) => theme.spacing.small};
   transition: transform 0.2s ease;
   transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+  color: ${({ theme }) => theme.colors.text.secondary};
 
   &::after {
     content: "▼";
@@ -120,14 +109,11 @@ export const SelectDropdown = styled.div<{
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: #ffffff;
-  border: 1px solid
-    ${({ theme }) =>
-      theme?.colors.border.default || defaultTheme.colors.border.default};
-  border-radius: ${({ theme }) =>
-    theme?.borderRadius || defaultTheme.borderRadius};
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 4px;
+  background-color: ${({ theme }) => theme.colors.pureWhite};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.md};
+  margin-top: ${({ theme }) => theme.spacing.small};
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
   transform: ${({ $isOpen }) =>
@@ -141,37 +127,30 @@ export const SelectOption = styled.div<{
   $disabled?: boolean;
   $selected?: boolean;
 }>`
-  padding: 8px 12px;
+  padding: ${({ theme }) => theme.spacing.medium};
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   color: ${({ $disabled, theme }) =>
-    $disabled
-      ? theme?.colors.text.secondary || defaultTheme.colors.text.secondary
-      : theme?.colors.text.primary || defaultTheme.colors.text.primary};
+    $disabled ? theme.colors.text.secondary : theme.colors.text.primary};
   background-color: ${({ $selected, theme }) =>
-    $selected
-      ? `${theme?.colors.primary || defaultTheme.colors.primary}10`
-      : "transparent"};
+    $selected ? `${theme.colors.primary}10` : "transparent"};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 
   &:hover:not(:disabled) {
-    background-color: ${({ theme }) =>
-      theme?.colors.background.hover.secondary ||
-      defaultTheme.colors.background.hover.secondary};
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
   }
 
   &:first-child {
-    border-radius: ${({ theme }) =>
-        theme?.borderRadius || defaultTheme.borderRadius}
-      ${({ theme }) => theme?.borderRadius || defaultTheme.borderRadius} 0 0;
+    border-radius: ${({ theme }) => theme.borderRadius}
+      ${({ theme }) => theme.borderRadius} 0 0;
   }
 
   &:last-child {
-    border-radius: 0 0
-      ${({ theme }) => theme?.borderRadius || defaultTheme.borderRadius}
-      ${({ theme }) => theme?.borderRadius || defaultTheme.borderRadius};
+    border-radius: 0 0 ${({ theme }) => theme.borderRadius}
+      ${({ theme }) => theme.borderRadius};
   }
 `;
 
 export const PlaceholderText = styled.span`
-  color: ${({ theme }) =>
-    theme?.colors.text.secondary || defaultTheme.colors.text.secondary};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;

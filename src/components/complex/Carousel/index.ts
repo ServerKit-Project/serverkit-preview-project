@@ -4,6 +4,7 @@ export const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+  border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
 export const CarouselTrack = styled.div<{ $currentIndex: number }>`
@@ -22,7 +23,7 @@ export const CarouselButton = styled.button<{ $direction: "prev" | "next" }>`
   top: 50%;
   transform: translateY(-50%);
   ${(props) => (props.$direction === "prev" ? "left: 1rem;" : "right: 1rem;")}
-  background: rgba(255, 255, 255, 0.8);
+  background: ${({ theme }) => theme.colors.pureWhite}CC;
   border: none;
   border-radius: 50%;
   width: 2.5rem;
@@ -32,14 +33,15 @@ export const CarouselButton = styled.button<{ $direction: "prev" | "next" }>`
   justify-content: center;
   cursor: pointer;
   z-index: 1;
+  color: ${({ theme }) => theme.colors.text.primary};
 
   &:hover {
-    background: rgba(255, 255, 255, 0.9);
+    background: ${({ theme }) => theme.colors.pureWhite};
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #3182ce;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -59,7 +61,9 @@ export const Dot = styled.button<{ $isActive: boolean }>`
   border-radius: 50%;
   border: none;
   background: ${(props) =>
-    props.$isActive ? "#3182ce" : "rgba(255, 255, 255, 0.8)"};
+    props.$isActive
+      ? props.theme.colors.primary
+      : props.theme.colors.pureWhite + "CC"};
   cursor: pointer;
   padding: 0;
   transition: all 0.2s ease-in-out;
@@ -70,6 +74,6 @@ export const Dot = styled.button<{ $isActive: boolean }>`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #3182ce;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary};
   }
 `;

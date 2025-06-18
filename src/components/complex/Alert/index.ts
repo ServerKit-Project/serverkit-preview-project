@@ -2,28 +2,47 @@ import styled from "styled-components";
 
 type AlertVariant = "info" | "success" | "warning" | "error";
 
-export const getAlertColor = (variant: AlertVariant) => {
+export const getAlertColor = (variant: AlertVariant, theme: any) => {
   switch (variant) {
     case "success":
-      return { bg: "#f0fff4", border: "#68d391", text: "#2f855a" };
+      return {
+        bg: theme.colors.background.secondary,
+        border: theme.colors.primary,
+        text: theme.colors.darkGreen,
+      };
     case "warning":
-      return { bg: "#fffaf0", border: "#f6ad55", text: "#c05621" };
+      return {
+        bg: theme.colors.background.secondary,
+        border: theme.colors.warning,
+        text: theme.colors.warning,
+      };
     case "error":
-      return { bg: "#fff5f5", border: "#fc8181", text: "#c53030" };
+      return {
+        bg: theme.colors.background.secondary,
+        border: theme.colors.danger,
+        text: theme.colors.danger,
+      };
     default:
-      return { bg: "#ebf8ff", border: "#63b3ed", text: "#2b6cb0" };
+      return {
+        bg: theme.colors.background.secondary,
+        border: theme.colors.primary,
+        text: theme.colors.text.primary,
+      };
   }
 };
 
 export const AlertContainer = styled.div<{ variant: AlertVariant }>`
   width: 100%;
-  padding: 1rem;
-  border-radius: 4px;
-  border-left: 4px solid ${(props) => getAlertColor(props.variant).border};
-  background-color: ${(props) => getAlertColor(props.variant).bg};
-  color: ${(props) => getAlertColor(props.variant).text};
+  padding: ${({ theme }) => theme.spacing.medium};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border-left: 4px solid
+    ${(props) => getAlertColor(props.variant, props.theme).border};
+  background-color: ${(props) => getAlertColor(props.variant, props.theme).bg};
+  color: ${(props) => getAlertColor(props.variant, props.theme).text};
   margin: 0.5rem 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
+  box-shadow: ${({ theme }) => theme.shadows.sm};
 `;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const Trigger = styled.button<{ $disabled: boolean }>`
@@ -9,28 +10,30 @@ export const Trigger = styled.button<{ $disabled: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem;
+  padding: ${({ theme }) => theme.spacing.medium};
   background: none;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
-  color: #2d3748;
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
   transition: all 0.2s ease-in-out;
 
   &:hover:not(:disabled) {
-    background: #f7fafc;
+    background: ${({ theme }) => theme.colors.background.secondary};
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #3182ce;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary};
   }
 `;
 
 export const Icon = styled.span<{ $isOpen: boolean }>`
   transform: rotate(${(props) => (props.$isOpen ? "180deg" : "0deg")});
   transition: transform 0.2s ease-in-out;
+  color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
 export const Content = styled.div<{ $height: number }>`
@@ -40,8 +43,11 @@ export const Content = styled.div<{ $height: number }>`
 `;
 
 export const ContentInner = styled.div`
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
+  padding: ${({ theme }) => theme.spacing.medium};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
   border-top: none;
-  border-radius: 0 0 0.375rem 0.375rem;
+  border-radius: 0 0 ${({ theme }) => theme.borderRadius}
+    ${({ theme }) => theme.borderRadius};
+  background: ${({ theme }) => theme.colors.pureWhite};
+  color: ${({ theme }) => theme.colors.text.primary};
 `;

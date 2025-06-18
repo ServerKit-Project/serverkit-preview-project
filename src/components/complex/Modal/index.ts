@@ -24,7 +24,7 @@ export const ModalBackdrop = styled.div<{ $isOpen: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.colors.deepBlack}80;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,6 +42,7 @@ export const ModalContainer = styled(CardRoot)<{
   transition: transform 0.3s ease;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: ${({ theme }) => theme.shadows.lg};
 
   ${({ $size }) => {
     switch ($size) {
@@ -75,19 +76,21 @@ export const ModalHeader = styled(CardHeaderRoot)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: ${({ theme }) => theme.spacing.medium};
 `;
 
 export const ModalTitle = styled(Text)`
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.text.primary};
 `;
 
 export const CloseButton = styled(Button)`
   background: none;
   border: none;
-  font-size: 1.5rem;
-  padding: 4px;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  padding: ${({ theme }) => theme.spacing.small};
   min-width: auto;
   min-height: auto;
 
@@ -97,4 +100,6 @@ export const CloseButton = styled(Button)`
   }
 `;
 
-export const ModalBody = styled(CardContentRoot)``;
+export const ModalBody = styled(CardContentRoot)`
+  padding: ${({ theme }) => theme.spacing.medium};
+`;

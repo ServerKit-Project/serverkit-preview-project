@@ -19,8 +19,8 @@ export const Panel = styled.div<{
   position: relative;
   ${(props) =>
     props.direction === "horizontal"
-      ? "height: 100%; border-right: 1px solid rgba(0, 0, 0, 0.1);"
-      : "width: 100%; border-bottom: 1px solid rgba(0, 0, 0, 0.1);"}
+      ? `height: 100%; border-right: 1px solid ${props.theme.colors.border.default};`
+      : `width: 100%; border-bottom: 1px solid ${props.theme.colors.border.default};`}
 
   &:last-child {
     border: none;
@@ -129,15 +129,15 @@ const handleBaseStyles = css`
   touch-action: none;
   cursor: pointer;
   user-select: none;
-  border-radius: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   z-index: 10;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
   }
 
   &:active {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: ${({ theme }) => theme.colors.background.secondary};
   }
 `;
 
@@ -158,17 +158,17 @@ export const VerticalHandle = styled.div<{ visible?: boolean }>`
     content: "";
     width: 2px;
     height: 24px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
+    background-color: ${({ theme }) => theme.colors.border.default};
+    border-radius: ${({ theme }) => theme.borderRadius};
     transition: background-color 0.2s;
   }
 
   &:hover::after {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: ${({ theme }) => theme.colors.border.hover};
   }
 
   &:active::after {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: ${({ theme }) => theme.colors.text.secondary};
   }
 `;
 
@@ -189,17 +189,17 @@ export const HorizontalHandle = styled.div<{ visible?: boolean }>`
     content: "";
     width: 24px;
     height: 2px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
+    background-color: ${({ theme }) => theme.colors.border.default};
+    border-radius: ${({ theme }) => theme.borderRadius};
     transition: background-color 0.2s;
   }
 
   &:hover::after {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: ${({ theme }) => theme.colors.border.hover};
   }
 
   &:active::after {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: ${({ theme }) => theme.colors.text.secondary};
   }
 `;
 
@@ -219,17 +219,17 @@ export const CornerHandle = styled.div<{ visible?: boolean }>`
     content: "";
     width: 6px;
     height: 6px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
+    background-color: ${({ theme }) => theme.colors.border.default};
+    border-radius: ${({ theme }) => theme.borderRadius};
     transition: background-color 0.2s;
   }
 
   &:hover::after {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: ${({ theme }) => theme.colors.border.hover};
   }
 
   &:active::after {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: ${({ theme }) => theme.colors.text.secondary};
   }
 `;
 

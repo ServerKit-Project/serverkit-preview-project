@@ -47,15 +47,15 @@ export const TooltipContentStyled = styled.div<{
   z-index: 50;
   position: absolute;
   max-width: 320px;
-  padding: 4px 12px;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 400;
+  padding: ${({ theme }) => theme.spacing.small};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-weight: ${({ theme }) => theme.fontWeights.normal};
   line-height: 1.4;
-  color: #fff;
-  background: #18181b;
-  border-radius: 8px;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+  color: ${({ theme }) => theme.colors.text.white};
+  background: ${({ theme }) => theme.colors.deepBlack};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
@@ -69,7 +69,7 @@ export const TooltipContentStyled = styled.div<{
     position: absolute;
     width: 8px;
     height: 8px;
-    background: #18181b;
+    background: ${({ theme }) => theme.colors.deepBlack};
     z-index: 51;
     ${({ $side }) => {
       switch ($side) {

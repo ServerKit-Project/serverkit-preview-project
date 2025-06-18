@@ -2,13 +2,13 @@ import styled from "styled-components";
 
 export const InputOTPRoot = styled.div`
   display: flex;
-  gap: 12px;
+  gap: ${({ theme }) => theme.spacing.medium};
   align-items: center;
 `;
 
 export const InputOTPGroupRoot = styled.div`
   display: flex;
-  gap: 8px;
+  gap: ${({ theme }) => theme.spacing.small};
   align-items: center;
 `;
 
@@ -22,18 +22,19 @@ export const InputOTPSlotInput = styled.input`
   width: 100%;
   height: 100%;
   padding: 0;
-  font-size: 20px;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   text-align: center;
-  border: 1px solid hsl(240 5.9% 90%);
-  border-radius: 6px;
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
   background-color: transparent;
-  color: hsl(240 10% 3.9%);
+  color: ${({ theme }) => theme.colors.text.primary};
   transition: all 150ms;
 
   &:focus {
     outline: none;
-    border-color: hsl(240 5.9% 90%);
-    box-shadow: 0 0 0 1px hsl(240 5.9% 90%);
+    border-color: ${({ theme }) => theme.colors.border.hover};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.border.hover};
   }
 
   &:disabled {
@@ -42,20 +43,21 @@ export const InputOTPSlotInput = styled.input`
   }
 
   &[data-complete="true"] {
-    border-color: hsl(142.1 76.2% 36.3%);
-    box-shadow: 0 0 0 1px hsl(142.1 76.2% 36.3%);
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.primary};
   }
 
   &[data-error="true"] {
-    border-color: hsl(0 84.2% 60.2%);
-    box-shadow: 0 0 0 1px hsl(0 84.2% 60.2%);
+    border-color: ${({ theme }) => theme.colors.danger};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.danger};
   }
 `;
 
 export const InputOTPSeparatorRoot = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 6px;
-  color: hsl(240 3.8% 46.1%);
-  font-size: 20px;
+  padding: 0 ${({ theme }) => theme.spacing.small};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-size: ${({ theme }) => theme.fontSize.large};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;

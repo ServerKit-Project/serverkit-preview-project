@@ -14,9 +14,10 @@ export const ProgressRoot = styled.div`
   position: relative;
   width: 100%;
   height: 8px;
-  background-color: rgb(228, 228, 231);
-  border-radius: 9999px;
+  background-color: ${({ theme }) => `${theme.colors.background.secondary}40`};
+  border-radius: ${({ theme }) => theme.borderRadius};
   overflow: hidden;
+  box-shadow: ${({ theme }) => theme.shadows.sm};
 `;
 
 export const ProgressIndicator = styled.div<{
@@ -26,7 +27,7 @@ export const ProgressIndicator = styled.div<{
 }>`
   width: 100%;
   height: 100%;
-  background-color: #000000;
+  background-color: ${({ theme }) => theme.colors.primary};
   transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
   ${(props) =>
@@ -43,6 +44,7 @@ export const ProgressIndicator = styled.div<{
       right: 0;
       transform-origin: left;
       animation: ${indeterminateAnim} 1s infinite linear;
+      background-color: ${({ theme }) => theme.colors.primary};
     `}
 `;
 

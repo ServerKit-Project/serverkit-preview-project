@@ -3,11 +3,12 @@ import styled from "styled-components";
 export const CalendarContainer = styled.div`
   width: 100%;
   max-width: 300px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: ${({ theme }) => theme.colors.pureWhite};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  padding: ${({ theme }) => theme.spacing.medium};
+  box-shadow: ${({ theme }) => theme.shadows.sm};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const Header = styled.div`
@@ -18,8 +19,9 @@ export const Header = styled.div`
 `;
 
 export const MonthYear = styled.div`
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-size: ${({ theme }) => theme.fontSize.medium};
+  color: ${({ theme }) => theme.colors.text.primary};
 `;
 
 export const Button = styled.button`
@@ -27,14 +29,14 @@ export const Button = styled.button`
   border: none;
   cursor: pointer;
   padding: 0.25rem;
-  color: #4a5568;
+  color: ${({ theme }) => theme.colors.text.secondary};
 
   &:hover {
-    color: #2d3748;
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 
   &:disabled {
-    color: #cbd5e0;
+    color: ${({ theme }) => theme.colors.border.default};
     cursor: not-allowed;
   }
 `;
@@ -45,9 +47,9 @@ export const WeekDays = styled.div`
   gap: 0.25rem;
   margin-bottom: 0.5rem;
   text-align: center;
-  font-weight: 500;
-  font-size: 0.875rem;
-  color: #718096;
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
 export const Days = styled.div`
@@ -66,14 +68,15 @@ export const Day = styled.button<{
   align-items: center;
   justify-content: center;
   border: none;
-  background: ${(props) => (props.$isSelected ? "#3182ce" : "transparent")};
+  background: ${(props) =>
+    props.$isSelected ? props.theme.colors.primary : "transparent"};
   color: ${(props) => {
-    if (props.$isSelected) return "#ffffff";
-    if (props.$isOutsideMonth) return "#cbd5e0";
-    return "#2d3748";
+    if (props.$isSelected) return props.theme.colors.pureWhite;
+    if (props.$isOutsideMonth) return props.theme.colors.border.default;
+    return props.theme.colors.text.primary;
   }};
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  font-size: ${({ theme }) => theme.fontSize.small};
   cursor: pointer;
   position: relative;
 
@@ -87,12 +90,19 @@ export const Day = styled.button<{
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: ${props.$isSelected ? "#ffffff" : "#3182ce"};
+      background: ${
+        props.$isSelected
+          ? props.theme.colors.pureWhite
+          : props.theme.colors.primary
+      };
     }
   `}
 
   &:hover:not(:disabled) {
-    background: ${(props) => (props.$isSelected ? "#2c5282" : "#e2e8f0")};
+    background: ${(props) =>
+      props.$isSelected
+        ? props.theme.colors.background.hover.primary
+        : props.theme.colors.background.secondary};
   }
 
   &:disabled {

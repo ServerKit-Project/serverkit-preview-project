@@ -3,31 +3,40 @@ import styled from "styled-components";
 export const Container = styled.div`
   position: relative;
   width: 100%;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const Input = styled.input<{ $hasError: boolean }>`
   width: 100%;
-  padding: 0.625rem 2.5rem 0.625rem 0.75rem;
-  border: 1px solid ${(props) => (props.$hasError ? "#e53e3e" : "#e2e8f0")};
-  border-radius: 0.375rem;
-  font-size: 1rem;
-  color: #2d3748;
-  background-color: white;
+  padding: ${({ theme }) => theme.spacing.medium};
+  border: 1px solid
+    ${(props) =>
+      props.$hasError
+        ? props.theme.colors.danger
+        : props.theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  font-size: ${({ theme }) => theme.fontSize.medium};
+  color: ${({ theme }) => theme.colors.text.primary};
+  background-color: ${({ theme }) => theme.colors.pureWhite};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: ${(props) => (props.$hasError ? "#e53e3e" : "#cbd5e0")};
+    border-color: ${(props) =>
+      props.$hasError
+        ? props.theme.colors.danger
+        : props.theme.colors.border.hover};
   }
 
   &:focus {
     outline: none;
-    border-color: #3182ce;
-    box-shadow: 0 0 0 1px #3182ce;
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.primary};
   }
 
   &:disabled {
-    background-color: #f7fafc;
+    background-color: ${({ theme }) => theme.colors.background.secondary};
     cursor: not-allowed;
     opacity: 0.6;
   }
@@ -41,7 +50,7 @@ export const ToggleButton = styled.button`
   background: none;
   border: none;
   padding: 0.25rem;
-  color: #4a5568;
+  color: ${({ theme }) => theme.colors.text.secondary};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -63,11 +72,11 @@ export const OptionsList = styled.ul<{ $isOpen: boolean }>`
   left: 0;
   right: 0;
   margin-top: 0.25rem;
-  padding: 0.5rem 0;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: ${({ theme }) => theme.spacing.small};
+  background-color: ${({ theme }) => theme.colors.pureWhite};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.md};
   z-index: 10;
   max-height: 200px;
   overflow-y: auto;
@@ -75,20 +84,27 @@ export const OptionsList = styled.ul<{ $isOpen: boolean }>`
 `;
 
 export const Option = styled.li<{ $isSelected: boolean }>`
-  padding: 0.5rem 0.75rem;
+  padding: ${({ theme }) => theme.spacing.small};
   cursor: pointer;
   background-color: ${(props) =>
-    props.$isSelected ? "#ebf8ff" : "transparent"};
-  color: ${(props) => (props.$isSelected ? "#2b6cb0" : "#2d3748")};
+    props.$isSelected
+      ? props.theme.colors.background.secondary
+      : "transparent"};
+  color: ${(props) =>
+    props.$isSelected
+      ? props.theme.colors.primary
+      : props.theme.colors.text.primary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 
   &:hover {
-    background-color: #f7fafc;
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
   }
 `;
 
 export const ErrorText = styled.span`
-  color: #e53e3e;
-  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.danger};
+  font-size: ${({ theme }) => theme.fontSize.small};
   margin-top: 0.25rem;
   display: block;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;

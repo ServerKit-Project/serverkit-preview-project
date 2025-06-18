@@ -1,10 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 // Root Pagination Component
 export const StyledPagination = styled.nav`
   display: flex;
   justify-content: center;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export interface PaginationProps {
@@ -15,7 +16,7 @@ export interface PaginationProps {
 export const StyledContent = styled.ul`
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: ${({ theme }) => theme.spacing.small};
   list-style: none;
   margin: 0;
   padding: 0;
@@ -29,27 +30,27 @@ export const StyledItem = styled.li`
 `;
 
 // Base Link Styles
-const baseLinkStyles = `
+const baseLinkStyles = css`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-w-[2.25rem];
+  min-width: 2.25rem;
   height: 2.25rem;
-  padding: 0 0.5rem;
-  border-radius: 0.375rem;
+  padding: 0 ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius};
   text-decoration: none;
-  font-size: 0.875rem;
-  color: #374151;
+  font-size: ${({ theme }) => theme.fontSize.small};
+  color: ${({ theme }) => theme.colors.text.primary};
   background: transparent;
   transition: all 0.15s ease;
 
   &:hover {
-    background-color: #F3F4F6;
-    color: #111827;
+    background-color: ${({ theme }) => theme.colors.background.secondary};
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 
   &:focus-visible {
-    outline: 2px solid #E5E7EB;
+    outline: 2px solid ${({ theme }) => theme.colors.border.default};
     outline-offset: 2px;
   }
 `;
@@ -57,9 +58,12 @@ const baseLinkStyles = `
 // Pagination Link
 export const StyledLink = styled.a<{ $isActive?: boolean }>`
   ${baseLinkStyles}
-  font-weight: ${(props) => (props.$isActive ? "600" : "400")};
-  background-color: ${(props) => (props.$isActive ? "#F3F4F6" : "transparent")};
-  color: ${(props) => (props.$isActive ? "#111827" : "#374151")};
+  font-weight: ${({ $isActive, theme }) =>
+    $isActive ? theme.fontWeights.bold : theme.fontWeights.normal};
+  background-color: ${({ $isActive, theme }) =>
+    $isActive ? theme.colors.background.secondary : "transparent"};
+  color: ${({ $isActive, theme }) =>
+    $isActive ? theme.colors.text.primary : theme.colors.text.secondary};
 `;
 
 export interface PaginationLinkProps extends PaginationProps {
@@ -70,11 +74,11 @@ export interface PaginationLinkProps extends PaginationProps {
 // Pagination Previous
 export const StyledPrevious = styled.a`
   ${baseLinkStyles}
-  gap: 0.5rem;
+  gap: ${({ theme }) => theme.spacing.small};
 `;
 
 // Pagination Next
 export const StyledNext = styled.a`
   ${baseLinkStyles}
-  gap: 0.5rem;
+  gap: ${({ theme }) => theme.spacing.small};
 `;

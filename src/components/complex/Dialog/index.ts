@@ -13,7 +13,8 @@ export const Overlay = styled.div<{ $isOpen: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: ${({ theme }) =>
+    `${theme.colors.deepBlack}66`}; // 40% opacity
   display: ${(props) => (props.$isOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
@@ -27,6 +28,8 @@ export const DialogContainer = styled(CardRoot)`
   overflow-y: auto;
   position: relative;
   animation: dialogEnter 0.3s ease-out;
+  background: ${({ theme }) => theme.colors.pureWhite};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
 
   @keyframes dialogEnter {
     from {
@@ -42,25 +45,29 @@ export const DialogContainer = styled(CardRoot)`
 
 export const Header = styled(CardHeaderRoot)`
   position: relative;
+  padding: ${({ theme }) => theme.spacing.medium};
 `;
 
 export const Title = styled(Text)`
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const Description = styled(Text)`
   margin: 0.5rem 0 0;
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme }) => theme.colors.text.secondary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const CloseButton = styled(Button)`
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.5rem;
+  top: ${({ theme }) => theme.spacing.medium};
+  right: ${({ theme }) => theme.spacing.medium};
+  padding: ${({ theme }) => theme.spacing.small};
   background: none;
   border: none;
   min-width: auto;
@@ -80,4 +87,6 @@ export const CloseButton = styled(Button)`
   }
 `;
 
-export const Content = styled(CardContentRoot)``;
+export const Content = styled(CardContentRoot)`
+  padding: ${({ theme }) => theme.spacing.medium};
+`;

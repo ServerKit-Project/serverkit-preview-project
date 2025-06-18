@@ -24,10 +24,11 @@ const sizes: SpinnerSize = {
 export const StyledSpinner = styled.div<{ $size: keyof SpinnerSize }>`
   width: ${({ $size }) => sizes[$size]};
   height: ${({ $size }) => sizes[$size]};
-  border: 4px solid ${({ theme }) => theme.colors.primary};
-  border-top-color: transparent;
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  border-top-color: ${({ theme }) => `${theme.colors.primary}40`};
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
+  box-shadow: ${({ theme }) => theme.shadows.sm};
 `;
 
 export interface SpinnerProps {

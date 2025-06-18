@@ -4,39 +4,45 @@ export const StyledContent = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
-  margin-top: 0.25rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
+  margin-top: ${({ theme }) => theme.spacing.small};
+  background: ${({ theme }) => theme.colors.pureWhite};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  padding: ${({ theme }) => theme.spacing.small};
   width: 14rem;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: ${({ theme }) => theme.shadows.md};
   z-index: 50;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const StyledItem = styled.div`
   display: flex;
   align-items: center;
-  font-size: 0.875rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
+  font-size: ${({ theme }) => theme.fontSize.small};
+  padding: ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius};
   cursor: pointer;
+  color: ${({ theme }) => theme.colors.text.primary};
+
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${({ theme }) => theme.colors.background.secondary};
   }
+
   &[data-disabled="true"] {
     opacity: 0.5;
     pointer-events: none;
+    color: ${({ theme }) => theme.colors.text.secondary};
   }
 `;
 
 export const StyledSubContent = styled(StyledContent)`
   position: absolute;
-  left: calc(100% - 0.5rem);
-  top: -0.5rem;
+  left: calc(100% - ${({ theme }) => theme.spacing.small});
+  top: -${({ theme }) => theme.spacing.small};
   margin-left: 0;
   min-width: 12rem;
 `;
+
 export interface DropdownMenuProps {
   defaultOpen?: boolean;
   open?: boolean;
@@ -117,14 +123,15 @@ export interface DropdownMenuSubContentProps {
 
 export const DropdownMenuSeparator = styled.div`
   height: 1px;
-  background-color: #e5e7eb;
-  margin: 0.5rem 0;
+  background-color: ${({ theme }) => theme.colors.border.default};
+  margin: ${({ theme }) => theme.spacing.small} 0;
 `;
 
 export const DropdownMenuShortcut = styled.span`
   margin-left: auto;
-  font-size: 0.75rem;
-  color: #9ca3af;
+  font-size: ${({ theme }) => theme.fontSize.small};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const SubWrapper = styled.div`

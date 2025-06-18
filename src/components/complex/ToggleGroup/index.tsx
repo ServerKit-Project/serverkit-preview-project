@@ -41,10 +41,10 @@ export interface ToggleGroupProps {
 
 export const ToggleGroupContainer = styled.div`
   display: inline-flex;
-  background-color: #f3f4f6;
-  border-radius: 0.375rem;
-  padding: 0.25rem;
-  gap: 0.25rem;
+  background-color: ${({ theme }) => theme.colors.background.secondary};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  padding: ${({ theme }) => theme.spacing.small};
+  gap: ${({ theme }) => theme.spacing.small};
 `;
 
 export const ToggleItemButton = styled.button<{
@@ -52,9 +52,10 @@ export const ToggleItemButton = styled.button<{
   $disabled?: boolean;
 }>`
   all: unset;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+  padding: ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   line-height: 1;
   height: 2rem;
   display: flex;
@@ -64,15 +65,22 @@ export const ToggleItemButton = styled.button<{
   white-space: nowrap;
   transition: all 0.2s;
   cursor: pointer;
-  color: ${(props) => (props.$pressed ? "white" : "#4b5563")};
-  background-color: ${(props) => (props.$pressed ? "#3b82f6" : "transparent")};
+  color: ${(props) =>
+    props.$pressed
+      ? props.theme.colors.text.white
+      : props.theme.colors.text.secondary};
+  background-color: ${(props) =>
+    props.$pressed ? props.theme.colors.primary : "transparent"};
 
   &:hover {
-    background-color: ${(props) => (props.$pressed ? "#2563eb" : "#e5e7eb")};
+    background-color: ${(props) =>
+      props.$pressed
+        ? props.theme.colors.background.hover.primary
+        : props.theme.colors.background.hover.secondary};
   }
 
   &:focus-visible {
-    outline: 2px solid #3b82f6;
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
 
@@ -82,7 +90,9 @@ export const ToggleItemButton = styled.button<{
       opacity: 0.5;
       cursor: not-allowed;
       &:hover {
-        background-color: ${props.$pressed ? "#3b82f6" : "transparent"};
+        background-color: ${props.$pressed
+          ? props.theme.colors.primary
+          : "transparent"};
       }
     `}
 

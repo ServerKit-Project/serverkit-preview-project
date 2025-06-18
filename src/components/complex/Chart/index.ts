@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { defaultTheme } from "@/theme";
 
 export interface ChartDataPoint {
   label: string;
@@ -21,12 +20,9 @@ export const ChartContainer = styled.div<{
   $height?: string | number;
 }>`
   display: inline-block;
-  background-color: ${({ theme }) =>
-    theme?.colors.background.secondary ||
-    defaultTheme.colors.background.secondary}20;
-  border-radius: ${({ theme }) =>
-    theme?.borderRadius || defaultTheme.borderRadius};
-  padding: 16px;
+  background-color: ${({ theme }) => theme.colors.background.secondary}20;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  padding: ${({ theme }) => theme.spacing.medium};
 
   ${({ $width }) =>
     $width &&
@@ -47,9 +43,9 @@ export const BarChart = styled.div`
 
 export const BarItem = styled.div<{ $height: number; $color?: string }>`
   flex: 1;
-  background-color: ${({ $color, theme }) =>
-    $color || theme?.colors.primary || defaultTheme.colors.primary};
-  border-radius: 4px 4px 0 0;
+  background-color: ${({ $color, theme }) => $color || theme.colors.primary};
+  border-radius: ${({ theme }) => theme.borderRadius}
+    ${({ theme }) => theme.borderRadius} 0 0;
   min-width: 20px;
   height: ${({ $height }) => $height}%;
   transition: all 0.3s ease;
@@ -68,17 +64,17 @@ export const ChartLabels = styled.div`
 export const ChartLabel = styled.div`
   flex: 1;
   text-align: center;
-  font-size: 0.875rem;
-  color: ${({ theme }) =>
-    theme?.colors.text.secondary || defaultTheme.colors.text.secondary};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  color: ${({ theme }) => theme.colors.text.secondary};
   min-width: 20px;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const ChartLegend = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: ${({ theme }) => theme.spacing.medium};
 `;
 
 export const LegendItem = styled.div`
@@ -90,22 +86,22 @@ export const LegendItem = styled.div`
 export const LegendColor = styled.div<{ $color?: string }>`
   width: 12px;
   height: 12px;
-  border-radius: 2px;
-  background-color: ${({ $color, theme }) =>
-    $color || theme?.colors.primary || defaultTheme.colors.primary};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  background-color: ${({ $color, theme }) => $color || theme.colors.primary};
 `;
 
 export const LegendLabel = styled.span`
-  font-size: 0.875rem;
-  color: ${({ theme }) =>
-    theme?.colors.text.primary || defaultTheme.colors.text.primary};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const ChartTitle = styled.h3`
-  margin: 0 0 16px 0;
-  font-size: 1.125rem;
-  color: ${({ theme }) =>
-    theme?.colors.text.primary || defaultTheme.colors.text.primary};
+  margin: 0 0 ${({ theme }) => theme.spacing.medium} 0;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
 export const PieChart = styled.div`
@@ -127,9 +123,8 @@ export const PieSlice = styled.div<{
   height: 200px;
   border-radius: 50%;
   background: conic-gradient(
-    ${({ $color, theme }) =>
-        $color || theme?.colors.primary || defaultTheme.colors.primary}
-      0% ${({ $percentage }) => $percentage}%,
+    ${({ $color, theme }) => $color || theme.colors.primary} 0%
+      ${({ $percentage }) => $percentage}%,
     transparent ${({ $percentage }) => $percentage}% 100%
   );
   transform: rotate(${({ $rotation }) => $rotation}deg);

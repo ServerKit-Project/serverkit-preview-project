@@ -14,23 +14,26 @@ export const Overlay = styled.div<{ isOpen: boolean }>`
 `;
 
 export const DialogContainer = styled.div`
-  background: white;
-  border-radius: 8px;
-  padding: 1.5rem;
+  background: ${({ theme }) => theme.colors.pureWhite};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  padding: ${({ theme }) => theme.spacing.large};
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: ${({ theme }) => theme.shadows.lg};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const Title = styled.h2`
   margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  color: ${({ theme }) => theme.colors.text.primary};
 `;
 
 export const Description = styled.p`
   margin: 0 0 1.5rem 0;
-  color: #4a5568;
+  color: ${({ theme }) => theme.colors.text.secondary};
+  font-size: ${({ theme }) => theme.fontSize.medium};
 `;
 
 export const ButtonGroup = styled.div`
@@ -40,17 +43,25 @@ export const ButtonGroup = styled.div`
 `;
 
 export const Button = styled.button<{ variant?: "danger" | "default" }>`
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius};
   border: none;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   background-color: ${(props) =>
-    props.variant === "danger" ? "#e53e3e" : "#e2e8f0"};
-  color: ${(props) => (props.variant === "danger" ? "white" : "black")};
+    props.variant === "danger"
+      ? props.theme.colors.danger
+      : props.theme.colors.background.secondary};
+  color: ${(props) =>
+    props.variant === "danger"
+      ? props.theme.colors.pureWhite
+      : props.theme.colors.text.primary};
 
   &:hover {
     background-color: ${(props) =>
-      props.variant === "danger" ? "#c53030" : "#cbd5e0"};
+      props.variant === "danger"
+        ? props.theme.colors.background.hover.danger
+        : props.theme.colors.background.hover.secondary};
   }
 `;

@@ -4,11 +4,11 @@ export const StyledMenubar = styled.div`
   display: flex;
   height: 40px;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
-  background-color: white;
+  gap: ${({ theme }) => theme.spacing.small};
+  padding: 0 ${({ theme }) => theme.spacing.small};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  background-color: ${({ theme }) => theme.colors.pureWhite};
 `;
 
 export const StyledMenubarMenu = styled.div`
@@ -16,27 +16,28 @@ export const StyledMenubarMenu = styled.div`
 `;
 
 export const StyledMenubarTrigger = styled.button`
-  padding: 0.5rem 0.75rem;
+  padding: ${({ theme }) => theme.spacing.small};
   outline: none;
   border: none;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   line-height: 1.25rem;
-  color: #374151;
+  color: ${({ theme }) => theme.colors.text.primary};
   background: transparent;
   cursor: pointer;
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
   }
 
   &:focus-visible {
-    outline: 2px solid #3b82f6;
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
 
   &[data-state="open"] {
-    background-color: #f3f4f6;
+    background-color: ${({ theme }) => theme.colors.background.secondary};
   }
 `;
 
@@ -44,13 +45,13 @@ export const StyledMenubarContent = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
-  margin-top: 0.5rem;
+  margin-top: ${({ theme }) => theme.spacing.small};
   min-width: 12rem;
-  padding: 0.5rem;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: ${({ theme }) => theme.spacing.small};
+  background-color: ${({ theme }) => theme.colors.pureWhite};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
   z-index: 50;
   animation: slideDown 0.1s ease-out;
 
@@ -82,24 +83,27 @@ const baseItemStyles = css<{ $inset?: boolean }>`
   align-items: center;
   width: 100%;
   padding: ${(props) =>
-    props.$inset ? "0.5rem 0.75rem 0.5rem 2rem" : "0.5rem 0.75rem"};
-  font-size: 0.875rem;
+    props.$inset
+      ? `${props.theme.spacing.small} ${props.theme.spacing.medium}`
+      : props.theme.spacing.small};
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   line-height: 1.25rem;
-  border-radius: 0.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius};
   cursor: pointer;
   user-select: none;
   outline: none;
   border: none;
   background: transparent;
-  color: #374151;
+  color: ${({ theme }) => theme.colors.text.primary};
   text-align: left;
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
   }
 
   &[data-disabled] {
-    color: #9ca3af;
+    color: ${({ theme }) => theme.colors.text.secondary};
     pointer-events: none;
   }
 `;
@@ -112,7 +116,7 @@ export const StyledMenubarCheckboxItem = styled(StyledMenubarItem)`
   &[data-checked="true"]::before {
     content: "✓";
     position: absolute;
-    left: 0.5rem;
+    left: ${({ theme }) => theme.spacing.small};
   }
 `;
 
@@ -120,45 +124,45 @@ export const StyledMenubarRadioItem = styled(StyledMenubarItem)`
   &[data-checked="true"]::before {
     content: "●";
     position: absolute;
-    left: 0.5rem;
+    left: ${({ theme }) => theme.spacing.small};
   }
 `;
 
 export const StyledMenubarSeparator = styled.div`
   height: 1px;
-  margin: 0.5rem -0.5rem;
-  background-color: #e5e7eb;
+  margin: ${({ theme }) => theme.spacing.small} -${({ theme }) => theme.spacing.small};
+  background-color: ${({ theme }) => theme.colors.border.default};
 `;
 
 export const StyledMenubarShortcut = styled.span`
   margin-left: auto;
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-size: ${({ theme }) => theme.fontSize.small};
+  color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
 export const StyledSubMenuWrapper = styled.div`
   position: relative;
-  padding-right: 1rem;
+  padding-right: ${({ theme }) => theme.spacing.medium};
 `;
 
 export const StyledMenubarSubTrigger = styled(StyledMenubarItem)`
   position: relative;
-  padding-right: 1.5rem;
+  padding-right: ${({ theme }) => theme.spacing.large};
 
   &::after {
     content: "▶";
     position: absolute;
-    right: 0.5rem;
-    font-size: 0.75rem;
+    right: ${({ theme }) => theme.spacing.small};
+    font-size: ${({ theme }) => theme.fontSize.small};
   }
 `;
 
 export const StyledMenubarSubContent = styled(StyledMenubarContent)`
   position: absolute;
   left: calc(100% - 0.75rem);
-  top: -0.5rem;
+  top: -${({ theme }) => theme.spacing.small};
   margin-left: 0;
-  padding: 0.5rem;
+  padding: ${({ theme }) => theme.spacing.small};
 
   &::before {
     content: "";
