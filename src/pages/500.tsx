@@ -14,23 +14,25 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: bold;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const Subtitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSize.medium};
-  color: ${({ theme }) => theme.colors.text.secondary};
+  color: ${({ theme }) => theme.colors.pureWhite};
 `;
 
 const Description = styled.p`
-  color: ${({ theme }) => theme.colors.grayish};
+  color: ${({ theme }) => theme.colors.pureWhite};
 `;
 
 const HomeLink = styled(Link)`
   margin-top: 1rem;
   padding: ${({ theme }) => theme.spacing.medium};
   background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.text.white};
+  color: ${({ theme }) => theme.colors.darkGray};
   border-radius: ${({ theme }) => theme.borderRadius};
+  font-weight: bold;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.background.hover.primary};

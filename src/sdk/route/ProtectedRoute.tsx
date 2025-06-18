@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/sdk/useAuth";
 import type { ReactNode } from "react";
 
@@ -17,19 +17,10 @@ export const ProtectedRoute = ({
 }: ProtectedRouteProps) => {
   const { sdk } = useAuth();
   const location = useLocation();
-  const history = useHistory();
-
-  const redirectToLogin = () => {
-    history.replace({
-      pathname: "/login",
-      state: { from: location },
-    });
-    return null;
-  };
 
   // 로그인 체크
   if (!sdk.getAccessToken()) {
-    return redirectToLogin();
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // 권한 체크
@@ -42,12 +33,12 @@ export const ProtectedRoute = ({
       if (fallback) {
         return <>{fallback}</>;
       }
-      return redirectToLogin();
+      return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
     return <>{children}</>;
   } catch (error) {
     console.error("권한 확인 중 오류 발생:", error);
-    return redirectToLogin();
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 };

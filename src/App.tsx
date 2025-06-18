@@ -1,4 +1,4 @@
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import WelcomeServerkit from "./pages/welcome-serverkit";
 import NotFound from "./pages/404";
@@ -20,15 +20,14 @@ function App() {
   return (
     <Container>
       <Main>
-        <Switch>
-          <Route exact path="/" component={WelcomeServerkit} />
+        <Routes>
+          <Route path="/" element={<WelcomeServerkit />} />
           {/*PackageRoutes*/}
 
-          <Route path="/500" component={ServerError} />
-          <Route path="*" component={NotFound} />
+          <Route path="/500" element={<ServerError />} />
           <Route
             path="/admin"
-            render={() => (
+            element={
               <ProtectedRoute
                 enabled={["role-id"]}
                 authAssetId="auth-asset-id"
@@ -36,9 +35,10 @@ function App() {
               >
                 <div>Admin Dashboard</div>
               </ProtectedRoute>
-            )}
+            }
           />
-        </Switch>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </Main>
     </Container>
   );
