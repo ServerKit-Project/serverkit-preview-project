@@ -44,8 +44,14 @@ import { TextareaPreview } from "@/components/ThemePreview/Textarea";
 import { TogglePreview } from "@/components/ThemePreview/Toggle";
 import { ToggleGroupPreview } from "@/components/ThemePreview/ToggleGroup";
 import { TooltipPreview } from "@/components/ThemePreview/Tooltip";
+import ThemePreviewPage from "./pages/theme-preview";
 
 const componentList = [
+  {
+    path: "theme-customizer",
+    name: "테마 커스터마이저",
+    component: ThemePreviewPage,
+  },
   { path: "accordion", name: "Accordion", component: AccordionPreview },
   { path: "alert", name: "Alert", component: AlertPreview },
   { path: "alert-dialog", name: "AlertDialog", component: AlertDialogPreview },

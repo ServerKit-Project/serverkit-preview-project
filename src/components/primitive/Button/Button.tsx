@@ -20,6 +20,7 @@ export const Button = styled.button<ButtonProps>`
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius};
   cursor: pointer;
+  font-family: ${({ theme }) => theme.fontFamily.sans};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   transition: all 0.2s ease;
   display: inline-flex;
@@ -96,10 +97,6 @@ export const Button = styled.button<ButtonProps>`
   }
 
   &:focus {
-    box-shadow: 0 0 0 3px
-      ${({ theme, variant }) =>
-        variant === "danger"
-          ? `${theme.colors.danger}40`
-          : `${theme.colors.primary}40`};
+    box-shadow: ${({ theme }) => theme.shadows.sm};
   }
 `;

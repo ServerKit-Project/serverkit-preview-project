@@ -91,11 +91,11 @@ export const Container = styled.div<ContainerProps>`
   ${({ shadow, theme }) => {
     switch (shadow) {
       case "small":
-        return "box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);";
+        return `box-shadow: ${theme.shadows.sm};`;
       case "medium":
-        return "box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);";
+        return `box-shadow: ${theme.shadows.md};`;
       case "large":
-        return "box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);";
+        return `box-shadow: ${theme.shadows.lg};`;
       default:
         return "box-shadow: none;";
     }

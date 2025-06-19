@@ -54,6 +54,14 @@ export interface Theme {
     small: string;
     medium: string;
     large: string;
+    h1: string;
+    h2: string;
+    h3: string;
+    h4: string;
+    h5: string;
+    h6: string;
+    subtitle: string;
+    caption: string;
   };
   fontFamily: {
     sans: string;
@@ -69,6 +77,16 @@ export interface Theme {
     sm: string;
     md: string;
     lg: string;
+  };
+  transitions: {
+    default: string;
+    fast: string;
+    slow: string;
+  };
+  zIndex: {
+    modal: number;
+    dropdown: number;
+    tooltip: number;
   };
 }
 
@@ -126,6 +144,14 @@ export const defaultTheme: DefaultTheme = {
     small: "14px",
     medium: "14px",
     large: "16px",
+    h1: "2.5rem",
+    h2: "2rem",
+    h3: "1.75rem",
+    h4: "1.5rem",
+    h5: "1.25rem",
+    h6: "1rem",
+    subtitle: "1.125rem",
+    caption: "0.75rem",
   },
   fontFamily: {
     sans: "Pretendard_Variable, sans-serif",
@@ -142,5 +168,15 @@ export const defaultTheme: DefaultTheme = {
     sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
     md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
     lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+  },
+  transitions: {
+    default: "all 0.2s ease",
+    fast: "all 0.1s ease",
+    slow: "all 0.3s ease",
+  },
+  zIndex: {
+    modal: 1000,
+    dropdown: 100,
+    tooltip: 200,
   },
 };

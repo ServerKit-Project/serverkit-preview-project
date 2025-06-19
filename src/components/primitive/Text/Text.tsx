@@ -58,69 +58,69 @@ export const Text = styled.span<{
       case "h1":
         return css`
           font-size: 2.5rem;
-          font-weight: 700;
+          font-weight: ${theme.fontWeights.bold};
           line-height: 1.2;
           margin-bottom: 1rem;
         `;
       case "h2":
         return css`
           font-size: 2rem;
-          font-weight: 600;
+          font-weight: ${theme.fontWeights.bold};
           line-height: 1.3;
           margin-bottom: 0.875rem;
         `;
       case "h3":
         return css`
           font-size: 1.75rem;
-          font-weight: 600;
+          font-weight: ${theme.fontWeights.bold};
           line-height: 1.3;
           margin-bottom: 0.75rem;
         `;
       case "h4":
         return css`
           font-size: 1.5rem;
-          font-weight: 600;
+          font-weight: ${theme.fontWeights.bold};
           line-height: 1.4;
           margin-bottom: 0.75rem;
         `;
       case "h5":
         return css`
           font-size: 1.25rem;
-          font-weight: 600;
+          font-weight: ${theme.fontWeights.bold};
           line-height: 1.4;
           margin-bottom: 0.625rem;
         `;
       case "h6":
         return css`
           font-size: 1rem;
-          font-weight: 600;
+          font-weight: ${theme.fontWeights.bold};
           line-height: 1.4;
           margin-bottom: 0.5rem;
         `;
       case "subtitle":
         return css`
           font-size: 1.125rem;
-          font-weight: 500;
+          font-weight: ${theme.fontWeights.medium};
           line-height: 1.5;
           margin-bottom: 0.5rem;
         `;
       case "body2":
         return css`
-          font-size: 0.875rem;
-          font-weight: 400;
+          font-size: ${theme.fontSize.small};
+          font-weight: ${theme.fontWeights.normal};
           line-height: 1.5;
         `;
       case "caption":
         return css`
-          font-size: 0.75rem;
-          font-weight: 400;
+          font-size: ${theme.fontSize.small};
+          font-weight: ${theme.fontWeights.normal};
           line-height: 1.4;
           color: ${theme.colors.text.secondary};
         `;
       default: // body1
         return css`
           font-size: ${theme.fontSize.medium};
-          font-weight: 400;
+          font-weight: ${theme.fontWeights.normal};
           line-height: 1.5;
         `;
     }
