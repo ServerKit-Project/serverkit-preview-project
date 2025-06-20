@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import logo from "@/assets/Simbol.png";
-import React, { useState } from "react";
-import { Pagination } from "../components/complex/Pagination";
 
 const Container = styled.div`
   position: fixed;
@@ -68,32 +66,6 @@ const Subtitle = styled.p`
   color: ${({ theme }) => theme.colors.text.secondary};
   line-height: 1.5;
 `;
-
-const ExampleContainer = styled.div`
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`;
-
-const PaginationExample = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
-
-  return (
-    <ExampleContainer>
-      <h2>페이지네이션 예제</h2>
-      <div>
-        <p>현재 페이지: {currentPage}</p>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
-    </ExampleContainer>
-  );
-};
 
 function WelcomeServerkit() {
   return (
