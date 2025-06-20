@@ -6,7 +6,7 @@ export interface ImageProps {
   width?: string | number;
   height?: string | number;
   fit?: "cover" | "contain" | "fill" | "none" | "scale-down";
-  rounded?: boolean | "circle";
+  rounded?: string | number | "circle";
   loading?: "lazy" | "eager";
   fallback?: React.ReactNode;
   placeholder?: React.ReactNode;
@@ -30,7 +30,7 @@ export const ImageContainer = styled.div<{
 
 export const StyledImage = styled.img<{
   $fit?: "cover" | "contain" | "fill" | "none" | "scale-down";
-  $rounded?: boolean | "circle";
+  $rounded?: string | number | "circle";
   $width?: string | number;
   $height?: string | number;
 }>`
@@ -44,7 +44,9 @@ export const StyledImage = styled.img<{
       return "border-radius: 50%;";
     }
     if ($rounded) {
-      return `border-radius: ${theme.borderRadius};`;
+      return `border-radius: ${
+        typeof $rounded === "number" ? `${$rounded}px` : $rounded
+      };`;
     }
     return "";
   }}
@@ -53,7 +55,7 @@ export const StyledImage = styled.img<{
 export const ImagePlaceholder = styled.div<{
   $width?: string | number;
   $height?: string | number;
-  $rounded?: boolean | string;
+  $rounded?: string | number | "circle";
 }>`
   display: flex;
   align-items: center;
@@ -68,7 +70,9 @@ export const ImagePlaceholder = styled.div<{
       return "border-radius: 50%;";
     }
     if ($rounded) {
-      return `border-radius: ${theme.borderRadius};`;
+      return `border-radius: ${
+        typeof $rounded === "number" ? `${$rounded}px` : $rounded
+      };`;
     }
     return "";
   }}

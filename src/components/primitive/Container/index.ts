@@ -6,8 +6,8 @@ export interface ContainerProps {
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "full" | string;
   padding?: "none" | "small" | "medium" | "large";
   margin?: "none" | "auto" | "small" | "medium" | "large";
-  background?: boolean;
-  rounded?: boolean;
+  background?: string;
+  rounded?: string | number;
   shadow?: "none" | "small" | "medium" | "large";
   direction?: "row" | "column";
   align?: "flex-start" | "center" | "flex-end" | "stretch";
@@ -76,16 +76,13 @@ export const Container = styled.div<ContainerProps>`
   }}
 
   ${({ background, theme }) =>
-    background &&
     css`
-      background-color: ${theme?.colors.background.secondary ||
-      defaultTheme.colors.background.secondary};
+      background-color: ${background || theme?.colors.background.secondary || defaultTheme.colors.background.secondary};
     `}
 
   ${({ rounded, theme }) =>
-    rounded &&
     css`
-      border-radius: ${theme?.borderRadius || defaultTheme.borderRadius};
+      border-radius: ${rounded || theme?.borderRadius || defaultTheme.borderRadius};
     `}
 
   ${({ shadow, theme }) => {

@@ -23,7 +23,7 @@ export const FormItemRoot = styled.div<{ $fullWidth?: boolean }>`
   ${({ $fullWidth }) => $fullWidth && "width: 100%;"}
 `;
 
-export const FormLabelRoot = styled.label<{ $required?: boolean }>`
+export const FormLabelRoot = styled.label<{ $required?: string }>`
   display: block;
   margin-bottom: 6px;
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -36,6 +36,7 @@ export const FormLabelRoot = styled.label<{ $required?: boolean }>`
     &::after {
       content: ' *';
       color: ${theme.colors.danger};
+      opacity: ${$required};
     }
   `}
 `;

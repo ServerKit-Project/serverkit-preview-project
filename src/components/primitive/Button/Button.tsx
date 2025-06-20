@@ -8,11 +8,11 @@ interface ButtonProps {
   size?: "small" | "medium" | "large";
   /** 버튼 색상 */
   variant?: "primary" | "secondary" | "danger";
-  /** 버튼 비활성화 여부 */
-  disabled?: boolean;
+  /** 버튼 비활성화 값 */
+  disabled?: string;
   /** 클릭 이벤트 */
   onClick?: () => void;
-  /** 버튼 전체 너비 */
+  /** 버튼 전체 너비 여부 */
   fullWidth?: boolean;
 }
 
@@ -92,7 +92,7 @@ export const Button = styled.button<ButtonProps>`
     `}
 
   &:disabled {
-    opacity: 0.6;
+    opacity: ${({ disabled }) => disabled || "0.6"};
     cursor: not-allowed;
   }
 
