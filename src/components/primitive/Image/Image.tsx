@@ -39,7 +39,7 @@ export const StyledImage = styled.img<{
   height: 100%;
   object-fit: ${({ $fit }) => $fit || "cover"};
 
-  ${({ $rounded, theme }) => {
+  ${({ $rounded }) => {
     if ($rounded === "circle") {
       return "border-radius: 50%;";
     }
@@ -65,7 +65,7 @@ export const ImagePlaceholder = styled.div<{
   width: 100%;
   height: 100%;
 
-  ${({ $rounded, theme }) => {
+  ${({ $rounded }) => {
     if ($rounded === "circle") {
       return "border-radius: 50%;";
     }

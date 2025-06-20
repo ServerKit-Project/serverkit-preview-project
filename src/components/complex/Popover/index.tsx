@@ -108,7 +108,6 @@ export const StyledPopoverContent = styled.div<
   }
 
   ${(props) => {
-    const offset = props.sideOffset || 5;
     const alignOffset = props.alignOffset || 0;
 
     const getBaseStyles = (side: Side) => {
