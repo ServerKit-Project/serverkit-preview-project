@@ -61,7 +61,10 @@ const baseLinkStyles = css<{ $disabled?: boolean }>`
 `;
 
 // Pagination Link
-export const StyledLink = styled.a<{ $isActive?: boolean }>`
+export const StyledLink = styled.a<{
+  $isActive?: boolean;
+  $disabled?: boolean;
+}>`
   ${baseLinkStyles}
   font-weight: ${({ $isActive, theme }) =>
     $isActive ? theme.fontWeights.bold : theme.fontWeights.normal};

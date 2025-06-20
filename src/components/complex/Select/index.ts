@@ -145,8 +145,7 @@ export const SelectOption = styled.div<{
   }
 
   &:last-child {
-    border-radius: 0 0 ${({ theme }) => theme.borderRadius}
-      ${({ theme }) => theme.borderRadius};
+    border-radius: 0 0 ${({ theme }) => theme.borderRadius};
   }
 `;
 

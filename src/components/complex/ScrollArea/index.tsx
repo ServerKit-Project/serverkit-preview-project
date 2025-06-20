@@ -1,4 +1,3 @@
-import * as React from "react";
 import styled from "styled-components";
 
 export const StyledScrollArea = styled.div<{ className?: string }>`
@@ -21,9 +20,3 @@ export const StyledScrollArea = styled.div<{ className?: string }>`
     background: ${({ theme }) => theme.colors.mediumGray};
   }
 `;
-
-export interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-}
