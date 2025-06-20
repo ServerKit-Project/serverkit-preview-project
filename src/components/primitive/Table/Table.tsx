@@ -23,8 +23,8 @@ export const TableHead = styled.thead`
 export const TableBody = styled.tbody``;
 
 export const TableRow = styled.tr<{
-  $striped?: string;
-  $hoverable?: string;
+  $striped?: boolean;
+  $hoverable?: boolean;
   $index?: number;
 }>`
   ${({ $striped, $index, theme }) =>

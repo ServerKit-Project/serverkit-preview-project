@@ -9,7 +9,7 @@ interface ButtonProps {
   /** 버튼 색상 */
   variant?: "primary" | "secondary" | "danger";
   /** 버튼 비활성화 값 */
-  disabled?: string;
+  disabled?: boolean;
   /** 클릭 이벤트 */
   onClick?: () => void;
   /** 버튼 전체 너비 여부 */
@@ -92,7 +92,7 @@ export const Button = styled.button<ButtonProps>`
     `}
 
   &:disabled {
-    opacity: ${({ disabled }) => disabled || "0.6"};
+    opacity: ${({ disabled }) => (disabled ? "0.6" : "1")};
     cursor: not-allowed;
   }
 

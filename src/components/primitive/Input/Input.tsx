@@ -5,8 +5,8 @@ export interface InputProps {
   type?: "text" | "number" | "email" | "password" | "tel" | "url";
   value?: string | number;
   placeholder?: string;
-  disabled?: string;
-  error?: string;
+  disabled?: boolean;
+  error?: boolean;
   size?: "small" | "medium" | "large";
   fullWidth?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -72,7 +72,7 @@ export const Input = styled.input<InputProps>`
 
   &:disabled {
     cursor: not-allowed;
-    opacity: ${({ disabled }) => disabled || "0.6"};
+    opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
   }
 
   &::placeholder {
