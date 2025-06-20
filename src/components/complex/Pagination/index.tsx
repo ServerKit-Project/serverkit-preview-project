@@ -1,4 +1,3 @@
-import React from "react";
 import styled, { css } from "styled-components";
 
 // Root Pagination Component
@@ -14,75 +13,6 @@ export interface PaginationProps {
   onPageChange: (page: number) => void;
   className?: string;
 }
-
-export const Pagination: React.FC<PaginationProps> = ({
-  currentPage,
-  totalPages,
-  onPageChange,
-  className,
-}) => {
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <StyledItem key={i}>
-          <StyledLink
-            href="#"
-            $isActive={i === currentPage}
-            onClick={(e) => {
-              e.preventDefault();
-              onPageChange(i);
-            }}
-          >
-            {i}
-          </StyledLink>
-        </StyledItem>
-      );
-    }
-
-    return pages;
-  };
-
-  return (
-    <StyledPagination className={className}>
-      <StyledContent>
-        <StyledItem>
-          <StyledPrevious
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              if (currentPage > 1) onPageChange(currentPage - 1);
-            }}
-            $disabled={currentPage === 1}
-          >
-            이전
-          </StyledPrevious>
-        </StyledItem>
-        {renderPageNumbers()}
-        <StyledItem>
-          <StyledNext
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              if (currentPage < totalPages) onPageChange(currentPage + 1);
-            }}
-            $disabled={currentPage === totalPages}
-          >
-            다음
-          </StyledNext>
-        </StyledItem>
-      </StyledContent>
-    </StyledPagination>
-  );
-};
 
 export const StyledContent = styled.ul`
   display: flex;

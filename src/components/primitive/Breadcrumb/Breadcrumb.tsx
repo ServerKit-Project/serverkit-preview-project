@@ -1,15 +1,4 @@
 import styled from "styled-components";
-import React from "react";
-
-interface BreadcrumbItem {
-  label: string;
-  href: string;
-}
-
-interface BreadcrumbProps {
-  items: BreadcrumbItem[];
-  separator?: string;
-}
 
 export const BreadcrumbNav = styled.nav`
   display: flex;
@@ -56,27 +45,3 @@ export const BreadcrumbCurrentPage = styled.span`
   color: ${({ theme }) => theme.colors.text.secondary};
   padding: ${({ theme }) => theme.spacing.small};
 `;
-
-export const Breadcrumb: React.FC<BreadcrumbProps> = ({
-  items,
-  separator = "/",
-}) => {
-  return (
-    <BreadcrumbNav>
-      <BreadcrumbList>
-        {items.map((item, index) => (
-          <BreadcrumbItem key={item.href}>
-            {index === items.length - 1 ? (
-              <BreadcrumbCurrentPage>{item.label}</BreadcrumbCurrentPage>
-            ) : (
-              <>
-                <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
-                <BreadcrumbSeparator>{separator}</BreadcrumbSeparator>
-              </>
-            )}
-          </BreadcrumbItem>
-        ))}
-      </BreadcrumbList>
-    </BreadcrumbNav>
-  );
-};

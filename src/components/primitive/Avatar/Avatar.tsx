@@ -1,12 +1,4 @@
 import styled from "styled-components";
-import React from "react";
-
-interface AvatarProps {
-  src?: string;
-  alt?: string;
-  size?: "sm" | "md" | "lg";
-  fallback?: string;
-}
 
 type AvatarSize = "sm" | "md" | "lg";
 
@@ -40,28 +32,3 @@ export const Avatar = styled.div<{ size?: AvatarSize }>`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: ${({ theme }) => theme.colors.text.secondary};
 `;
-
-export const AvatarComponent: React.FC<AvatarProps> = ({
-  src,
-  alt = "",
-  size = "md",
-  fallback,
-}) => {
-  const [error, setError] = React.useState(false);
-
-  const getFallback = () => {
-    if (fallback) return fallback;
-    if (alt) return alt.charAt(0).toUpperCase();
-    return "?";
-  };
-
-  return (
-    <Avatar size={size}>
-      {src && !error ? (
-        <AvatarImage src={src} alt={alt} onError={() => setError(true)} />
-      ) : (
-        getFallback()
-      )}
-    </Avatar>
-  );
-};
