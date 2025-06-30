@@ -29,7 +29,7 @@ export const DialogContainer = styled(CardRoot)`
   position: relative;
   animation: dialogEnter 0.3s ease-out;
   background: ${({ theme }) => theme.colors.pureWhite};
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.large};
 
   @keyframes dialogEnter {
     from {

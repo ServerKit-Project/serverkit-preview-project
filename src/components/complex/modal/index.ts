@@ -42,7 +42,7 @@ export const ModalContainer = styled(CardRoot)<{
   transition: transform 0.3s ease;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.large};
 
   ${({ $size }) => {
     switch ($size) {

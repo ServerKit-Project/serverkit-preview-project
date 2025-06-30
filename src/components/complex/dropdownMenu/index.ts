@@ -10,7 +10,7 @@ export const StyledContent = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: ${({ theme }) => theme.spacing.small};
   width: 14rem;
-  box-shadow: ${({ theme }) => theme.shadows.md};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
   z-index: 50;
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;

@@ -97,6 +97,6 @@ export const Button = styled.button<ButtonProps>`
   }
 
   &:focus {
-    box-shadow: ${({ theme }) => theme.shadows.sm};
+    box-shadow: ${({ theme }) => theme.shadows.small};
   }
 `;

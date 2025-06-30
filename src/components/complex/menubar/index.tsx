@@ -51,7 +51,7 @@ export const StyledMenubarContent = styled.div`
   background-color: ${({ theme }) => theme.colors.pureWhite};
   border: 1px solid ${({ theme }) => theme.colors.border.default};
   border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.large};
   z-index: 50;
   animation: slideDown 0.1s ease-out;
 

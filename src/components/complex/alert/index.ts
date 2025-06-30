@@ -44,5 +44,5 @@ export const AlertContainer = styled.div<{ variant: AlertVariant }>`
   align-items: center;
   gap: 0.5rem;
   font-family: ${({ theme }) => theme.fontFamily.sans};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
 `;

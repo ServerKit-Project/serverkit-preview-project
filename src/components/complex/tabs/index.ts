@@ -80,7 +80,7 @@ export const TabButton = styled.button<{
       return css`
         border-radius: ${theme.borderRadius};
         background-color: ${$active ? theme.colors.pureWhite : "transparent"};
-        box-shadow: ${$active ? theme.shadows.sm : "none"};
+        box-shadow: ${$active ? theme.shadows.small : "none"};
       `;
     } else {
       return css`

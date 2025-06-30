@@ -76,7 +76,7 @@ export const OptionsList = styled.ul<{ $isOpen: boolean }>`
   background-color: ${({ theme }) => theme.colors.pureWhite};
   border: 1px solid ${({ theme }) => theme.colors.border.default};
   border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: ${({ theme }) => theme.shadows.md};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
   z-index: 10;
   max-height: 200px;
   overflow-y: auto;

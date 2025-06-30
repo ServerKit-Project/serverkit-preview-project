@@ -92,11 +92,11 @@ export const Container = styled.div<ContainerProps>`
   ${({ shadow, theme }) => {
     switch (shadow) {
       case "small":
-        return `box-shadow: ${theme.shadows.sm};`;
+        return `box-shadow: ${theme.shadows.small};`;
       case "medium":
-        return `box-shadow: ${theme.shadows.md};`;
+        return `box-shadow: ${theme.shadows.medium};`;
       case "large":
-        return `box-shadow: ${theme.shadows.lg};`;
+        return `box-shadow: ${theme.shadows.large};`;
       default:
         return "box-shadow: none;";
     }

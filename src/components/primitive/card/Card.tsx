@@ -4,7 +4,7 @@ export const CardRoot = styled.div`
   background: ${({ theme }) => theme.colors.background.secondary};
   border-radius: ${({ theme }) => theme.borderRadius};
   border: 1px solid ${({ theme }) => theme.colors.border.default};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
 `;
 
 export const CardHeaderRoot = styled.div`

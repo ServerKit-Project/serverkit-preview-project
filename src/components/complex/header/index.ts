@@ -177,7 +177,7 @@ export const MobileMenu = styled.div<{ $isOpen: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.default};
   transform: translateY(${(props) => (props.$isOpen ? "0" : "-100%")});
   transition: transform 0.3s ease;
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.large};
 
   @media (max-width: 768px) {
     display: block;

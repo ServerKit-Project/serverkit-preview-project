@@ -19,7 +19,7 @@ export const DialogContainer = styled.div`
   padding: ${({ theme }) => theme.spacing.large};
   width: 100%;
   max-width: 400px;
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.large};
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 

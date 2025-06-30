@@ -17,7 +17,7 @@ export const ProgressRoot = styled.div`
   background-color: ${({ theme }) => `${theme.colors.background.secondary}40`};
   border-radius: ${({ theme }) => theme.borderRadius};
   overflow: hidden;
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
 `;
 
 export const ProgressIndicator = styled.div<{

@@ -7,7 +7,7 @@ export const CalendarContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border.default};
   border-radius: ${({ theme }) => theme.borderRadius};
   padding: ${({ theme }) => theme.spacing.medium};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 

@@ -145,7 +145,7 @@ export const ChatMessageContent = styled.div<{ $isUser?: boolean }>`
   line-height: 1.4;
   word-wrap: break-word;
   font-family: ${({ theme }) => theme.fontFamily.sans};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
 `;
 
 export const ChatInputContainer = styled.div`
@@ -180,7 +180,7 @@ export const ChatInput = styled.input`
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: ${({ theme }) => theme.shadows.sm};
+    box-shadow: ${({ theme }) => theme.shadows.small};
   }
 `;
 
@@ -198,11 +198,11 @@ export const ChatSendButton = styled.button`
   justify-content: center;
   cursor: pointer;
   transition: ${({ theme }) => theme.transitions.default};
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
 
   &:hover {
     background: ${({ theme }) => theme.colors.darkSlateGray};
-    box-shadow: ${({ theme }) => theme.shadows.md};
+    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 
   &:disabled {

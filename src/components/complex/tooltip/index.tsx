@@ -55,7 +55,7 @@ export const TooltipContentStyled = styled.div<{
   color: ${({ theme }) => theme.colors.text.white};
   background: ${({ theme }) => theme.colors.deepBlack};
   border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: ${({ theme }) => theme.shadows.large};
   text-align: center;
   white-space: nowrap;
   pointer-events: none;

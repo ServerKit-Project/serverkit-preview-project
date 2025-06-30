@@ -12,7 +12,7 @@ export const AccordionContainer = styled.div`
   width: 100%;
   border-radius: ${({ theme }) => theme.borderRadius};
   overflow: hidden;
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
 `;
 
 export const AccordionItem = styled.div`

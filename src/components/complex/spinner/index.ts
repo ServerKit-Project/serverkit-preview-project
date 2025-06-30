@@ -28,7 +28,7 @@ export const StyledSpinner = styled.div<{ $size: keyof SpinnerSize }>`
   border-top-color: ${({ theme }) => `${theme.colors.primary}40`};
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
-  box-shadow: ${({ theme }) => theme.shadows.sm};
+  box-shadow: ${({ theme }) => theme.shadows.small};
 `;
 
 export interface SpinnerProps {
