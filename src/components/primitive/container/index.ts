@@ -3,7 +3,14 @@ import { defaultTheme } from "@/theme";
 
 export interface ContainerProps {
   children: React.ReactNode;
-  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "full" | string;
+  maxWidth?:
+    | "extraSmall"
+    | "small"
+    | "medium"
+    | "large"
+    | "extraLarge"
+    | "full"
+    | string;
   padding?: "none" | "small" | "medium" | "large";
   margin?: "none" | "auto" | "small" | "medium" | "large";
   background?: string;
@@ -25,20 +32,27 @@ export const Container = styled.div<ContainerProps>`
   ${({ maxWidth }) => {
     if (
       typeof maxWidth === "string" &&
-      !["xs", "sm", "md", "lg", "xl", "full"].includes(maxWidth)
+      ![
+        "extraSmall",
+        "small",
+        "medium",
+        "large",
+        "extraLarge",
+        "full",
+      ].includes(maxWidth)
     ) {
       return `max-width: ${maxWidth};`;
     }
     switch (maxWidth) {
-      case "xs":
+      case "extraSmall":
         return "max-width: 480px;";
-      case "sm":
+      case "small":
         return "max-width: 640px;";
-      case "md":
+      case "medium":
         return "max-width: 768px;";
-      case "lg":
+      case "large":
         return "max-width: 1024px;";
-      case "xl":
+      case "extraLarge":
         return "max-width: 1280px;";
       case "full":
         return "max-width: 100%;";

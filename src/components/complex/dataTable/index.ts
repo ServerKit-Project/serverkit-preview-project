@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { TableRow } from "@/components/primitive_test/Table/Table";
-import { Button } from "@/components/primitive_test/Button/Button";
-import { Text } from "@/components/primitive_test/Text/Text";
+import { TableRow } from "@/components/complex/table";
+import { Button } from "@/components/primitive/button";
+import { Text } from "@/components/primitive/text";
 
 interface SortButtonProps {
   $direction?: "asc" | "desc";

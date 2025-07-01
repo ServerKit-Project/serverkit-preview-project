@@ -4,9 +4,9 @@ import {
   CardRoot,
   CardHeaderRoot,
   CardContentRoot,
-} from "@/components/primitive_test/Card/Card";
-import { Text } from "@/components/primitive_test/Text/Text";
-import { Button } from "@/components/primitive_test/Button/Button";
+} from "@/components/complex/card";
+import { Text } from "@/components/primitive/text";
+import { Button } from "@/components/primitive/button";
 
 export interface ModalProps {
   isOpen: boolean;

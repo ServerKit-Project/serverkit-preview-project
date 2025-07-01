@@ -1,31 +1,35 @@
 import styled from "styled-components";
 
 const sizes = {
-  sm: {
+  small: {
     width: "32px",
     height: "18px",
     thumbSize: "14px",
   },
-  md: {
+  medium: {
     width: "40px",
     height: "22px",
     thumbSize: "18px",
   },
-  lg: {
+  large: {
     width: "48px",
     height: "26px",
     thumbSize: "22px",
   },
 } as const;
 
-export const SwitchContainer = styled.label<{ size: "sm" | "md" | "lg" }>`
+export const SwitchContainer = styled.label<{
+  size: "small" | "medium" | "large";
+}>`
   position: relative;
   display: inline-block;
   width: ${(props) => sizes[props.size].width};
   height: ${(props) => sizes[props.size].height};
 `;
 
-export const SwitchInput = styled.input<{ $size: "sm" | "md" | "lg" }>`
+export const SwitchInput = styled.input<{
+  $size: "small" | "medium" | "large";
+}>`
   opacity: 0;
   width: 0;
   height: 0;
@@ -53,7 +57,7 @@ export const SwitchInput = styled.input<{ $size: "sm" | "md" | "lg" }>`
   }
 `;
 
-export const SwitchSlider = styled.span<{ size: "sm" | "md" | "lg" }>`
+export const SwitchSlider = styled.span<{ size: "small" | "medium" | "large" }>`
   position: absolute;
   cursor: pointer;
   top: 0;

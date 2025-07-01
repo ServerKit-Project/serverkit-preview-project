@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ToggleRoot = styled.button<{
   $pressed?: boolean;
-  $size?: "sm" | "default" | "lg";
+  $size?: "small" | "default" | "large";
   $variant?: "default" | "outline";
 }>`
   display: inline-flex;
@@ -15,7 +15,7 @@ export const ToggleRoot = styled.button<{
 
   /* Size variants */
   ${(props) =>
-    props.$size === "sm" &&
+    props.$size === "small" &&
     `
     padding: 0.375rem 0.625rem;
     font-size: 0.875rem;
@@ -31,7 +31,7 @@ export const ToggleRoot = styled.button<{
   `}
   
   ${(props) =>
-    props.$size === "lg" &&
+    props.$size === "large" &&
     `
     padding: 0.75rem 1rem;
     font-size: 1rem;

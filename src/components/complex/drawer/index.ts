@@ -1,17 +1,17 @@
 import styled from "styled-components";
 
 type DrawerPlacement = "left" | "right" | "top" | "bottom";
-type DrawerSize = "sm" | "md" | "lg" | "xl" | "full";
+type DrawerSize = "small" | "medium" | "large" | "extraLarge" | "full";
 
 const getSize = (size: DrawerSize) => {
   switch (size) {
-    case "sm":
+    case "small":
       return "280px";
-    case "md":
+    case "medium":
       return "320px";
-    case "lg":
+    case "large":
       return "400px";
-    case "xl":
+    case "extraLarge":
       return "560px";
     case "full":
       return "100%";

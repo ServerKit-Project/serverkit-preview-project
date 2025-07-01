@@ -5,10 +5,10 @@ import {
   CardFooterRoot,
   CardHeaderRoot,
   CardTitleRoot,
-} from "@/components/primitive_test/Card/Card";
-import { Button } from "@/components/primitive_test/Button/Button";
-import { Text } from "@/components/primitive_test/Text/Text";
-import { FormItemRoot } from "@/components/primitive_test/Form/Form";
+} from "@/components/complex/card";
+import { Button } from "@/components/primitive/button";
+import { Text } from "@/components/primitive/text";
+import { FormItemRoot } from "@/components/complex/form";
 
 export const StyledCard = styled(CardRoot)`
   width: 400px;

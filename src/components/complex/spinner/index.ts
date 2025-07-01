@@ -10,15 +10,15 @@ const spin = keyframes`
 `;
 
 interface SpinnerSize {
-  sm: string;
-  md: string;
-  lg: string;
+  small: string;
+  medium: string;
+  large: string;
 }
 
 const sizes: SpinnerSize = {
-  sm: "1rem",
-  md: "2rem",
-  lg: "3rem",
+  small: "1rem",
+  medium: "2rem",
+  large: "3rem",
 };
 
 export const StyledSpinner = styled.div<{ $size: keyof SpinnerSize }>`

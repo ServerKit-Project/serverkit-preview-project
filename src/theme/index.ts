@@ -3,7 +3,6 @@ import type { DefaultTheme } from "styled-components";
 export interface Theme {
   colors: {
     primary: string;
-    primaryGreen: string;
     secondary: string;
     danger: string;
     warning: string;
@@ -93,7 +92,6 @@ export interface Theme {
 export const defaultTheme: DefaultTheme = {
   colors: {
     primary: "#2D3748",
-    primaryGreen: "#2D3748",
     secondary: "#718096",
     danger: "#E53E3E",
     warning: "#DD6B20",

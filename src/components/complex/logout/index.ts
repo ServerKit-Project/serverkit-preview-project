@@ -5,8 +5,8 @@ import {
   CardHeaderRoot,
   CardTitleRoot,
   CardRoot,
-} from "@/components/primitive_test/Card/Card";
-import { Button } from "@/components/primitive_test/Button/Button";
+} from "@/components/complex/card";
+import { Button } from "@/components/primitive/button";
 
 export const StyledCard = styled(CardRoot)`
   width: 350px;
