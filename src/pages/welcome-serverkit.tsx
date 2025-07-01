@@ -58,7 +58,7 @@ const Title = styled.h1`
 `;
 
 const GreenSpan = styled.span`
-  color: ${({ theme }) => theme.colors.primaryGreen};
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const Subtitle = styled.p`
