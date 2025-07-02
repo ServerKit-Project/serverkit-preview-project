@@ -107,9 +107,9 @@ export const ChatMessages = styled.div`
   }
 `;
 
-export const ChatMessage = styled.div<{ $isUser?: boolean }>`
+export const ChatMessage = styled.div<{ isUser?: boolean }>`
   display: flex;
-  flex-direction: ${(props) => (props.$isUser ? "row-reverse" : "row")};
+  flex-direction: ${(props) => (props.isUser ? "row-reverse" : "row")};
   align-items: flex-start;
   gap: 8px;
 `;
@@ -129,18 +129,18 @@ export const ChatMessageAvatar = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
-export const ChatMessageContent = styled.div<{ $isUser?: boolean }>`
+export const ChatMessageContent = styled.div<{ isUser?: boolean }>`
   max-width: 70%;
   background: ${(props) =>
-    props.$isUser ? props.theme.colors.primary : props.theme.colors.lightGray};
+    props.isUser ? props.theme.colors.primary : props.theme.colors.lightGray};
   color: ${(props) =>
-    props.$isUser
+    props.isUser
       ? props.theme.colors.text.white
       : props.theme.colors.text.primary};
   padding: 12px 16px;
   border-radius: 18px;
-  border-top-left-radius: ${(props) => (props.$isUser ? "18px" : "4px")};
-  border-top-right-radius: ${(props) => (props.$isUser ? "4px" : "18px")};
+  border-top-left-radius: ${(props) => (props.isUser ? "18px" : "4px")};
+  border-top-right-radius: ${(props) => (props.isUser ? "4px" : "18px")};
   font-size: ${({ theme }) => theme.fontSize.medium};
   line-height: 1.4;
   word-wrap: break-word;

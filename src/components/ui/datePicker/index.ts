@@ -5,10 +5,10 @@ export const Container = styled.div`
   width: 100%;
 `;
 
-export const Input = styled.input<{ $hasError: boolean }>`
+export const Input = styled.input<{ hasError: boolean }>`
   width: 100%;
   padding: 0.625rem 2.5rem 0.625rem 0.75rem;
-  border: 1px solid ${(props) => (props.$hasError ? "#e53e3e" : "#e2e8f0")};
+  border: 1px solid ${(props) => (props.hasError ? "#e53e3e" : "#e2e8f0")};
   border-radius: 0.375rem;
   font-size: 1rem;
   color: #2d3748;
@@ -17,7 +17,7 @@ export const Input = styled.input<{ $hasError: boolean }>`
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: ${(props) => (props.$hasError ? "#e53e3e" : "#cbd5e0")};
+    border-color: ${(props) => (props.hasError ? "#e53e3e" : "#cbd5e0")};
   }
 
   &:focus {
@@ -57,8 +57,8 @@ export const CalendarIcon = styled.button`
   }
 `;
 
-export const Calendar = styled.div<{ $isOpen: boolean }>`
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
+export const Calendar = styled.div<{ isOpen: boolean }>`
+  display: ${(props) => (props.isOpen ? "block" : "none")};
   position: absolute;
   top: calc(100% + 0.5rem);
   left: 0;
@@ -120,30 +120,30 @@ export const Days = styled.div`
 `;
 
 export const Day = styled.button<{
-  $isToday?: boolean;
-  $isSelected?: boolean;
-  $isOutsideMonth?: boolean;
-  $isDisabled?: boolean;
+  isToday?: boolean;
+  isSelected?: boolean;
+  isOutsideMonth?: boolean;
+  isDisabled?: boolean;
 }>`
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  background: ${(props) => (props.$isSelected ? "#3182ce" : "transparent")};
+  background: ${(props) => (props.isSelected ? "#3182ce" : "transparent")};
   color: ${(props) => {
-    if (props.$isDisabled) return "#cbd5e0";
-    if (props.$isSelected) return "#ffffff";
-    if (props.$isOutsideMonth) return "#a0aec0";
+    if (props.isDisabled) return "#cbd5e0";
+    if (props.isSelected) return "#ffffff";
+    if (props.isOutsideMonth) return "#a0aec0";
     return "#2d3748";
   }};
   border-radius: 0.25rem;
   font-size: 0.875rem;
-  cursor: ${(props) => (props.$isDisabled ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.isDisabled ? "not-allowed" : "pointer")};
   position: relative;
 
   ${(props) =>
-    props.$isToday &&
+    props.isToday &&
     `
     &::after {
       content: '';
@@ -152,12 +152,12 @@ export const Day = styled.button<{
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: ${props.$isSelected ? "#ffffff" : "#3182ce"};
+      background: ${props.isSelected ? "#ffffff" : "#3182ce"};
     }
   `}
 
   &:hover:not(:disabled) {
-    background: ${(props) => (props.$isSelected ? "#2c5282" : "#f7fafc")};
+    background: ${(props) => (props.isSelected ? "#2c5282" : "#f7fafc")};
   }
 `;
 

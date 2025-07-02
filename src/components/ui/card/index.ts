@@ -29,9 +29,9 @@ export const CardContentRoot = styled.div`
   padding: 1.5rem;
 `;
 
-export const CardFooterRoot = styled.div<{ $hasGap?: boolean }>`
+export const CardFooterRoot = styled.div<{ hasGap?: boolean }>`
   padding: 1.5rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border.default};
   display: flex;
-  gap: ${({ $hasGap }) => ($hasGap ? "0.5rem" : "0")};
+  gap: ${({ hasGap }) => (hasGap ? "0.5rem" : "0")};
 `;

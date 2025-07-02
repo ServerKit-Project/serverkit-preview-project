@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
 interface SortButtonProps {
-  $direction?: "asc" | "desc";
+  direction?: "asc" | "desc";
 }
 
 export const SortButton = styled(Button)<SortButtonProps>`
@@ -23,9 +23,9 @@ export const SortButton = styled(Button)<SortButtonProps>`
 
   &::after {
     content: "${(props) =>
-      props.$direction === "asc"
+      props.direction === "asc"
         ? "▲"
-        : props.$direction === "desc"
+        : props.direction === "desc"
         ? "▼"
         : "⇅"}";
   }
@@ -47,11 +47,11 @@ export const PageInfo = styled(Text)`
   color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
-export const PageButton = styled(Button)<{ $disabled?: boolean }>`
+export const PageButton = styled(Button)<{ disabled?: boolean }>`
   padding: ${({ theme }) => theme.spacing.small};
   margin: 0 ${({ theme }) => theme.spacing.small};
   min-width: auto;
-  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+  opacity: ${(props) => (props.disabled ? 0.6 : 1)};
   font-family: ${({ theme }) => theme.fontFamily.sans};
 
   &:disabled {
@@ -61,18 +61,18 @@ export const PageButton = styled(Button)<{ $disabled?: boolean }>`
 `;
 
 interface StyledTableRowProps {
-  $striped?: boolean;
-  $hoverable?: boolean;
-  $selected?: boolean;
+  striped?: boolean;
+  hoverable?: boolean;
+  selected?: boolean;
 }
 
 export const StyledTableRow = styled(TableRow)<StyledTableRowProps>`
-  background-color: ${({ theme, $selected }) =>
-    $selected ? theme.colors.background.secondary : "inherit"};
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.colors.background.secondary : "inherit"};
 
   &:hover {
-    background-color: ${({ theme, $selected }) =>
-      $selected
+    background-color: ${({ theme, selected }) =>
+      selected
         ? theme.colors.background.hover.secondary
         : theme.colors.background.secondary};
   }

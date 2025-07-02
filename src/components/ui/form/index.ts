@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 type FormSpacing = "small" | "medium" | "large";
 
-export const FormRoot = styled.form<{ $spacing?: FormSpacing }>`
+export const FormRoot = styled.form<{ spacing?: FormSpacing }>`
   display: flex;
   flex-direction: column;
-  gap: ${({ $spacing }) => {
-    switch ($spacing) {
+  gap: ${({ spacing }) => {
+    switch (spacing) {
       case "small":
         return "12px";
       case "large":
@@ -17,26 +17,26 @@ export const FormRoot = styled.form<{ $spacing?: FormSpacing }>`
   }};
 `;
 
-export const FormItemRoot = styled.div<{ $fullWidth?: boolean }>`
+export const FormItemRoot = styled.div<{ fullWidth?: boolean }>`
   display: flex;
   flex-direction: column;
-  ${({ $fullWidth }) => $fullWidth && "width: 100%;"}
+  ${({ fullWidth }) => fullWidth && "width: 100%;"}
 `;
 
-export const FormLabelRoot = styled.label<{ $required?: boolean }>`
+export const FormLabelRoot = styled.label<{ required?: boolean }>`
   display: block;
   margin-bottom: 6px;
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   font-size: ${({ theme }) => theme.fontSize.medium};
   color: ${({ theme }) => theme.colors.text.primary};
 
-  ${({ $required, theme }) =>
-    $required &&
+  ${({ required, theme }) =>
+    required &&
     `
     &::after {
       content: ' *';
       color: ${theme.colors.danger};
-      opacity: ${$required ? 1 : 0};
+      opacity: ${required ? 1 : 0};
     }
   `}
 `;

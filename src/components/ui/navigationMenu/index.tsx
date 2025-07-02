@@ -56,7 +56,7 @@ export const NavigationMenuTrigger = styled.button`
   }
 `;
 
-export const NavigationMenuContent = styled.div<{ $isOpen?: boolean }>`
+export const NavigationMenuContent = styled.div<{ isOpen?: boolean }>`
   position: absolute;
   left: 0;
   top: 100%;
@@ -68,7 +68,7 @@ export const NavigationMenuContent = styled.div<{ $isOpen?: boolean }>`
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
   animation: scale-in 0.2s ease-out;
   transform-origin: top center;
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
+  display: ${(props) => (props.isOpen ? "block" : "none")};
   z-index: 20;
 
   @keyframes scale-in {
@@ -115,8 +115,8 @@ export const NavigationMenuViewport = styled.div`
   overflow: hidden;
 `;
 
-export const NavigationMenuIndicator = styled.div<{ $isVisible?: boolean }>`
-  display: ${(props) => (props.$isVisible ? "block" : "none")};
+export const NavigationMenuIndicator = styled.div<{ isVisible?: boolean }>`
+  display: ${(props) => (props.isVisible ? "block" : "none")};
   height: 2px;
   background-color: hsl(240 4% 16%);
   position: absolute;

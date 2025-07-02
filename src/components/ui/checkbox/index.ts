@@ -19,12 +19,12 @@ export const CheckboxContainer = styled.div`
   gap: 0.25rem;
 `;
 
-export const CheckboxLabel = styled.label<{ $size?: CheckboxSize }>`
+export const CheckboxLabel = styled.label<{ size?: CheckboxSize }>`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  font-size: ${(props) => getSize(props.$size).font};
+  font-size: ${(props) => getSize(props.size).font};
   color: ${({ theme }) => theme.colors.text.primary};
 `;
 
@@ -36,15 +36,15 @@ export const CheckboxInput = styled.input.attrs({ type: "checkbox" })`
 `;
 
 export const CheckboxBox = styled.div<{
-  $checked?: boolean;
-  $disabled?: boolean;
-  $size?: CheckboxSize;
+  checked?: boolean;
+  disabled?: boolean;
+  size?: CheckboxSize;
 }>`
-  width: ${(props) => getSize(props.$size).box};
-  height: ${(props) => getSize(props.$size).box};
+  width: ${(props) => getSize(props.size).box};
+  height: ${(props) => getSize(props.size).box};
   border: 2px solid
     ${(props) =>
-      props.$checked
+      props.checked
         ? props.theme.colors.primary
         : props.theme.colors.border.default};
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -53,13 +53,13 @@ export const CheckboxBox = styled.div<{
   justify-content: center;
   transition: all 0.2s ease-in-out;
   background-color: ${(props) =>
-    props.$checked
+    props.checked
       ? props.theme.colors.primary
       : props.theme.colors.background.secondary};
-  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+  opacity: ${(props) => (props.disabled ? 0.6 : 1)};
 
   &:hover {
-    border-color: ${(props) => !props.$disabled && props.theme.colors.primary};
+    border-color: ${(props) => !props.disabled && props.theme.colors.primary};
   }
 
   &::after {
@@ -68,7 +68,7 @@ export const CheckboxBox = styled.div<{
     height: 60%;
     border: solid ${({ theme }) => theme.colors.text.white};
     border-width: 0 2px 2px 0;
-    transform: rotate(45deg) scale(${(props) => (props.$checked ? 1 : 0)});
+    transform: rotate(45deg) scale(${(props) => (props.checked ? 1 : 0)});
     transition: transform 0.2s ease-in-out;
     margin-bottom: 2px;
   }

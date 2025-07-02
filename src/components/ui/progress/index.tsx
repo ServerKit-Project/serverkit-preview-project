@@ -21,9 +21,9 @@ export const ProgressRoot = styled.div`
 `;
 
 export const ProgressIndicator = styled.div<{
-  $value: number;
-  $max: number;
-  $indeterminate: boolean;
+  value: number;
+  max: number;
+  indeterminate: boolean;
 }>`
   width: 100%;
   height: 100%;
@@ -31,13 +31,13 @@ export const ProgressIndicator = styled.div<{
   transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
   ${(props) =>
-    !props.$indeterminate &&
+    !props.indeterminate &&
     css`
-      transform: translateX(-${100 - (props.$value / props.$max) * 100}%);
+      transform: translateX(-${100 - (props.value / props.max) * 100}%);
     `}
 
   ${(props) =>
-    props.$indeterminate &&
+    props.indeterminate &&
     css`
       position: absolute;
       left: 0;

@@ -21,9 +21,9 @@ const sizes: SpinnerSize = {
   large: "3rem",
 };
 
-export const StyledSpinner = styled.div<{ $size: keyof SpinnerSize }>`
-  width: ${({ $size }) => sizes[$size]};
-  height: ${({ $size }) => sizes[$size]};
+export const StyledSpinner = styled.div<{ size: keyof SpinnerSize }>`
+  width: ${({ size }) => sizes[size]};
+  height: ${({ size }) => sizes[size]};
   border: 2px solid ${({ theme }) => theme.colors.primary};
   border-top-color: ${({ theme }) => `${theme.colors.primary}40`};
   border-radius: 50%;

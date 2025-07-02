@@ -5,18 +5,18 @@ const fadeIn = keyframes`
   to { opacity: 1; }
 `;
 
-const getPosition = ($side: string, $sideOffset: number) => {
-  switch ($side) {
+const getPosition = (side: string, sideOffset: number) => {
+  switch (side) {
     case "top":
       return css`
         left: 50%;
-        bottom: calc(100% + ${$sideOffset}px);
+        bottom: calc(100% + ${sideOffset}px);
         transform: translateX(-50%);
         transform-origin: bottom center;
       `;
     case "right":
       return css`
-        left: calc(100% + ${$sideOffset}px);
+        left: calc(100% + ${sideOffset}px);
         top: 50%;
         transform: translateY(-50%);
         transform-origin: left center;
@@ -24,13 +24,13 @@ const getPosition = ($side: string, $sideOffset: number) => {
     case "bottom":
       return css`
         left: 50%;
-        top: calc(100% + ${$sideOffset}px);
+        top: calc(100% + ${sideOffset}px);
         transform: translateX(-50%);
         transform-origin: top center;
       `;
     case "left":
       return css`
-        right: calc(100% + ${$sideOffset}px);
+        right: calc(100% + ${sideOffset}px);
         top: 50%;
         transform: translateY(-50%);
         transform-origin: right center;
@@ -41,8 +41,8 @@ const getPosition = ($side: string, $sideOffset: number) => {
 };
 
 export const TooltipContentStyled = styled.div<{
-  $side?: "top" | "right" | "bottom" | "left";
-  $sideOffset: number;
+  side?: "top" | "right" | "bottom" | "left";
+  sideOffset: number;
 }>`
   z-index: 50;
   position: absolute;
@@ -62,7 +62,7 @@ export const TooltipContentStyled = styled.div<{
   opacity: 1;
   animation: ${fadeIn} 0.16s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
-  ${({ $side, $sideOffset }) => getPosition($side || "top", $sideOffset)}
+  ${({ side, sideOffset }) => getPosition(side || "top", sideOffset)}
 
   &::after {
     content: "";
@@ -71,8 +71,8 @@ export const TooltipContentStyled = styled.div<{
     height: 8px;
     background: ${({ theme }) => theme.colors.deepBlack};
     z-index: 51;
-    ${({ $side }) => {
-      switch ($side) {
+    ${({ side }) => {
+      switch (side) {
         case "top":
           return css`
             top: 92%;

@@ -18,7 +18,7 @@ export interface ModalProps {
   showCloseButton?: boolean;
 }
 
-export const ModalBackdrop = styled.div<{ $isOpen: boolean }>`
+export const ModalBackdrop = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -29,23 +29,23 @@ export const ModalBackdrop = styled.div<{ $isOpen: boolean }>`
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
   transition: all 0.3s ease;
 `;
 
 export const ModalContainer = styled(CardRoot)<{
-  $size?: string;
-  $isOpen: boolean;
+  size?: string;
+  isOpen: boolean;
 }>`
-  transform: ${({ $isOpen }) => ($isOpen ? "scale(1)" : "scale(0.95)")};
+  transform: ${({ isOpen }) => (isOpen ? "scale(1)" : "scale(0.95)")};
   transition: transform 0.3s ease;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: ${({ theme }) => theme.shadows.large};
 
-  ${({ $size }) => {
-    switch ($size) {
+  ${({ size }) => {
+    switch (size) {
       case "small":
         return css`
           width: 90%;

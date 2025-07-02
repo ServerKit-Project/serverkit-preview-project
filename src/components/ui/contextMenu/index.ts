@@ -25,10 +25,10 @@ const slideUpAndFade = keyframes`
   }
 `;
 
-export const MenuContainer = styled.div<{ $position: Position }>`
+export const MenuContainer = styled.div<{ position: Position }>`
   position: fixed;
-  left: ${(props) => props.$position.x}px;
-  top: ${(props) => props.$position.y}px;
+  left: ${(props) => props.position.x}px;
+  top: ${(props) => props.position.y}px;
   min-width: 220px;
   background: white;
   border-radius: 0.5rem;
@@ -43,9 +43,9 @@ export const MenuContainer = styled.div<{ $position: Position }>`
 `;
 
 export const MenuItem = styled.div<{
-  $disabled?: boolean;
-  $danger?: boolean;
-  $hasSubmenu?: boolean;
+  disabled?: boolean;
+  danger?: boolean;
+  hasSubmenu?: boolean;
 }>`
   display: flex;
   align-items: center;
@@ -53,8 +53,8 @@ export const MenuItem = styled.div<{
   font-size: 0.875rem;
   line-height: 1.25;
   color: ${(props) =>
-    props.$danger ? "#dc2626" : props.$disabled ? "#6b7280" : "#1f2937"};
-  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
+    props.danger ? "#dc2626" : props.disabled ? "#6b7280" : "#1f2937"};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   border-radius: 0.375rem;
   position: relative;
   transition: all 0.15s ease;
@@ -62,17 +62,17 @@ export const MenuItem = styled.div<{
 
   &:hover {
     background-color: ${(props) =>
-      !props.$disabled &&
-      (props.$danger ? "rgba(220, 38, 38, 0.04)" : "rgba(0, 0, 0, 0.04)")};
+      !props.disabled &&
+      (props.danger ? "rgba(220, 38, 38, 0.04)" : "rgba(0, 0, 0, 0.04)")};
   }
 
   &:active {
     background-color: ${(props) =>
-      !props.$disabled &&
-      (props.$danger ? "rgba(220, 38, 38, 0.08)" : "rgba(0, 0, 0, 0.08)")};
+      !props.disabled &&
+      (props.danger ? "rgba(220, 38, 38, 0.08)" : "rgba(0, 0, 0, 0.08)")};
   }
 
-  opacity: ${(props) => (props.$disabled ? "0.4" : "1")};
+  opacity: ${(props) => (props.disabled ? "0.4" : "1")};
 `;
 
 export const IconWrapper = styled.div`
@@ -90,11 +90,11 @@ export const Label = styled.span`
   flex: 1;
 `;
 
-export const Submenu = styled.div<{ $isOpen: boolean }>`
+export const Submenu = styled.div<{ isOpen: boolean }>`
   position: absolute;
   left: calc(100% + 4px);
   top: -0.375rem;
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
+  display: ${(props) => (props.isOpen ? "block" : "none")};
   min-width: 220px;
   background: white;
   border-radius: 0.5rem;

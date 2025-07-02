@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const ToggleRoot = styled.button<{
-  $pressed?: boolean;
-  $size?: "small" | "default" | "large";
-  $variant?: "default" | "outline";
+  pressed?: boolean;
+  size?: "small" | "default" | "large";
+  variant?: "default" | "outline";
 }>`
   display: inline-flex;
   align-items: center;
@@ -15,7 +15,7 @@ export const ToggleRoot = styled.button<{
 
   /* Size variants */
   ${(props) =>
-    props.$size === "small" &&
+    props.size === "small" &&
     `
     padding: 0.375rem 0.625rem;
     font-size: 0.875rem;
@@ -23,7 +23,7 @@ export const ToggleRoot = styled.button<{
   `}
 
   ${(props) =>
-    (!props.$size || props.$size === "default") &&
+    (!props.size || props.size === "default") &&
     `
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
@@ -31,7 +31,7 @@ export const ToggleRoot = styled.button<{
   `}
   
   ${(props) =>
-    props.$size === "large" &&
+    props.size === "large" &&
     `
     padding: 0.75rem 1rem;
     font-size: 1rem;
@@ -40,10 +40,10 @@ export const ToggleRoot = styled.button<{
 
   /* Style variants */
   ${(props) =>
-    (!props.$variant || props.$variant === "default") &&
+    (!props.variant || props.variant === "default") &&
     `
-    background-color: ${props.$pressed ? "#E5E7EB" : "transparent"};
-    color: ${props.$pressed ? "#111827" : "#6B7280"};
+    background-color: ${props.pressed ? "#E5E7EB" : "transparent"};
+    color: ${props.pressed ? "#111827" : "#6B7280"};
     border: 1px solid transparent;
 
     &:hover {
@@ -53,11 +53,11 @@ export const ToggleRoot = styled.button<{
   `}
 
   ${(props) =>
-    props.$variant === "outline" &&
+    props.variant === "outline" &&
     `
-    background-color: ${props.$pressed ? "#F3F4F6" : "transparent"};
+    background-color: ${props.pressed ? "#F3F4F6" : "transparent"};
     border: 1px solid #E5E7EB;
-    color: ${props.$pressed ? "#111827" : "#6B7280"};
+    color: ${props.pressed ? "#111827" : "#6B7280"};
 
     &:hover {
       background-color: #F9FAFB;

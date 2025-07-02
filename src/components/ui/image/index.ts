@@ -1,39 +1,39 @@
 import styled from "styled-components";
 
 export const ImageContainer = styled.div<{
-  $width?: string | number;
-  $height?: string | number;
+  width?: string | number;
+  height?: string | number;
 }>`
   display: inline-block;
   overflow: hidden;
-  ${({ $width }) =>
-    $width &&
-    (typeof $width === "number" ? `width: ${$width}px;` : `width: ${$width};`)}
-  ${({ $height }) =>
-    $height &&
-    (typeof $height === "number"
-      ? `height: ${$height}px;`
-      : `height: ${$height};`)}
+  ${({ width }) =>
+    width &&
+    (typeof width === "number" ? `width: ${width}px;` : `width: ${width};`)}
+  ${({ height }) =>
+    height &&
+    (typeof height === "number"
+      ? `height: ${height}px;`
+      : `height: ${height};`)}
 `;
 
 export const StyledImage = styled.img<{
-  $fit?: "cover" | "contain" | "fill" | "none" | "scale-down";
-  $rounded?: string | number | "circle";
-  $width?: string | number;
-  $height?: string | number;
+  fit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+  rounded?: string | number | "circle";
+  width?: string | number;
+  height?: string | number;
 }>`
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: ${({ $fit }) => $fit || "cover"};
+  object-fit: ${({ fit }) => fit || "cover"};
 
-  ${({ $rounded }) => {
-    if ($rounded === "circle") {
+  ${({ rounded }) => {
+    if (rounded === "circle") {
       return "border-radius: 50%;";
     }
-    if ($rounded) {
+    if (rounded) {
       return `border-radius: ${
-        typeof $rounded === "number" ? `${$rounded}px` : $rounded
+        typeof rounded === "number" ? `${rounded}px` : rounded
       };`;
     }
     return "";
@@ -41,9 +41,9 @@ export const StyledImage = styled.img<{
 `;
 
 export const ImagePlaceholder = styled.div<{
-  $width?: string | number;
-  $height?: string | number;
-  $rounded?: string | number | "circle";
+  width?: string | number;
+  height?: string | number;
+  rounded?: string | number | "circle";
 }>`
   display: flex;
   align-items: center;
@@ -53,13 +53,13 @@ export const ImagePlaceholder = styled.div<{
   width: 100%;
   height: 100%;
 
-  ${({ $rounded }) => {
-    if ($rounded === "circle") {
+  ${({ rounded }) => {
+    if (rounded === "circle") {
       return "border-radius: 50%;";
     }
-    if ($rounded) {
+    if (rounded) {
       return `border-radius: ${
-        typeof $rounded === "number" ? `${$rounded}px` : $rounded
+        typeof rounded === "number" ? `${rounded}px` : rounded
       };`;
     }
     return "";

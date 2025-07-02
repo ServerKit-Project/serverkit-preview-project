@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 interface HeaderRootProps {
-  $variant?: "default" | "transparent" | "dark";
-  $border?: boolean;
+  variant?: "default" | "transparent" | "dark";
+  border?: boolean;
 }
 
 export const HeaderRoot = styled.header<HeaderRootProps>`
   width: 100%;
-  background-color: ${({ theme, $variant = "default" }) => {
-    switch ($variant) {
+  background-color: ${({ theme, variant = "default" }) => {
+    switch (variant) {
       case "transparent":
         return "transparent";
       case "dark":
@@ -17,14 +17,14 @@ export const HeaderRoot = styled.header<HeaderRootProps>`
         return theme.colors.pureWhite;
     }
   }};
-  border-bottom: ${({ theme, $border = true }) =>
-    $border ? `1px solid ${theme.colors.border.default}` : "none"};
+  border-bottom: ${({ theme, border = true }) =>
+    border ? `1px solid ${theme.colors.border.default}` : "none"};
   position: sticky;
   top: 0;
   z-index: 40;
   transition: all 0.3s ease;
-  backdrop-filter: ${({ $variant }) =>
-    $variant === "transparent" ? "blur(10px)" : "none"};
+  backdrop-filter: ${({ variant }) =>
+    variant === "transparent" ? "blur(10px)" : "none"};
 `;
 
 export const HeaderContainer = styled.div`
@@ -55,15 +55,15 @@ export const HeaderLogo = styled.a`
 `;
 
 interface HeaderLogoTextProps {
-  $variant?: "default" | "transparent" | "dark";
+  variant?: "default" | "transparent" | "dark";
 }
 
 export const HeaderLogoText = styled.span<HeaderLogoTextProps>`
   font-family: ${({ theme }) => theme.fontFamily.sans};
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme, $variant = "default" }) => {
-    switch ($variant) {
+  color: ${({ theme, variant = "default" }) => {
+    switch (variant) {
       case "dark":
         return theme.colors.text.white;
       case "transparent":
@@ -85,16 +85,16 @@ export const HeaderNav = styled.nav`
 `;
 
 interface HeaderLinkProps {
-  $variant?: "default" | "transparent" | "dark";
-  $active?: boolean;
+  variant?: "default" | "transparent" | "dark";
+  active?: boolean;
 }
 
 export const HeaderLink = styled.a<HeaderLinkProps>`
   font-family: ${({ theme }) => theme.fontFamily.sans};
   font-size: ${({ theme }) => theme.fontSize.small};
-  color: ${({ theme, $variant = "default", $active = false }) => {
-    if ($active) return theme.colors.primary;
-    switch ($variant) {
+  color: ${({ theme, variant = "default", active = false }) => {
+    if (active) return theme.colors.primary;
+    switch (variant) {
       case "dark":
         return theme.colors.text.white;
       case "transparent":
@@ -117,7 +117,7 @@ export const HeaderLink = styled.a<HeaderLinkProps>`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: ${({ $active }) => ($active ? "100%" : "0")};
+    width: ${({ active }) => (active ? "100%" : "0")};
     height: 2px;
     background-color: ${({ theme }) => theme.colors.primary};
     transition: width 0.2s ease;
@@ -135,7 +135,7 @@ export const HeaderActions = styled.div`
 `;
 
 interface MobileMenuButtonProps {
-  $variant?: "default" | "transparent" | "dark";
+  variant?: "default" | "transparent" | "dark";
 }
 
 export const MobileMenuButton = styled.button<MobileMenuButtonProps>`
@@ -145,8 +145,8 @@ export const MobileMenuButton = styled.button<MobileMenuButtonProps>`
   border: none;
   cursor: pointer;
   border-radius: ${({ theme }) => theme.borderRadius};
-  color: ${({ theme, $variant = "default" }) => {
-    switch ($variant) {
+  color: ${({ theme, variant = "default" }) => {
+    switch (variant) {
       case "dark":
         return theme.colors.text.white;
       default:
@@ -166,7 +166,7 @@ export const MobileMenuButton = styled.button<MobileMenuButtonProps>`
   }
 `;
 
-export const MobileMenu = styled.div<{ $isOpen: boolean }>`
+export const MobileMenu = styled.div<{ isOpen: boolean }>`
   display: none;
   position: fixed;
   top: 64px;
@@ -175,7 +175,7 @@ export const MobileMenu = styled.div<{ $isOpen: boolean }>`
   background-color: ${({ theme }) => theme.colors.pureWhite};
   padding: 20px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.default};
-  transform: translateY(${(props) => (props.$isOpen ? "0" : "-100%")});
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
   transition: transform 0.3s ease;
   box-shadow: ${({ theme }) => theme.shadows.large};
 
@@ -216,22 +216,25 @@ export const NotificationBadge = styled.span`
   font-weight: bold;
 `;
 
-export const ActionButton = styled.button<{ $variant?: "icon" | "text" }>`
-  position: relative;
-  padding: ${({ $variant = "icon" }) =>
-    $variant === "icon" ? "8px" : "8px 16px"};
+export const ActionButton = styled.button<{ variant?: "icon" | "text" }>`
   background: none;
-  border: none;
-  cursor: pointer;
+  padding: ${({ variant = "icon" }) =>
+    variant === "icon" ? "8px" : "8px 16px"};
+  border: 1px solid ${({ theme }) => theme.colors.border.default};
   border-radius: ${({ theme }) => theme.borderRadius};
-  color: ${({ theme }) => theme.colors.text.secondary};
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.text.primary};
+  font-family: ${({ theme }) => theme.fontFamily.sans};
+  font-size: ${({ theme }) => theme.fontSize.small};
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-    background-color: ${({ theme }) => theme.colors.background.secondary};
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
+    color: ${({ theme }) => theme.colors.text.primary};
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}40;
   }
 `;

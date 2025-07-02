@@ -5,7 +5,7 @@ export const Container = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
-export const Trigger = styled.button<{ $disabled: boolean }>`
+export const Trigger = styled.button<{ disabled: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
@@ -16,8 +16,8 @@ export const Trigger = styled.button<{ $disabled: boolean }>`
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.colors.text.primary};
   font-family: ${({ theme }) => theme.fontFamily.sans};
-  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
-  opacity: ${(props) => (props.$disabled ? 0.6 : 1)};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => (props.disabled ? 0.6 : 1)};
   transition: all 0.2s ease-in-out;
 
   &:hover:not(:disabled) {
@@ -30,16 +30,16 @@ export const Trigger = styled.button<{ $disabled: boolean }>`
   }
 `;
 
-export const Icon = styled.span<{ $isOpen: boolean }>`
-  transform: rotate(${(props) => (props.$isOpen ? "180deg" : "0deg")});
+export const Icon = styled.span<{ isOpen: boolean }>`
+  transform: rotate(${(props) => (props.isOpen ? "180deg" : "0deg")});
   transition: transform 0.2s ease-in-out;
   color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
-export const Content = styled.div<{ $height: number }>`
+export const Content = styled.div<{ height: number }>`
   overflow: hidden;
   transition: height 0.3s ease-in-out;
-  height: ${(props) => props.$height}px;
+  height: ${(props) => props.height}px;
 `;
 
 export const ContentInner = styled.div`

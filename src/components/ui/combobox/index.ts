@@ -6,12 +6,12 @@ export const Container = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
-export const Input = styled.input<{ $hasError: boolean }>`
+export const Input = styled.input<{ hasError: boolean }>`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.medium};
   border: 1px solid
     ${(props) =>
-      props.$hasError
+      props.hasError
         ? props.theme.colors.danger
         : props.theme.colors.border.default};
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -24,7 +24,7 @@ export const Input = styled.input<{ $hasError: boolean }>`
 
   &:hover {
     border-color: ${(props) =>
-      props.$hasError
+      props.hasError
         ? props.theme.colors.danger
         : props.theme.colors.border.hover};
   }
@@ -66,7 +66,7 @@ export const ToggleButton = styled.button`
   }
 `;
 
-export const OptionsList = styled.ul<{ $isOpen: boolean }>`
+export const OptionsList = styled.ul<{ isOpen: boolean }>`
   position: absolute;
   top: 100%;
   left: 0;
@@ -80,18 +80,18 @@ export const OptionsList = styled.ul<{ $isOpen: boolean }>`
   z-index: 10;
   max-height: 200px;
   overflow-y: auto;
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
+  display: ${(props) => (props.isOpen ? "block" : "none")};
 `;
 
-export const Option = styled.li<{ $isSelected: boolean }>`
+export const Option = styled.li<{ isSelected: boolean }>`
   padding: ${({ theme }) => theme.spacing.small};
   cursor: pointer;
   background-color: ${(props) =>
-    props.$isSelected
+    props.isSelected
       ? props.theme.colors.background.secondary
       : "transparent"};
   color: ${(props) =>
-    props.$isSelected
+    props.isSelected
       ? props.theme.colors.primary
       : props.theme.colors.text.primary};
   font-family: ${({ theme }) => theme.fontFamily.sans};

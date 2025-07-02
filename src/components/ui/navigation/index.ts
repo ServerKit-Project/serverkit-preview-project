@@ -1,34 +1,17 @@
 import styled, { css } from "styled-components";
 
-export interface NavItem {
-  key: string;
-  label: string;
-  href?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-  icon?: React.ReactNode;
-}
-
-export interface NavigationProps {
-  items: NavItem[];
-  activeKey?: string;
-  variant?: "horizontal" | "vertical";
-  size?: "small" | "medium" | "large";
-  background?: boolean;
-}
-
 export const NavContainer = styled.nav<{
-  $variant?: string;
-  $background?: boolean;
+  variant?: string;
+  background?: boolean;
 }>`
   display: flex;
-  ${({ $variant }) =>
-    $variant === "vertical"
+  ${({ variant }) =>
+    variant === "vertical"
       ? "flex-direction: column;"
       : "flex-direction: row;"}
 
-  ${({ $background, theme }) =>
-    $background &&
+  ${({ background, theme }) =>
+    background &&
     css`
       background-color: ${theme.colors.background.secondary};
       padding: ${theme.spacing.medium};
@@ -38,31 +21,31 @@ export const NavContainer = styled.nav<{
 `;
 
 export const NavItem = styled.a<{
-  $active?: boolean;
-  $variant?: string;
-  $size?: string;
-  $disabled?: boolean;
+  active?: boolean;
+  variant?: string;
+  size?: string;
+  disabled?: boolean;
 }>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.small};
   text-decoration: none;
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
   border-radius: ${({ theme }) => theme.borderRadius};
-  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
-  color: ${({ $active, $disabled, theme }) => {
-    if ($disabled) return theme.colors.text.secondary;
-    if ($active) return theme.colors.primary;
+  color: ${({ active, disabled, theme }) => {
+    if (disabled) return theme.colors.text.secondary;
+    if (active) return theme.colors.primary;
     return theme.colors.text.primary;
   }};
 
-  background-color: ${({ $active, theme }) =>
-    $active ? `${theme.colors.primary}10` : "transparent"};
+  background-color: ${({ active, theme }) =>
+    active ? `${theme.colors.primary}10` : "transparent"};
 
-  ${({ $size, theme }) => {
-    switch ($size) {
+  ${({ size, theme }) => {
+    switch (size) {
       case "small":
         return css`
           padding: ${theme.spacing.small};
@@ -81,16 +64,16 @@ export const NavItem = styled.a<{
     }
   }}
 
-  ${({ $variant, theme }) =>
-    $variant === "horizontal" &&
+  ${({ variant, theme }) =>
+    variant === "horizontal" &&
     css`
       &:not(:last-child) {
         margin-right: ${theme.spacing.small};
       }
     `}
 
-  ${({ $variant, theme }) =>
-    $variant === "vertical" &&
+  ${({ variant, theme }) =>
+    variant === "vertical" &&
     css`
       &:not(:last-child) {
         margin-bottom: ${theme.spacing.small};
@@ -98,8 +81,8 @@ export const NavItem = styled.a<{
     `}
 
   &:hover:not(:disabled) {
-    background-color: ${({ $active, theme }) =>
-      $active
+    background-color: ${({ active, theme }) =>
+      active
         ? `${theme.colors.primary}20`
         : theme.colors.background.hover.secondary};
   }

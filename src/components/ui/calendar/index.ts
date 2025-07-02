@@ -59,9 +59,9 @@ export const Days = styled.div`
 `;
 
 export const Day = styled.button<{
-  $isToday?: boolean;
-  $isSelected?: boolean;
-  $isOutsideMonth?: boolean;
+  isToday?: boolean;
+  isSelected?: boolean;
+  isOutsideMonth?: boolean;
 }>`
   aspect-ratio: 1;
   display: flex;
@@ -69,10 +69,10 @@ export const Day = styled.button<{
   justify-content: center;
   border: none;
   background: ${(props) =>
-    props.$isSelected ? props.theme.colors.primary : "transparent"};
+    props.isSelected ? props.theme.colors.primary : "transparent"};
   color: ${(props) => {
-    if (props.$isSelected) return props.theme.colors.pureWhite;
-    if (props.$isOutsideMonth) return props.theme.colors.border.default;
+    if (props.isSelected) return props.theme.colors.pureWhite;
+    if (props.isOutsideMonth) return props.theme.colors.border.default;
     return props.theme.colors.text.primary;
   }};
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -81,7 +81,7 @@ export const Day = styled.button<{
   position: relative;
 
   ${(props) =>
-    props.$isToday &&
+    props.isToday &&
     `
     &::after {
       content: '';
@@ -91,7 +91,7 @@ export const Day = styled.button<{
       height: 4px;
       border-radius: 50%;
       background: ${
-        props.$isSelected
+        props.isSelected
           ? props.theme.colors.pureWhite
           : props.theme.colors.primary
       };
@@ -100,7 +100,7 @@ export const Day = styled.button<{
 
   &:hover:not(:disabled) {
     background: ${(props) =>
-      props.$isSelected
+      props.isSelected
         ? props.theme.colors.background.hover.primary
         : props.theme.colors.background.secondary};
   }

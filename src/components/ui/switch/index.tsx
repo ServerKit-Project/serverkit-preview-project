@@ -28,7 +28,7 @@ export const SwitchContainer = styled.label<{
 `;
 
 export const SwitchInput = styled.input<{
-  $size: "small" | "medium" | "large";
+  size: "small" | "medium" | "large";
 }>`
   opacity: 0;
   width: 0;
@@ -41,8 +41,8 @@ export const SwitchInput = styled.input<{
   &:checked + span:before {
     transform: translateX(
       calc(
-        ${(props) => sizes[props.$size].width} -
-          ${(props) => sizes[props.$size].thumbSize} - 2px
+        ${(props) => sizes[props.size].width} -
+          ${(props) => sizes[props.size].thumbSize} - 2px
       )
     );
   }

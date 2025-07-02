@@ -17,14 +17,14 @@ type TextAlign = "left" | "center" | "right" | "justify";
 type TextWeight = "normal" | "medium" | "semibold" | "bold";
 
 export const Text = styled.span<{
-  $variant?: TextVariant;
-  $color?: TextColor;
-  $align?: TextAlign;
-  $weight?: TextWeight;
+  variant?: TextVariant;
+  color?: TextColor;
+  align?: TextAlign;
+  weight?: TextWeight;
 }>`
   margin: 0;
-  color: ${({ $color, theme }) => {
-    switch ($color) {
+  color: ${({ color, theme }) => {
+    switch (color) {
       case "primary":
         return theme.colors.primary;
       case "secondary":
@@ -38,10 +38,10 @@ export const Text = styled.span<{
     }
   }};
 
-  text-align: ${({ $align }) => $align || "left"};
+  text-align: ${({ align }) => align || "left"};
 
-  font-weight: ${({ $weight }) => {
-    switch ($weight) {
+  font-weight: ${({ weight }) => {
+    switch (weight) {
       case "medium":
         return 500;
       case "semibold":
@@ -53,8 +53,8 @@ export const Text = styled.span<{
     }
   }};
 
-  ${({ $variant, theme }) => {
-    switch ($variant) {
+  ${({ variant, theme }) => {
+    switch (variant) {
       case "h1":
         return css`
           font-size: 2.5rem;

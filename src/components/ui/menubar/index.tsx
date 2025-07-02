@@ -77,13 +77,13 @@ export const StyledMenubarContent = styled.div`
   }
 `;
 
-const baseItemStyles = css<{ $inset?: boolean }>`
+const baseItemStyles = css<{ inset?: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
   padding: ${(props) =>
-    props.$inset
+    props.inset
       ? `${props.theme.spacing.small} ${props.theme.spacing.medium}`
       : props.theme.spacing.small};
   font-size: ${({ theme }) => theme.fontSize.small};
@@ -108,7 +108,7 @@ const baseItemStyles = css<{ $inset?: boolean }>`
   }
 `;
 
-export const StyledMenubarItem = styled.button<{ $inset?: boolean }>`
+export const StyledMenubarItem = styled.button<{ inset?: boolean }>`
   ${baseItemStyles}
 `;
 

@@ -59,11 +59,11 @@ export const UserEmail = styled.p`
   margin: 0;
 `;
 
-export const StyledCardFooter = styled(CardFooterRoot)<{ $hasGap?: boolean }>`
+export const StyledCardFooter = styled(CardFooterRoot)<{ hasGap?: boolean }>`
   display: flex;
-  justify-content: ${(props) => (props.$hasGap ? "space-between" : "stretch")};
+  justify-content: ${(props) => (props.hasGap ? "space-between" : "stretch")};
 `;
 
-export const StyledButton = styled(Button)<{ $fullWidth?: boolean }>`
-  width: ${(props) => (props.$fullWidth ? "100%" : "auto")};
+export const StyledButton = styled(Button)<{ fullWidth?: boolean }>`
+  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
 `;

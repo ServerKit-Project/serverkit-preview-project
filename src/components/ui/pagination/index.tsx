@@ -31,7 +31,7 @@ export const StyledItem = styled.li`
 `;
 
 // Base Link Styles
-const baseLinkStyles = css<{ $disabled?: boolean }>`
+const baseLinkStyles = css<{ disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -41,17 +41,17 @@ const baseLinkStyles = css<{ $disabled?: boolean }>`
   border-radius: ${({ theme }) => theme.borderRadius};
   text-decoration: none;
   font-size: ${({ theme }) => theme.fontSize.small};
-  color: ${({ theme, $disabled }) =>
-    $disabled ? theme.colors.secondary : theme.colors.text.primary};
+  color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.secondary : theme.colors.text.primary};
   background: transparent;
   transition: all 0.15s ease;
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 
   &:hover {
-    background-color: ${({ theme, $disabled }) =>
-      $disabled ? "transparent" : theme.colors.background.secondary};
-    color: ${({ theme, $disabled }) =>
-      $disabled ? theme.colors.secondary : theme.colors.text.primary};
+    background-color: ${({ theme, disabled }) =>
+      disabled ? "transparent" : theme.colors.background.secondary};
+    color: ${({ theme, disabled }) =>
+      disabled ? theme.colors.secondary : theme.colors.text.primary};
   }
 
   &:focus-visible {
@@ -62,24 +62,24 @@ const baseLinkStyles = css<{ $disabled?: boolean }>`
 
 // Pagination Link
 export const StyledLink = styled.a<{
-  $isActive?: boolean;
-  $disabled?: boolean;
+  isActive?: boolean;
+  disabled?: boolean;
 }>`
   ${baseLinkStyles}
-  font-weight: ${({ $isActive, theme }) =>
-    $isActive ? theme.fontWeights.bold : theme.fontWeights.normal};
-  background-color: ${({ $isActive, theme }) =>
-    $isActive ? theme.colors.background.secondary : "transparent"};
-  color: ${({ $isActive, theme }) =>
-    $isActive ? theme.colors.text.primary : theme.colors.text.secondary};
+  font-weight: ${({ isActive, theme }) =>
+    isActive ? theme.fontWeights.bold : theme.fontWeights.normal};
+  background-color: ${({ isActive, theme }) =>
+    isActive ? theme.colors.background.secondary : "transparent"};
+  color: ${({ isActive, theme }) =>
+    isActive ? theme.colors.text.primary : theme.colors.text.secondary};
 `;
 
-export const StyledPrevious = styled.a<{ $disabled?: boolean }>`
+export const StyledPrevious = styled.a<{ disabled?: boolean }>`
   ${baseLinkStyles}
   gap: ${({ theme }) => theme.spacing.small};
 `;
 
-export const StyledNext = styled.a<{ $disabled?: boolean }>`
+export const StyledNext = styled.a<{ disabled?: boolean }>`
   ${baseLinkStyles}
   gap: ${({ theme }) => theme.spacing.small};
 `;

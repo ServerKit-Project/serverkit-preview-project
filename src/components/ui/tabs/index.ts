@@ -22,12 +22,12 @@ export const TabsContainer = styled.div`
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
-export const TabsList = styled.div<{ $variant?: string }>`
+export const TabsList = styled.div<{ variant?: string }>`
   display: flex;
-  border-bottom: ${({ $variant, theme }) =>
-    $variant === "card" ? "none" : `1px solid ${theme.colors.border.default}`};
-  ${({ $variant, theme }) =>
-    $variant === "card" &&
+  border-bottom: ${({ variant, theme }) =>
+    variant === "card" ? "none" : `1px solid ${theme.colors.border.default}`};
+  ${({ variant, theme }) =>
+    variant === "card" &&
     css`
       background-color: ${theme.colors.background.secondary};
       padding: ${theme.spacing.small};
@@ -37,26 +37,26 @@ export const TabsList = styled.div<{ $variant?: string }>`
 `;
 
 export const TabButton = styled.button<{
-  $active?: boolean;
-  $variant?: string;
-  $size?: string;
-  $disabled?: boolean;
+  active?: boolean;
+  variant?: string;
+  size?: string;
+  disabled?: boolean;
 }>`
   background: none;
   border: none;
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   outline: none;
-  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   transition: all 0.2s ease;
-  color: ${({ $active, $disabled, theme }) => {
-    if ($disabled) return theme.colors.text.secondary;
-    if ($active) return theme.colors.primary;
+  color: ${({ active, disabled, theme }) => {
+    if (disabled) return theme.colors.text.secondary;
+    if (active) return theme.colors.primary;
     return theme.colors.text.primary;
   }};
   font-family: ${({ theme }) => theme.fontFamily.sans};
 
-  ${({ $size, theme }) => {
-    switch ($size) {
+  ${({ size, theme }) => {
+    switch (size) {
       case "small":
         return css`
           padding: ${theme.spacing.small};
@@ -75,27 +75,27 @@ export const TabButton = styled.button<{
     }
   }}
 
-  ${({ $variant, $active, theme }) => {
-    if ($variant === "card") {
+  ${({ variant, active, theme }) => {
+    if (variant === "card") {
       return css`
         border-radius: ${theme.borderRadius};
-        background-color: ${$active ? theme.colors.pureWhite : "transparent"};
-        box-shadow: ${$active ? theme.shadows.small : "none"};
+        background-color: ${active ? theme.colors.pureWhite : "transparent"};
+        box-shadow: ${active ? theme.shadows.small : "none"};
       `;
     } else {
       return css`
         border-bottom: 2px solid
-          ${$active ? theme.colors.primary : "transparent"};
+          ${active ? theme.colors.primary : "transparent"};
         margin-bottom: -1px;
       `;
     }
   }}
 
   &:hover:not(:disabled) {
-    ${({ $variant, $active, theme }) => {
-      if ($variant === "card" && !$active) {
+    ${({ variant, active, theme }) => {
+      if (variant === "card" && !active) {
         return `background-color: ${theme.colors.background.hover.secondary};`;
-      } else if ($variant !== "card") {
+      } else if (variant !== "card") {
         return `color: ${theme.colors.primary};`;
       }
       return "";

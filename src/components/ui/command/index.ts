@@ -46,13 +46,13 @@ export const ItemsList = styled.div`
   overflow-y: auto;
 `;
 
-export const Item = styled.div<{ $isSelected: boolean }>`
+export const Item = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   padding: 0.75rem 1rem;
   cursor: pointer;
   background-color: ${(props) =>
-    props.$isSelected ? "#f7fafc" : "transparent"};
+    props.isSelected ? "#f7fafc" : "transparent"};
 
   &:hover {
     background-color: #f7fafc;

@@ -20,21 +20,21 @@ const getSize = (size: DrawerSize) => {
   }
 };
 
-export const Overlay = styled.div<{ $isOpen: boolean }>`
+export const Overlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.4);
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
+  display: ${(props) => (props.isOpen ? "block" : "none")};
   z-index: 50;
 `;
 
 export const DrawerContainer = styled.div<{
-  $isOpen: boolean;
-  $placement: DrawerPlacement;
-  $size: DrawerSize;
+  isOpen: boolean;
+  placement: DrawerPlacement;
+  size: DrawerSize;
 }>`
   position: fixed;
   background: white;
@@ -44,15 +44,15 @@ export const DrawerContainer = styled.div<{
   z-index: 51;
 
   ${(props) => {
-    const size = getSize(props.$size);
-    switch (props.$placement) {
+    const size = getSize(props.size);
+    switch (props.placement) {
       case "left":
         return `
           top: 0;
           left: 0;
           bottom: 0;
           width: ${size};
-          transform: translateX(${props.$isOpen ? "0" : "-100%"});
+          transform: translateX(${props.isOpen ? "0" : "-100%"});
         `;
       case "right":
         return `
@@ -60,7 +60,7 @@ export const DrawerContainer = styled.div<{
           right: 0;
           bottom: 0;
           width: ${size};
-          transform: translateX(${props.$isOpen ? "0" : "100%"});
+          transform: translateX(${props.isOpen ? "0" : "100%"});
         `;
       case "top":
         return `
@@ -68,7 +68,7 @@ export const DrawerContainer = styled.div<{
           left: 0;
           right: 0;
           height: ${size};
-          transform: translateY(${props.$isOpen ? "0" : "-100%"});
+          transform: translateY(${props.isOpen ? "0" : "-100%"});
         `;
       case "bottom":
         return `
@@ -76,7 +76,7 @@ export const DrawerContainer = styled.div<{
           left: 0;
           right: 0;
           height: ${size};
-          transform: translateY(${props.$isOpen ? "0" : "100%"});
+          transform: translateY(${props.isOpen ? "0" : "100%"});
         `;
     }
   }}

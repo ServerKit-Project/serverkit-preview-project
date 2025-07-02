@@ -16,9 +16,9 @@ export interface KeyValueProps {
   striped?: boolean;
 }
 
-export const KeyValueContainer = styled.div<{ $bordered?: boolean }>`
-  ${({ $bordered, theme }) =>
-    $bordered &&
+export const KeyValueContainer = styled.div<{ bordered?: boolean }>`
+  ${({ bordered, theme }) =>
+    bordered &&
     css`
       border: 1px solid
         ${theme?.colors.border.default || defaultTheme.colors.border.default};
@@ -28,26 +28,26 @@ export const KeyValueContainer = styled.div<{ $bordered?: boolean }>`
 `;
 
 export const KeyValueItem = styled.div<{
-  $layout?: string;
-  $size?: string;
-  $striped?: boolean;
-  $index?: number;
-  $bordered?: boolean;
+  layout?: string;
+  size?: string;
+  striped?: boolean;
+  index?: number;
+  bordered?: boolean;
 }>`
   display: flex;
-  ${({ $layout }) =>
-    $layout === "vertical" ? "flex-direction: column;" : "flex-direction: row;"}
+  ${({ layout }) =>
+    layout === "vertical" ? "flex-direction: column;" : "flex-direction: row;"}
 
-  ${({ $striped, $index, theme }) =>
-    $striped && $index && $index % 2 === 0
+  ${({ striped, index, theme }) =>
+    striped && index && index % 2 === 0
       ? `background-color: ${
           theme?.colors.background.secondary ||
           defaultTheme.colors.background.secondary
         }30;`
       : ""}
 
-  ${({ $bordered, theme }) =>
-    $bordered &&
+  ${({ bordered, theme }) =>
+    bordered &&
     css`
       &:not(:last-child) {
         border-bottom: 1px solid
@@ -55,8 +55,8 @@ export const KeyValueItem = styled.div<{
       }
     `}
 
-  ${({ $size }) => {
-    switch ($size) {
+  ${({ size }) => {
+    switch (size) {
       case "small":
         return "padding: 8px 12px;";
       case "large":
@@ -67,16 +67,16 @@ export const KeyValueItem = styled.div<{
   }}
 `;
 
-export const KeyLabel = styled.div<{ $layout?: string; $size?: string }>`
+export const KeyLabel = styled.div<{ layout?: string; size?: string }>`
   font-weight: 500;
   color: ${({ theme }) =>
     theme?.colors.text.primary || defaultTheme.colors.text.primary};
 
-  ${({ $layout, $size, theme }) => {
-    if ($layout === "vertical") {
+  ${({ layout, size, theme }) => {
+    if (layout === "vertical") {
       return css`
         margin-bottom: 4px;
-        font-size: ${$size === "small"
+        font-size: ${size === "small"
           ? "0.875rem"
           : theme?.fontSize.medium || defaultTheme.fontSize.medium};
       `;
@@ -84,7 +84,7 @@ export const KeyLabel = styled.div<{ $layout?: string; $size?: string }>`
       return css`
         min-width: 120px;
         margin-right: 16px;
-        font-size: ${$size === "small"
+        font-size: ${size === "small"
           ? "0.875rem"
           : theme?.fontSize.medium || defaultTheme.fontSize.medium};
       `;
@@ -92,7 +92,7 @@ export const KeyLabel = styled.div<{ $layout?: string; $size?: string }>`
   }}
 `;
 
-export const ValueContent = styled.div<{ $layout?: string; $size?: string }>`
+export const ValueContent = styled.div<{ layout?: string; size?: string }>`
   color: ${({ theme }) =>
     theme?.colors.text.primary || defaultTheme.colors.text.primary};
   display: flex;
@@ -101,8 +101,8 @@ export const ValueContent = styled.div<{ $layout?: string; $size?: string }>`
   flex: 1;
   word-break: break-word;
 
-  ${({ $size, theme }) => {
-    switch ($size) {
+  ${({ size, theme }) => {
+    switch (size) {
       case "small":
         return `font-size: 0.875rem;`;
       case "large":

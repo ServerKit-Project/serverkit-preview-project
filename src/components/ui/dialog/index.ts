@@ -7,7 +7,7 @@ import {
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 
-export const Overlay = styled.div<{ $isOpen: boolean }>`
+export const Overlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -15,7 +15,7 @@ export const Overlay = styled.div<{ $isOpen: boolean }>`
   bottom: 0;
   background-color: ${({ theme }) =>
     `${theme.colors.deepBlack}66`}; // 40% opacity
-  display: ${(props) => (props.$isOpen ? "flex" : "none")};
+  display: ${(props) => (props.isOpen ? "flex" : "none")};
   justify-content: center;
   align-items: center;
   z-index: 50;

@@ -18,41 +18,41 @@ export interface SelectProps {
   onChange?: (value: string | number) => void;
 }
 
-export const SelectContainer = styled.div<{ $fullWidth?: boolean }>`
+export const SelectContainer = styled.div<{ fullWidth?: boolean }>`
   position: relative;
   display: inline-block;
-  ${({ $fullWidth }) => $fullWidth && "width: 100%;"}
+  ${({ fullWidth }) => fullWidth && "width: 100%;"}
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const SelectButton = styled.button<{
-  $error?: boolean;
-  $size?: string;
-  $fullWidth?: boolean;
-  $disabled?: boolean;
+  error?: boolean;
+  size?: string;
+  fullWidth?: boolean;
+  disabled?: boolean;
 }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 1px solid
-    ${({ theme, $error }) =>
-      $error ? theme.colors.danger : theme.colors.border.default};
+    ${({ theme, error }) =>
+      error ? theme.colors.danger : theme.colors.border.default};
   border-radius: ${({ theme }) => theme.borderRadius};
-  background-color: ${({ $disabled, theme }) =>
-    $disabled
+  background-color: ${({ disabled, theme }) =>
+    disabled
       ? `${theme.colors.background.secondary}80`
       : theme.colors.pureWhite};
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   outline: none;
   transition: all 0.2s ease;
   color: ${({ theme }) => theme.colors.text.primary};
   text-align: left;
   font-family: ${({ theme }) => theme.fontFamily.sans};
 
-  ${({ $fullWidth }) => $fullWidth && "width: 100%;"}
+  ${({ fullWidth }) => fullWidth && "width: 100%;"}
 
-  ${({ $size, theme }) => {
-    switch ($size) {
+  ${({ size, theme }) => {
+    switch (size) {
       case "small":
         return css`
           padding: ${theme.spacing.small};
@@ -75,11 +75,11 @@ export const SelectButton = styled.button<{
   }}
 
   &:focus {
-    border-color: ${({ theme, $error }) =>
-      $error ? theme.colors.danger : theme.colors.primary};
+    border-color: ${({ theme, error }) =>
+      error ? theme.colors.danger : theme.colors.primary};
     box-shadow: 0 0 0 3px
-      ${({ theme, $error }) =>
-        $error ? `${theme.colors.danger}20` : `${theme.colors.primary}20`};
+      ${({ theme, error }) =>
+        error ? `${theme.colors.danger}20` : `${theme.colors.primary}20`};
   }
 
   &:hover:not(:disabled) {
@@ -87,10 +87,10 @@ export const SelectButton = styled.button<{
   }
 `;
 
-export const SelectIcon = styled.span<{ $isOpen?: boolean }>`
+export const SelectIcon = styled.span<{ isOpen?: boolean }>`
   margin-left: ${({ theme }) => theme.spacing.small};
   transition: transform 0.2s ease;
-  transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+  transform: ${({ isOpen }) => (isOpen ? "rotate(180deg)" : "rotate(0deg)")};
   color: ${({ theme }) => theme.colors.text.secondary};
 
   &::after {
@@ -101,8 +101,8 @@ export const SelectIcon = styled.span<{ $isOpen?: boolean }>`
 `;
 
 export const SelectDropdown = styled.div<{
-  $isOpen?: boolean;
-  $fullWidth?: boolean;
+  isOpen?: boolean;
+  fullWidth?: boolean;
 }>`
   position: absolute;
   top: 100%;
@@ -114,25 +114,25 @@ export const SelectDropdown = styled.div<{
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: ${({ theme }) => theme.shadows.medium};
   margin-top: ${({ theme }) => theme.spacing.small};
-  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
-  transform: ${({ $isOpen }) =>
-    $isOpen ? "translateY(0)" : "translateY(-10px)"};
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
+  transform: ${({ isOpen }) =>
+    isOpen ? "translateY(0)" : "translateY(-10px)"};
   transition: all 0.2s ease;
   max-height: 200px;
   overflow-y: auto;
 `;
 
 export const SelectOption = styled.div<{
-  $disabled?: boolean;
-  $selected?: boolean;
+  disabled?: boolean;
+  selected?: boolean;
 }>`
   padding: ${({ theme }) => theme.spacing.medium};
-  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
-  color: ${({ $disabled, theme }) =>
-    $disabled ? theme.colors.text.secondary : theme.colors.text.primary};
-  background-color: ${({ $selected, theme }) =>
-    $selected ? `${theme.colors.primary}10` : "transparent"};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  color: ${({ disabled, theme }) =>
+    disabled ? theme.colors.text.secondary : theme.colors.text.primary};
+  background-color: ${({ selected, theme }) =>
+    selected ? `${theme.colors.primary}10` : "transparent"};
   font-family: ${({ theme }) => theme.fontFamily.sans};
 
   &:hover:not(:disabled) {

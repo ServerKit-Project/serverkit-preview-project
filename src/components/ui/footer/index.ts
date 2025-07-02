@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 interface FooterRootProps {
-  $variant?: "default" | "dark" | "light";
-  $size?: "compact" | "normal" | "expanded";
+  variant?: "default" | "dark" | "light";
+  size?: "compact" | "normal" | "expanded";
 }
 
 export const FooterRoot = styled.footer<FooterRootProps>`
   width: 100%;
-  padding: ${({ theme, $size = "normal" }) => {
-    switch ($size) {
+  padding: ${({ theme, size = "normal" }) => {
+    switch (size) {
       case "compact":
         return theme.spacing.medium;
       case "expanded":
@@ -17,8 +17,8 @@ export const FooterRoot = styled.footer<FooterRootProps>`
         return theme.spacing.large;
     }
   }};
-  background-color: ${({ theme, $variant = "default" }) => {
-    switch ($variant) {
+  background-color: ${({ theme, variant = "default" }) => {
+    switch (variant) {
       case "light":
         return theme.colors.background.secondary;
       case "dark":
@@ -27,8 +27,8 @@ export const FooterRoot = styled.footer<FooterRootProps>`
         return theme.colors.background.primary;
     }
   }};
-  color: ${({ theme, $variant = "default" }) => {
-    switch ($variant) {
+  color: ${({ theme, variant = "default" }) => {
+    switch (variant) {
       case "dark":
         return theme.colors.text.white;
       case "light":
@@ -37,19 +37,19 @@ export const FooterRoot = styled.footer<FooterRootProps>`
         return theme.colors.text.secondary;
     }
   }};
-  border-top: ${({ theme, $variant }) =>
-    $variant === "light" ? `1px solid ${theme.colors.border.default}` : "none"};
+  border-top: ${({ theme, variant }) =>
+    variant === "light" ? `1px solid ${theme.colors.border.default}` : "none"};
 `;
 
 interface FooterContainerProps {
-  $layout?: "grid" | "columns" | "centered";
+  layout?: "grid" | "columns" | "centered";
 }
 
 export const FooterContainer = styled.div<FooterContainerProps>`
   max-width: 1200px;
   margin: 0 auto;
-  display: ${({ $layout = "grid" }) => {
-    switch ($layout) {
+  display: ${({ layout = "grid" }) => {
+    switch (layout) {
       case "columns":
         return "flex";
       case "centered":
@@ -69,14 +69,14 @@ export const FooterContainer = styled.div<FooterContainerProps>`
     grid-template-columns: 1fr;
   }
 
-  ${({ $layout }) => {
-    if ($layout === "columns") {
+  ${({ layout }) => {
+    if (layout === "columns") {
       return `
         justify-content: space-between;
         flex-wrap: wrap;
       `;
     }
-    if ($layout === "centered") {
+    if (layout === "centered") {
       return `
         flex-direction: column;
         align-items: center;
@@ -99,15 +99,15 @@ export const FooterSection = styled.div`
 `;
 
 interface FooterTitleProps {
-  $variant?: "default" | "dark" | "light";
+  variant?: "default" | "dark" | "light";
 }
 
 export const FooterTitle = styled.h3<FooterTitleProps>`
   font-family: ${({ theme }) => theme.fontFamily.sans};
   font-size: ${({ theme }) => theme.fontSize.medium};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme, $variant = "default" }) => {
-    switch ($variant) {
+  color: ${({ theme, variant = "default" }) => {
+    switch (variant) {
       case "dark":
         return theme.colors.text.white;
       case "light":
@@ -131,14 +131,14 @@ export const FooterTitle = styled.h3<FooterTitleProps>`
 `;
 
 interface FooterLinkProps {
-  $variant?: "default" | "dark" | "light";
+  variant?: "default" | "dark" | "light";
 }
 
 export const FooterLink = styled.a<FooterLinkProps>`
   font-family: ${({ theme }) => theme.fontFamily.sans};
   font-size: ${({ theme }) => theme.fontSize.small};
-  color: ${({ theme, $variant = "default" }) => {
-    switch ($variant) {
+  color: ${({ theme, variant = "default" }) => {
+    switch (variant) {
       case "dark":
         return theme.colors.text.secondary;
       case "light":
@@ -200,8 +200,13 @@ export const SocialLink = styled.a`
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
-    background-color: ${({ theme }) => theme.colors.background.secondary};
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
     transform: translateY(-2px);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -250,7 +255,7 @@ export const FooterDescription = styled.p`
   font-family: ${({ theme }) => theme.fontFamily.sans};
   font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme }) => theme.colors.text.secondary};
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 `;
 
@@ -273,11 +278,6 @@ export const FooterLogo = styled.div`
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
-
-  img {
-    height: 40px;
-    width: auto;
-  }
 `;
 
 export const FooterLogoText = styled.span`

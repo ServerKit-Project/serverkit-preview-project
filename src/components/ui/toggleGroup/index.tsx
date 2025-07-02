@@ -48,8 +48,8 @@ export const ToggleGroupContainer = styled.div`
 `;
 
 export const ToggleItemButton = styled.button<{
-  $pressed?: boolean;
-  $disabled?: boolean;
+  pressed?: boolean;
+  disabled?: boolean;
 }>`
   all: unset;
   padding: ${({ theme }) => theme.spacing.small};
@@ -66,15 +66,15 @@ export const ToggleItemButton = styled.button<{
   transition: all 0.2s;
   cursor: pointer;
   color: ${(props) =>
-    props.$pressed
+    props.pressed
       ? props.theme.colors.text.white
       : props.theme.colors.text.secondary};
   background-color: ${(props) =>
-    props.$pressed ? props.theme.colors.primary : "transparent"};
+    props.pressed ? props.theme.colors.primary : "transparent"};
 
   &:hover {
     background-color: ${(props) =>
-      props.$pressed
+      props.pressed
         ? props.theme.colors.background.hover.primary
         : props.theme.colors.background.hover.secondary};
   }
@@ -85,12 +85,12 @@ export const ToggleItemButton = styled.button<{
   }
 
   ${(props) =>
-    props.$disabled &&
+    props.disabled &&
     css`
       opacity: 0.5;
       cursor: not-allowed;
       &:hover {
-        background-color: ${props.$pressed
+        background-color: ${props.pressed
           ? props.theme.colors.primary
           : "transparent"};
       }

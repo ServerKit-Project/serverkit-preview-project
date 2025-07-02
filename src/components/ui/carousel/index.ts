@@ -7,10 +7,10 @@ export const CarouselContainer = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
 `;
 
-export const CarouselTrack = styled.div<{ $currentIndex: number }>`
+export const CarouselTrack = styled.div<{ currentIndex: number }>`
   display: flex;
   transition: transform 0.3s ease-in-out;
-  transform: translateX(-${(props) => props.$currentIndex * 100}%);
+  transform: translateX(-${(props) => props.currentIndex * 100}%);
 `;
 
 export const CarouselSlide = styled.div`
@@ -18,11 +18,11 @@ export const CarouselSlide = styled.div`
   width: 100%;
 `;
 
-export const CarouselButton = styled.button<{ $direction: "prev" | "next" }>`
+export const CarouselButton = styled.button<{ direction: "prev" | "next" }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  ${(props) => (props.$direction === "prev" ? "left: 1rem;" : "right: 1rem;")}
+  ${(props) => (props.direction === "prev" ? "left: 1rem;" : "right: 1rem;")}
   background: ${({ theme }) => theme.colors.pureWhite}CC;
   border: none;
   border-radius: 50%;
@@ -55,13 +55,13 @@ export const DotsContainer = styled.div`
   z-index: 1;
 `;
 
-export const Dot = styled.button<{ $isActive: boolean }>`
+export const Dot = styled.button<{ isActive: boolean }>`
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
   border: none;
   background: ${(props) =>
-    props.$isActive
+    props.isActive
       ? props.theme.colors.primary
       : props.theme.colors.pureWhite + "CC"};
   cursor: pointer;

@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const StyledTextarea = styled.textarea<{ $error?: boolean }>`
+export const StyledTextarea = styled.textarea<{ error?: boolean }>`
   width: 100%;
   min-height: 80px;
   padding: 0.5rem 0.75rem;
   background-color: white;
-  border: 1px solid ${(props) => (props.$error ? "#ef4444" : "#e5e7eb")};
+  border: 1px solid ${(props) => (props.error ? "#ef4444" : "#e5e7eb")};
   border-radius: 0.375rem;
   color: #1f2937;
   font-size: 0.875rem;
@@ -18,10 +18,10 @@ export const StyledTextarea = styled.textarea<{ $error?: boolean }>`
 
   &:focus {
     outline: none;
-    border-color: ${(props) => (props.$error ? "#ef4444" : "#3b82f6")};
+    border-color: ${(props) => (props.error ? "#ef4444" : "#3b82f6")};
     box-shadow: 0 0 0 2px
       ${(props) =>
-        props.$error ? "rgba(239, 68, 68, 0.2)" : "rgba(59, 130, 246, 0.2)"};
+        props.error ? "rgba(239, 68, 68, 0.2)" : "rgba(59, 130, 246, 0.2)"};
   }
 
   &:disabled {
