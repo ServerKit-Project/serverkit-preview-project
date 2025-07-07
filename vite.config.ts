@@ -82,35 +82,84 @@ function componentMappingPlugin() {
       // pages 폴더의 파일만 처리
       if (!id.includes('/pages/')) return null;
 
-      // 파일명에서 컴포넌트 이름 추출
-      const fileName = path.basename(id, '.tsx');
-      const componentId = componentMapping.get(fileName);
+      console.log(`🔍 Processing file: ${id}`);
 
-      if (!componentId) {
-        console.log(`🔍 No mapping found for: ${fileName}`);
+      // export default function 이름 찾기
+      const exportDefaultRegex = /export\s+default\s+function\s+(\w+)/;
+      const exportMatch = code.match(exportDefaultRegex);
+      const componentName = exportMatch ? exportMatch[1] : null;
+
+      if (!componentName) {
+        console.log(`❌ No export default function found in file: ${id}`);
         return null;
       }
 
-      console.log(`🔧 Processing ${fileName} -> ${componentId}`);
+      console.log(`📦 Found component: ${componentName}`);
+
+      // mappingId.json에서 해당 컴포넌트의 ID를 찾음
+      let componentId = '';
+      
+      // 전체 매핑 데이터를 순회하며 컴포넌트 이름과 일치하는 항목 찾기
+      const findComponentId = (data: any): string => {
+        // 현재 노드의 이름이 일치하는지 확인
+        if (data.name === componentName) {
+          console.log(`✨ Found matching name: ${data.name} = ${componentName}`);
+          return data.id;
+        }
+        // children이 있는 경우 재귀적으로 검색
+        if (data.children && Array.isArray(data.children)) {
+          for (const child of data.children) {
+            const found = findComponentId(child);
+            if (found) return found;
+          }
+        }
+        return '';
+      };
+
+      // 모든 루트 데이터에서 검색
+      for (const rootData of Object.values(mappingData)) {
+        componentId = findComponentId(rootData);
+        if (componentId) {
+          console.log(`🎯 Found ID: ${componentId} for component: ${componentName}`);
+          break;
+        }
+      }
+
+      if (!componentId) {
+        console.log(`❌ No mapping found for component: ${componentName}`);
+        return null;
+      }
 
       // 이미 data-component-name이 있는 경우 제거
       let transformedCode = code.replace(/\s*data-component-name="[^"]*"/g, '');
 
-      // 기본 JSX 요소의 첫 번째 태그에 data-component-name 추가
-      // return 문 다음의 첫 번째 JSX 요소를 찾아서 속성 추가
+      // styled-components 찾기
+      const styledComponentRegex = /const\s+(\w+)\s*=\s*styled(?:\.\w+|\([^)]+\))(?:<[^>]*>)?`[^`]*`/g;
       const returnRegex = /return\s*\(\s*<([^>\s]+)([^>]*?)>/;
-      const match = transformedCode.match(returnRegex);
+      
+      // styled-components 이름 수집
+      const styledComponents = new Set<string>();
+      let match;
+      while ((match = styledComponentRegex.exec(transformedCode)) !== null) {
+        console.log(`💅 Found styled-component: ${match[1]}`);
+        styledComponents.add(match[1]);
+      }
+      
+      // return 문에서 최상위 컴포넌트 찾기
+      const returnMatch = transformedCode.match(returnRegex);
 
-      console.log(`🔍 Regex match for ${fileName}:`, match ? 'Found' : 'Not found');
-      if (match) {
-        console.log(`🔍 Match details:`, { tagName: match[1], props: match[2] });
+      if (!returnMatch) {
+        console.log(`❌ No return statement found in component: ${componentName}`);
+        return null;
       }
 
-      if (match) {
-        const tagName = match[1];
-        const existingProps = match[2];
+      const tagName = returnMatch[1];
+      console.log(`🔍 Found return tag: ${tagName}`);
 
-        // 속성이 이미 있는 경우와 없는 경우 구분
+      const existingProps = returnMatch[2];
+
+      // 최상위 컴포넌트가 styled-component인 경우에만 처리
+      if (styledComponents.has(tagName)) {
         const hasExistingProps = existingProps.trim().length > 0;
         const separator = hasExistingProps ? ' ' : ' ';
 
@@ -118,10 +167,9 @@ function componentMappingPlugin() {
     <${tagName}${existingProps}${separator}data-component-name="${componentId}">`;
 
         transformedCode = transformedCode.replace(returnRegex, replacement);
-        console.log(`✅ Transformed ${fileName}:`, replacement);
+        console.log(`✅ Added data-component-name to ${componentName} (${tagName})`);
       } else {
-        console.log(`❌ No regex match for ${fileName}. Code preview:`, transformedCode.substring(0, 400));
-        console.log(`🔍 Full function code:`, transformedCode.substring(transformedCode.indexOf('export default'), transformedCode.indexOf('export default') + 500));
+        console.log(`⚠️ Tag ${tagName} is not a styled-component`);
       }
 
       return transformedCode;
