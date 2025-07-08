@@ -3,6 +3,12 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 import fs from "fs";
 import { z } from "zod";
+import { parse } from "@babel/parser";
+import traverseMod from "@babel/traverse";
+const traverse = (traverseMod as any).default;
+import generateMod from "@babel/generator";
+const generate = (generateMod as any).default;
+import * as t from "@babel/types";
 
 // (dev only) mappingId.json Schema 정의
 const ComponentItemSchema: z.ZodType<any> = z.lazy(() => z.object({
@@ -130,67 +136,100 @@ function componentMappingPlugin() {
         return null;
       }
 
-      // 이미 data-component-name이 있는 경우 제거
-      let transformedCode = code.replace(/\s*data-component-name="[^"]*"/g, '');
+            // AST를 사용해서 JSX 구조를 정확히 분석
+      try {
+        const ast = parse(code, {
+          sourceType: 'module',
+          plugins: ['jsx', 'typescript']
+        });
 
-      // styled-components 찾기
-      const styledComponentRegex = /const\s+(\w+)\s*=\s*styled(?:\.\w+|\([^)]+\))(?:<[^>]*>)?`[^`]*`/g;
-      
-      // styled-components 이름 수집
-      const styledComponents = new Set<string>();
-      let match;
-      while ((match = styledComponentRegex.exec(transformedCode)) !== null) {
-        console.log(`💅 Found styled-component: ${match[1]}`);
-        styledComponents.add(match[1]);
-      }
-      
-      // 컴포넌트의 메인 return 문만 찾기 - 더 간단하고 안전한 방법
-      // export default function 다음에 오는 마지막 return 문을 찾음 (일반적으로 메인 return 문)
-      const exportIndex = transformedCode.indexOf('export default function');
-      if (exportIndex === -1) {
-        console.log(`❌ Could not find export default function in component: ${componentName}`);
-        return null;
-      }
+        let styledComponentNames = new Set<string>();
+        let mainReturnJSX: any = null;
 
-      // export default function 이후의 코드에서 return 문 찾기
-      const afterExport = transformedCode.substring(exportIndex);
-      
-      // 모든 return 문을 찾아서 마지막 것을 사용 (일반적으로 메인 return 문)
-      const returnMatches = [...afterExport.matchAll(/return\s*\(\s*<([A-Z][A-Za-z0-9]*)([^>]*?)>/g)];
-      
-      if (returnMatches.length === 0) {
-        console.log(`❌ No return statement found in component: ${componentName}`);
-        return null;
-      }
+        // styled-components 찾기
+        traverse(ast, {
+          VariableDeclarator(path: any) {
+            if (path.node.init && 
+                path.node.init.type === 'TaggedTemplateExpression' &&
+                path.node.init.tag.type === 'CallExpression' &&
+                path.node.init.tag.callee.type === 'Identifier' &&
+                path.node.init.tag.callee.name === 'styled') {
+              if (path.node.id.type === 'Identifier') {
+                styledComponentNames.add(path.node.id.name);
+                console.log(`💅 Found styled-component: ${path.node.id.name}`);
+              }
+            }
+          }
+        });
 
-      // 마지막 return 문 사용 (일반적으로 메인 return 문)
-      const lastReturnMatch = returnMatches[returnMatches.length - 1];
-      const tagName = lastReturnMatch[1];
-      console.log(`🔍 Found main return tag: ${tagName}`);
+        // export default function의 첫 번째 return 문 찾기
+        traverse(ast, {
+          ExportDefaultDeclaration(path: any) {
+            console.log(`🔍 Found export default declaration:`, path.node.declaration.type);
+            if (path.node.declaration.type === 'FunctionDeclaration') {
+              const functionBody = path.node.declaration.body;
+              if (functionBody.type === 'BlockStatement') {
+                console.log(`🔍 Function body has ${functionBody.body.length} statements`);
+                for (const statement of functionBody.body) {
+                  console.log(`🔍 Statement type:`, statement.type);
+                  if (statement.type === 'ReturnStatement' && statement.argument) {
+                    console.log(`🔍 Return statement argument type:`, statement.argument.type);
+                    if (statement.argument.type === 'JSXElement') {
+                      mainReturnJSX = statement.argument;
+                      console.log(`✅ Found main return JSX`);
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        });
 
-      const existingProps = lastReturnMatch[2];
+        if (!mainReturnJSX) {
+          console.log(`❌ No main return JSX found in component: ${componentName}`);
+          return null;
+        }
 
-      // 최상위 컴포넌트가 styled-component인 경우에만 처리
-      if (styledComponents.has(tagName)) {
-        const hasExistingProps = existingProps.trim().length > 0;
-        const separator = hasExistingProps ? ' ' : ' ';
-
-        // 정확한 위치에 data-component-name 추가
-        const replacement = `return (
-    <${tagName}${existingProps}${separator}data-component-name="${componentId}">`;
-
-        // 마지막 return 문만 교체
-        const lastReturnIndex = afterExport.lastIndexOf('return');
-        const beforeLastReturn = transformedCode.substring(0, exportIndex + lastReturnIndex);
-        const afterLastReturn = afterExport.substring(lastReturnIndex).replace(/return\s*\(\s*<([A-Z][A-Za-z0-9]*)([^>]*?)>/, replacement);
+        const tagName = mainReturnJSX.openingElement.name.type === 'JSXIdentifier' 
+          ? mainReturnJSX.openingElement.name.name 
+          : null;
         
-        transformedCode = beforeLastReturn + afterLastReturn;
-        console.log(`✅ Added data-component-name to ${componentName} (${tagName})`);
-      } else {
-        console.log(`⚠️ Tag ${tagName} is not a styled-component`);
-      }
+        if (!tagName) {
+          console.log(`❌ Could not get tag name from JSX element`);
+          return null;
+        }
+        console.log(`🔍 Found main return tag: ${tagName}`);
 
-      return transformedCode;
+        if (!styledComponentNames.has(tagName)) {
+          console.log(`⚠️ Tag ${tagName} is not a styled-component`);
+          return null;
+        }
+
+        // 이미 data-component-name이 있는지 확인
+        const existingProps = mainReturnJSX.openingElement.attributes || [];
+        const hasDataComponentName = existingProps.some((attr: any) => 
+          attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
+        );
+
+        if (!hasDataComponentName) {
+          // data-component-name 속성 추가
+          mainReturnJSX.openingElement.attributes.push(
+            t.jsxAttribute(
+              t.jsxIdentifier('data-component-name'),
+              t.stringLiteral(componentId)
+            )
+          );
+        }
+
+        // 변환된 코드 생성
+        const result = generate(ast, { retainLines: true });
+        console.log(`✅ Added data-component-name to ${componentName} (${tagName})`);
+        return result.code;
+      } catch (error) {
+        console.log(`❌ Error parsing component: ${componentName}`, error);
+        return null;
+      }
     }
   };
 }
