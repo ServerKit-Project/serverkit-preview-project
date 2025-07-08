@@ -135,7 +135,6 @@ function componentMappingPlugin() {
 
       // styled-components 찾기
       const styledComponentRegex = /const\s+(\w+)\s*=\s*styled(?:\.\w+|\([^)]+\))(?:<[^>]*>)?`[^`]*`/g;
-      const returnRegex = /return\s*\(\s*<([^>\s]+)([^>]*?)>/;
       
       // styled-components 이름 수집
       const styledComponents = new Set<string>();
@@ -145,28 +144,47 @@ function componentMappingPlugin() {
         styledComponents.add(match[1]);
       }
       
-      // return 문에서 최상위 컴포넌트 찾기
-      const returnMatch = transformedCode.match(returnRegex);
+      // 컴포넌트의 메인 return 문만 찾기 - 더 간단하고 안전한 방법
+      // export default function 다음에 오는 마지막 return 문을 찾음 (일반적으로 메인 return 문)
+      const exportIndex = transformedCode.indexOf('export default function');
+      if (exportIndex === -1) {
+        console.log(`❌ Could not find export default function in component: ${componentName}`);
+        return null;
+      }
 
-      if (!returnMatch) {
+      // export default function 이후의 코드에서 return 문 찾기
+      const afterExport = transformedCode.substring(exportIndex);
+      
+      // 모든 return 문을 찾아서 마지막 것을 사용 (일반적으로 메인 return 문)
+      const returnMatches = [...afterExport.matchAll(/return\s*\(\s*<([A-Z][A-Za-z0-9]*)([^>]*?)>/g)];
+      
+      if (returnMatches.length === 0) {
         console.log(`❌ No return statement found in component: ${componentName}`);
         return null;
       }
 
-      const tagName = returnMatch[1];
-      console.log(`🔍 Found return tag: ${tagName}`);
+      // 마지막 return 문 사용 (일반적으로 메인 return 문)
+      const lastReturnMatch = returnMatches[returnMatches.length - 1];
+      const tagName = lastReturnMatch[1];
+      console.log(`🔍 Found main return tag: ${tagName}`);
 
-      const existingProps = returnMatch[2];
+      const existingProps = lastReturnMatch[2];
 
       // 최상위 컴포넌트가 styled-component인 경우에만 처리
       if (styledComponents.has(tagName)) {
         const hasExistingProps = existingProps.trim().length > 0;
         const separator = hasExistingProps ? ' ' : ' ';
 
+        // 정확한 위치에 data-component-name 추가
         const replacement = `return (
     <${tagName}${existingProps}${separator}data-component-name="${componentId}">`;
 
-        transformedCode = transformedCode.replace(returnRegex, replacement);
+        // 마지막 return 문만 교체
+        const lastReturnIndex = afterExport.lastIndexOf('return');
+        const beforeLastReturn = transformedCode.substring(0, exportIndex + lastReturnIndex);
+        const afterLastReturn = afterExport.substring(lastReturnIndex).replace(/return\s*\(\s*<([A-Z][A-Za-z0-9]*)([^>]*?)>/, replacement);
+        
+        transformedCode = beforeLastReturn + afterLastReturn;
         console.log(`✅ Added data-component-name to ${componentName} (${tagName})`);
       } else {
         console.log(`⚠️ Tag ${tagName} is not a styled-component`);
