@@ -90,83 +90,24 @@ function componentMappingPlugin() {
 
       console.log(`🔍 Processing file: ${id}`);
 
-      // export default function 이름 찾기
-      const exportDefaultRegex = /export\s+default\s+function\s+(\w+)/;
-      const exportMatch = code.match(exportDefaultRegex);
-      const componentName = exportMatch ? exportMatch[1] : null;
-
-      if (!componentName) {
-        console.log(`❌ No export default function found in file: ${id}`);
-        return null;
-      }
-
-      console.log(`📦 Found component: ${componentName}`);
-
-      // mappingId.json에서 해당 컴포넌트의 ID를 찾음
-      let componentId = '';
+      // AST를 사용해서 모든 분석 수행
+      let componentName: string | null = null;
+      let styledComponentNames = new Set<string>();
+      let mainReturnJSX: any = null;
       
-      // 전체 매핑 데이터를 순회하며 컴포넌트 이름과 일치하는 항목 찾기
-      const findComponentId = (data: any): string => {
-        // 현재 노드의 이름이 일치하는지 확인
-        if (data.name === componentName) {
-          console.log(`✨ Found matching name: ${data.name} = ${componentName}`);
-          return data.id;
-        }
-        // children이 있는 경우 재귀적으로 검색
-        if (data.children && Array.isArray(data.children)) {
-          for (const child of data.children) {
-            const found = findComponentId(child);
-            if (found) return found;
-          }
-        }
-        return '';
-      };
-
-      // 모든 루트 데이터에서 검색
-      for (const rootData of Object.values(mappingData)) {
-        componentId = findComponentId(rootData);
-        if (componentId) {
-          console.log(`🎯 Found ID: ${componentId} for component: ${componentName}`);
-          break;
-        }
-      }
-
-      if (!componentId) {
-        console.log(`❌ No mapping found for component: ${componentName}`);
-        return null;
-      }
-
-            // AST를 사용해서 JSX 구조를 정확히 분석
       try {
         const ast = parse(code, {
           sourceType: 'module',
           plugins: ['jsx', 'typescript']
         });
 
-        let styledComponentNames = new Set<string>();
-        let mainReturnJSX: any = null;
-
-        // styled-components 찾기
-        traverse(ast, {
-          VariableDeclarator(path: any) {
-            if (path.node.init && 
-                path.node.init.type === 'TaggedTemplateExpression' &&
-                path.node.init.tag.type === 'CallExpression' &&
-                path.node.init.tag.callee.type === 'Identifier' &&
-                path.node.init.tag.callee.name === 'styled') {
-              if (path.node.id.type === 'Identifier') {
-                styledComponentNames.add(path.node.id.name);
-                console.log(`💅 Found styled-component: ${path.node.id.name}`);
-              }
-            }
-          }
-        });
-
-        // export default function의 첫 번째 return 문 찾기
+        // 한 번의 traverse로 모든 정보 수집
         traverse(ast, {
           ExportDefaultDeclaration(path: any) {
-            console.log(`🔍 Found export default declaration:`, path.node.declaration.type);
-            if (path.node.declaration.type === 'FunctionDeclaration') {
+            if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id) {
+              componentName = path.node.declaration.id.name;
+              console.log(`🔍 Found export default declaration:`, path.node.declaration.type);
+              
               const functionBody = path.node.declaration.body;
               if (functionBody.type === 'BlockStatement') {
                 console.log(`🔍 Function body has ${functionBody.body.length} statements`);
@@ -183,51 +124,123 @@ function componentMappingPlugin() {
                 }
               }
             }
+          },
+          VariableDeclarator(path: any) {
+            if (path.node.init && 
+                path.node.init.type === 'TaggedTemplateExpression' &&
+                path.node.init.tag.type === 'CallExpression' &&
+                path.node.init.tag.callee.type === 'Identifier' &&
+                path.node.init.tag.callee.name === 'styled') {
+              if (path.node.id.type === 'Identifier') {
+                styledComponentNames.add(path.node.id.name);
+                console.log(`💅 Found styled-component: ${path.node.id.name}`);
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.log(`❌ Error parsing AST: ${error}`);
+        return null;
+      }
+
+      if (!componentName) {
+        console.log(`❌ No export default function found in file: ${id}`);
+        return null;
+      }
+
+      console.log(`📦 Found component: ${componentName}`);
+
+      // componentMapping에서 해당 컴포넌트의 ID를 찾음
+      const componentId = componentMapping.get(componentName);
+      
+      if (!componentId) {
+        console.log(`❌ No mapping found for component: ${componentName}`);
+        return null;
+      }
+      
+      console.log(`🎯 Found ID: ${componentId} for component: ${componentName}`);
+
+      if (!mainReturnJSX) {
+        console.log(`❌ No main return JSX found in component: ${componentName}`);
+        return null;
+      }
+
+      const tagName = mainReturnJSX.openingElement.name.type === 'JSXIdentifier' 
+        ? mainReturnJSX.openingElement.name.name 
+        : null;
+      
+      if (!tagName) {
+        console.log(`❌ Could not get tag name from JSX element`);
+        return null;
+      }
+      console.log(`🔍 Found main return tag: ${tagName}`);
+
+      if (!styledComponentNames.has(tagName)) {
+        console.log(`⚠️ Tag ${tagName} is not a styled-component`);
+        return null;
+      }
+
+      // 이미 data-component-name이 있는지 확인
+      const existingProps = mainReturnJSX.openingElement.attributes || [];
+      const hasDataComponentName = existingProps.some((attr: any) => 
+        attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
+      );
+
+      if (!hasDataComponentName) {
+        // data-component-name 속성 추가
+        console.log(`🚀 Adding data-component-name="${componentId}" to ${componentName}`);
+        mainReturnJSX.openingElement.attributes.push(
+          t.jsxAttribute(
+            t.jsxIdentifier('data-component-name'),
+            t.stringLiteral(componentId)
+          )
+        );
+      }
+
+      // 변환된 코드 생성 (이미 파싱된 AST를 재사용하지 않고 새로 파싱)
+      try {
+        const newAst = parse(code, {
+          sourceType: 'module',
+          plugins: ['jsx', 'typescript']
+        });
+
+        // data-component-name 속성 추가
+        traverse(newAst, {
+          ExportDefaultDeclaration(path: any) {
+            if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id?.name === componentName) {
+              const functionBody = path.node.declaration.body;
+              if (functionBody.type === 'BlockStatement') {
+                for (const statement of functionBody.body) {
+                  if (statement.type === 'ReturnStatement' && statement.argument) {
+                    if (statement.argument.type === 'JSXElement') {
+                      const jsxElement = statement.argument;
+                      const existingProps = jsxElement.openingElement.attributes || [];
+                      const hasDataComponentName = existingProps.some((attr: any) => 
+                        attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
+                      );
+
+                      if (!hasDataComponentName) {
+                        jsxElement.openingElement.attributes.push(
+                          t.jsxAttribute(
+                            t.jsxIdentifier('data-component-name'),
+                            t.stringLiteral(componentId)
+                          )
+                        );
+                      }
+                      break;
+                    }
+                  }
+                }
+              }
+            }
           }
         });
 
-        if (!mainReturnJSX) {
-          console.log(`❌ No main return JSX found in component: ${componentName}`);
-          return null;
-        }
-
-        const tagName = mainReturnJSX.openingElement.name.type === 'JSXIdentifier' 
-          ? mainReturnJSX.openingElement.name.name 
-          : null;
-        
-        if (!tagName) {
-          console.log(`❌ Could not get tag name from JSX element`);
-          return null;
-        }
-        console.log(`🔍 Found main return tag: ${tagName}`);
-
-        if (!styledComponentNames.has(tagName)) {
-          console.log(`⚠️ Tag ${tagName} is not a styled-component`);
-          return null;
-        }
-
-        // 이미 data-component-name이 있는지 확인
-        const existingProps = mainReturnJSX.openingElement.attributes || [];
-        const hasDataComponentName = existingProps.some((attr: any) => 
-          attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
-        );
-
-        if (!hasDataComponentName) {
-          // data-component-name 속성 추가
-          mainReturnJSX.openingElement.attributes.push(
-            t.jsxAttribute(
-              t.jsxIdentifier('data-component-name'),
-              t.stringLiteral(componentId)
-            )
-          );
-        }
-
-        // 변환된 코드 생성
-        const result = generate(ast, { retainLines: true });
+        const result = generate(newAst, { retainLines: true });
         console.log(`✅ Added data-component-name to ${componentName} (${tagName})`);
         return result.code;
       } catch (error) {
-        console.log(`❌ Error parsing component: ${componentName}`, error);
+        console.log(`❌ Error generating code: ${error}`);
         return null;
       }
     }
