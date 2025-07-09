@@ -18,7 +18,7 @@ const ComponentItemSchema: z.ZodType<any> = z.lazy(() => z.object({
   children: z.array(ComponentItemSchema)
 }));
 
-const MappingIdSchema = z.record(z.string(), ComponentItemSchema);
+const MappingIdSchema = z.record(z.string(), z.array(ComponentItemSchema));
 
 // (dev only) 컴포넌트 매핑 자동 주입 플러그인
 function componentMappingPlugin() {
@@ -54,21 +54,26 @@ function componentMappingPlugin() {
 
         // 컴포넌트 매핑 테이블 생성
         Object.keys(mappingData).forEach(rootKey => {
-          const rootData = mappingData[rootKey];
+          const rootDataArray = mappingData[rootKey];
+          
+          // 배열의 첫 번째 요소가 실제 루트 데이터
+          if (Array.isArray(rootDataArray) && rootDataArray.length > 0) {
+            const rootData = rootDataArray[0];
+            
+            // Root 컴포넌트 자체 매핑 (Root_ef0cbdb6.tsx 같은 파일용)
+            componentMapping.set(rootKey, rootData.id);
 
-          // Root 컴포넌트 자체 매핑 (Root_c9566184.tsx 같은 파일용)
-          componentMapping.set(rootKey, rootData.id);
+            function mapComponents(item: any) {
+              if (item.name) {
+                componentMapping.set(item.name, item.id);
+              }
+              if (item.children) {
+                item.children.forEach(mapComponents);
+              }
+            }
 
-          function mapComponents(item: any) {
-            if (item.name) {
-              componentMapping.set(item.name, item.id);
-            }
-            if (item.children) {
-              item.children.forEach(mapComponents);
-            }
+            mapComponents(rootData);
           }
-
-          mapComponents(rootData);
         });
 
         console.log('🔗 Component mapping loaded:', componentMapping);
@@ -173,12 +178,8 @@ function componentMappingPlugin() {
         console.log(`❌ Could not get tag name from JSX element`);
         return null;
       }
+      // styled-component 여부에 관계없이 모든 컴포넌트에 시작 return에 data-component-name 추가
       console.log(`🔍 Found main return tag: ${tagName}`);
-
-      if (!styledComponentNames.has(tagName)) {
-        console.log(`⚠️ Tag ${tagName} is not a styled-component`);
-        return null;
-      }
 
       // 이미 data-component-name이 있는지 확인
       const existingProps = mainReturnJSX.openingElement.attributes || [];
