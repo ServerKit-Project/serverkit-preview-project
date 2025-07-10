@@ -1,16 +1,17 @@
-const imageModules = import.meta.glob("./images/*.{png,jpg,jpeg,svg}", {
+const imageModules = import.meta.glob("../assets/images/*.{png,jpg,jpeg,svg}", {
     eager: true,
-  });
-const videoModules = import.meta.glob("./videos/*.{mp4,webm}", { eager: true });
-
+});
+const videoModules = import.meta.glob("../assets/videos/*.{mp4,webm}", {
+    eager: true,
+});
 const allModules = {
     ...imageModules,
     ...videoModules,
 };
-
+  
 export function getMediaSrcFromManager(filename: string): string | null {
-    const imagePath = `./images/${filename}`;
-    const videoPath = `./videos/${filename}`;
+    const imagePath = `../assets/images/${filename}`;
+    const videoPath = `../assets/videos/${filename}`;
 
     if (allModules[imagePath]) {
         return (allModules[imagePath] as any).default;
