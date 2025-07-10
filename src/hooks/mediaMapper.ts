@@ -33,11 +33,11 @@ export function createMediaMap(mediaConfig: MediaEntry[]) {
     }
   }
 
-  function getMediaSrc(key: string): string | null {
+  function getMediaSrc(key: string): string {
     const filename = mediaPathMap[key];
-    if (!filename) return null;
+    if (!filename) return "";
     if (filename.type === "import") {
-      return getMediaSrcFromManager(filename.path);
+      return getMediaSrcFromManager(filename.path) || "";
     } else {
       return filename.path;
     }
