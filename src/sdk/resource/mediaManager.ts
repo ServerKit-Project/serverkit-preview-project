@@ -1,5 +1,5 @@
 const imageModules = import.meta.glob(
-  "../../assets/images/*.{png,jpg,jpeg,svg}",
+  "../../assets/images/*.{png,jpg,jpeg,svg,PNG,JPG,JPEG,SVG}",
   {
     eager: true,
   }
