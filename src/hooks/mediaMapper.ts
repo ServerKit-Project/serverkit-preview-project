@@ -1,12 +1,36 @@
 import { getMediaSrcFromManager } from "./mediaManager";
 
-type MediaConfigItem = { name: string; data: string; type: string };
+type MediaType = "image" | "video";
 
-export function createMediaMap(mediaConfig: MediaConfigItem[]) {
+interface RecommendedSize {
+  width: number;
+  height: number;
+}
+
+interface mediaSrcData {
+  name: string;
+  data: string;
+  type: "import" | "url";
+}
+
+export interface MediaEntry {
+  purpose: string;
+  type: MediaType;
+  componentName: string;
+  recommendedSize: RecommendedSize;
+  mediaSrcData: mediaSrcData[];
+}
+
+export function createMediaMap(mediaConfig: MediaEntry[]) {
   const mediaPathMap: Record<string, { path: string; type: string }> = {};
 
   for (const item of mediaConfig) {
-    mediaPathMap[item.name] = { path: item.data, type: item.type };
+    for (const media of item.mediaSrcData) {
+      mediaPathMap[media.name] = {
+        path: media.data,
+        type: media.type,
+      };
+    }
   }
 
   function getMediaSrc(key: string): string | null {
