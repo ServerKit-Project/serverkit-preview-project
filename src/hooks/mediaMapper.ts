@@ -1,4 +1,4 @@
-import { getMediaSrcFromManager } from "./mediaManager";
+import { getMediaSrcFromManager } from "../sdk/resource/mediaManager";
 
 type MediaType = "image" | "video";
 
