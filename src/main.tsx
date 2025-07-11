@@ -5,14 +5,17 @@ import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./theme";
 import "./theme/index.css";
 import { AuthProvider } from "./context/auth/AuthProvider.tsx";
+import { MediaProvider } from "./context/media";
 
 createRoot(document.getElementById("root")!).render(
   <>
     <ThemeProvider theme={defaultTheme}>
       <AuthProvider projectId={import.meta.env.VITE_PROJECT_ID}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <MediaProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </MediaProvider>
       </AuthProvider>
     </ThemeProvider>
   </>
