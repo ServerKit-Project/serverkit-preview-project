@@ -64,6 +64,6 @@ export const StyledCardFooter = styled(CardFooterRoot)<{ hasGap?: boolean }>`
   justify-content: ${(props) => (props.hasGap ? "space-between" : "stretch")};
 `;
 
-export const StyledButton = styled(Button)<{ fullWidth?: boolean }>`
-  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+export const StyledButton = styled(Button)<{ isFullWidth?: boolean }>`
+  width: ${(props) => (props.isFullWidth ? "100%" : "auto")};
 `;

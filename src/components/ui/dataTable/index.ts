@@ -61,18 +61,18 @@ export const PageButton = styled(Button)<{ disabled?: boolean }>`
 `;
 
 interface StyledTableRowProps {
-  striped?: boolean;
-  hoverable?: boolean;
-  selected?: boolean;
+  isStriped?: boolean;
+  isHoverable?: boolean;
+  isSelected?: boolean;
 }
 
 export const StyledTableRow = styled(TableRow)<StyledTableRowProps>`
-  background-color: ${({ theme, selected }) =>
-    selected ? theme.colors.background.secondary : "inherit"};
+  background-color: ${({ theme, isSelected }) =>
+    isSelected ? theme.colors.background.secondary : "inherit"};
 
   &:hover {
-    background-color: ${({ theme, selected }) =>
-      selected
+    background-color: ${({ theme, isSelected }) =>
+      isSelected
         ? theme.colors.background.hover.secondary
         : theme.colors.background.secondary};
   }

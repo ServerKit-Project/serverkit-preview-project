@@ -7,9 +7,9 @@ export const TableContainer = styled.div`
 `;
 
 export const TableRoot = styled.table<{
-  striped?: string;
-  bordered?: string;
-  hoverable?: string;
+  isStriped?: boolean;
+  isBordered?: boolean;
+  isHoverable?: boolean;
 }>`
   width: 100%;
   border-collapse: collapse;
@@ -23,46 +23,44 @@ export const TableHead = styled.thead`
 export const TableBody = styled.tbody``;
 
 export const TableRow = styled.tr<{
-  striped?: boolean;
-  hoverable?: boolean;
+  isStriped?: boolean;
+  isHoverable?: boolean;
   index?: number;
 }>`
-  ${({ striped, index, theme }) =>
-    striped && index && index % 2 === 0
-      ? `background-color: ${theme.colors.background.secondary}${striped};`
+  ${({ isStriped, index, theme }) =>
+    isStriped && index && index % 2 === 0
+      ? `background-color: ${theme.colors.background.secondary};`
       : ""}
 
-  ${({ hoverable, theme }) =>
-    hoverable &&
+  ${({ isHoverable, theme }) =>
+    isHoverable &&
     `
       &:hover {
-        background-color: ${theme.colors.background.hover.secondary}${hoverable};
+        background-color: ${theme.colors.background.hover.secondary};
       }
     `}
 `;
 
-export const TableHeader = styled.th<{ width?: string; bordered?: string }>`
+export const TableHeader = styled.th<{ width?: string; isBordered?: boolean }>`
   padding: 12px 16px;
   text-align: left;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: ${({ theme }) => theme.colors.text.primary};
   ${({ width }) => width && `width: ${width};`}
-  ${({ bordered, theme }) =>
-    bordered &&
-    `border-right: 1px solid ${theme.colors.border.default}${bordered};`}
+  ${({ isBordered, theme }) =>
+    isBordered && `border-right: 1px solid ${theme.colors.border.default};`}
   
   &:last-child {
     border-right: none;
   }
 `;
 
-export const TableCell = styled.td<{ bordered?: string }>`
+export const TableCell = styled.td<{ isBordered?: boolean }>`
   padding: 12px 16px;
   color: ${({ theme }) => theme.colors.text.primary};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border.default};
-  ${({ bordered, theme }) =>
-    bordered &&
-    `border-right: 1px solid ${theme.colors.border.default}${bordered};`}
+  ${({ isBordered, theme }) =>
+    isBordered && `border-right: 1px solid ${theme.colors.border.default};`}
 
   &:last-child {
     border-right: none;

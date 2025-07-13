@@ -7,7 +7,7 @@ interface ButtonProps {
   variant?: "primary" | "secondary" | "danger";
   disabled?: boolean;
   onClick?: () => void;
-  fullWidth?: boolean;
+  isFullWidth?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -79,8 +79,8 @@ export const Button = styled.button<ButtonProps>`
     }
   }}
 
-  ${({ fullWidth }) =>
-    fullWidth &&
+  ${({ isFullWidth }) =>
+    isFullWidth &&
     css`
       width: 100%;
     `}

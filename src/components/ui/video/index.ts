@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 interface VideoContainerProps {
   aspectRatio?: "16:9" | "4:3" | "1:1";
-  fullWidth?: boolean;
+  isFullWidth?: boolean;
 }
 
 interface VideoControlsProps {
@@ -12,9 +12,9 @@ interface VideoControlsProps {
 
 export const VideoContainer = styled.div<VideoContainerProps>`
   position: relative;
-  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
+  width: ${({ isFullWidth }) => (isFullWidth ? "100%" : "auto")};
   max-width: 100%;
-  
+
   ${({ aspectRatio }) => {
     switch (aspectRatio) {
       case "16:9":
@@ -46,15 +46,20 @@ export const VideoElement = styled.video`
 `;
 
 export const VideoControls = styled.div<VideoControlsProps>`
-  position: ${({ position }) => (position === "overlay" ? "absolute" : "relative")};
+  position: ${({ position }) =>
+    position === "overlay" ? "absolute" : "relative"};
   bottom: ${({ position }) => (position === "overlay" ? "0" : "auto")};
   left: 0;
   right: 0;
   background: ${({ position, theme }) =>
-    position === "overlay" ? "rgba(0, 0, 0, 0.7)" : theme.colors.background.secondary};
+    position === "overlay"
+      ? "rgba(0, 0, 0, 0.7)"
+      : theme.colors.background.secondary};
   padding: ${({ theme }) => theme.spacing.medium};
   border-radius: ${({ position, theme }) =>
-    position === "overlay" ? "0 0 " + theme.borderRadius + " " + theme.borderRadius : theme.borderRadius};
+    position === "overlay"
+      ? "0 0 " + theme.borderRadius + " " + theme.borderRadius
+      : theme.borderRadius};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.small};
@@ -145,4 +150,4 @@ export const VideoOverlay = styled.div`
   &:hover {
     opacity: 1;
   }
-`; 
+`;

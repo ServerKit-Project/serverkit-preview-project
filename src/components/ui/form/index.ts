@@ -17,26 +17,26 @@ export const FormRoot = styled.form<{ spacing?: FormSpacing }>`
   }};
 `;
 
-export const FormItemRoot = styled.div<{ fullWidth?: boolean }>`
+export const FormItemRoot = styled.div<{ isFullWidth?: boolean }>`
   display: flex;
   flex-direction: column;
-  ${({ fullWidth }) => fullWidth && "width: 100%;"}
+  ${({ isFullWidth }) => isFullWidth && "width: 100%;"}
 `;
 
-export const FormLabelRoot = styled.label<{ required?: boolean }>`
+export const FormLabelRoot = styled.label<{ isRequired?: boolean }>`
   display: block;
   margin-bottom: 6px;
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   font-size: ${({ theme }) => theme.fontSize.medium};
   color: ${({ theme }) => theme.colors.text.primary};
 
-  ${({ required, theme }) =>
-    required &&
+  ${({ isRequired, theme }) =>
+    isRequired &&
     `
     &::after {
       content: ' *';
       color: ${theme.colors.danger};
-      opacity: ${required ? 1 : 0};
+      opacity: ${isRequired ? 1 : 0};
     }
   `}
 `;

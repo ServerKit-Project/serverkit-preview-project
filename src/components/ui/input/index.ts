@@ -8,7 +8,7 @@ interface InputProps {
   disabled?: boolean;
   error?: boolean;
   size?: "small" | "medium" | "large";
-  fullWidth?: boolean;
+  isFullWidth?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -52,8 +52,8 @@ export const Input = styled.input<InputProps>`
     }
   }}
 
-  ${({ fullWidth }) =>
-    fullWidth &&
+  ${({ isFullWidth }) =>
+    isFullWidth &&
     css`
       width: 100%;
     `}

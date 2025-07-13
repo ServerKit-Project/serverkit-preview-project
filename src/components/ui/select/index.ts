@@ -14,21 +14,21 @@ export interface SelectProps {
   disabled?: boolean;
   error?: boolean;
   size?: "small" | "medium" | "large";
-  fullWidth?: boolean;
+  isFullWidth?: boolean;
   onChange?: (value: string | number) => void;
 }
 
-export const SelectContainer = styled.div<{ fullWidth?: boolean }>`
+export const SelectContainer = styled.div<{ isFullWidth?: boolean }>`
   position: relative;
   display: inline-block;
-  ${({ fullWidth }) => fullWidth && "width: 100%;"}
+  ${({ isFullWidth }) => isFullWidth && "width: 100%;"}
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
 export const SelectButton = styled.button<{
   error?: boolean;
   size?: string;
-  fullWidth?: boolean;
+  isFullWidth?: boolean;
   disabled?: boolean;
 }>`
   display: flex;
@@ -49,7 +49,7 @@ export const SelectButton = styled.button<{
   text-align: left;
   font-family: ${({ theme }) => theme.fontFamily.sans};
 
-  ${({ fullWidth }) => fullWidth && "width: 100%;"}
+  ${({ isFullWidth }) => isFullWidth && "width: 100%;"}
 
   ${({ size, theme }) => {
     switch (size) {
@@ -102,7 +102,7 @@ export const SelectIcon = styled.span<{ isOpen?: boolean }>`
 
 export const SelectDropdown = styled.div<{
   isOpen?: boolean;
-  fullWidth?: boolean;
+  isFullWidth?: boolean;
 }>`
   position: absolute;
   top: 100%;
@@ -125,14 +125,14 @@ export const SelectDropdown = styled.div<{
 
 export const SelectOption = styled.div<{
   disabled?: boolean;
-  selected?: boolean;
+  isSelected?: boolean;
 }>`
   padding: ${({ theme }) => theme.spacing.medium};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   color: ${({ disabled, theme }) =>
     disabled ? theme.colors.text.secondary : theme.colors.text.primary};
-  background-color: ${({ selected, theme }) =>
-    selected ? `${theme.colors.primary}10` : "transparent"};
+  background-color: ${({ isSelected, theme }) =>
+    isSelected ? `${theme.colors.primary}10` : "transparent"};
   font-family: ${({ theme }) => theme.fontFamily.sans};
 
   &:hover:not(:disabled) {

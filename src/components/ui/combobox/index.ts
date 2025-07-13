@@ -87,9 +87,7 @@ export const Option = styled.li<{ isSelected: boolean }>`
   padding: ${({ theme }) => theme.spacing.small};
   cursor: pointer;
   background-color: ${(props) =>
-    props.isSelected
-      ? props.theme.colors.background.secondary
-      : "transparent"};
+    props.isSelected ? props.theme.colors.background.secondary : "transparent"};
   color: ${(props) =>
     props.isSelected
       ? props.theme.colors.primary

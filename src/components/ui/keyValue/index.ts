@@ -12,13 +12,13 @@ export interface KeyValueProps {
   items: KeyValueItem[];
   layout?: "horizontal" | "vertical";
   size?: "small" | "medium" | "large";
-  bordered?: boolean;
-  striped?: boolean;
+  isBordered?: boolean;
+  isStriped?: boolean;
 }
 
-export const KeyValueContainer = styled.div<{ bordered?: boolean }>`
-  ${({ bordered, theme }) =>
-    bordered &&
+export const KeyValueContainer = styled.div<{ isBordered?: boolean }>`
+  ${({ isBordered, theme }) =>
+    isBordered &&
     css`
       border: 1px solid
         ${theme?.colors.border.default || defaultTheme.colors.border.default};
@@ -30,24 +30,24 @@ export const KeyValueContainer = styled.div<{ bordered?: boolean }>`
 export const KeyValueItem = styled.div<{
   layout?: string;
   size?: string;
-  striped?: boolean;
+  isStriped?: boolean;
   index?: number;
-  bordered?: boolean;
+  isBordered?: boolean;
 }>`
   display: flex;
   ${({ layout }) =>
     layout === "vertical" ? "flex-direction: column;" : "flex-direction: row;"}
 
-  ${({ striped, index, theme }) =>
-    striped && index && index % 2 === 0
+  ${({ isStriped, index, theme }) =>
+    isStriped && index && index % 2 === 0
       ? `background-color: ${
           theme?.colors.background.secondary ||
           defaultTheme.colors.background.secondary
         }30;`
       : ""}
 
-  ${({ bordered, theme }) =>
-    bordered &&
+  ${({ isBordered, theme }) =>
+    isBordered &&
     css`
       &:not(:last-child) {
         border-bottom: 1px solid
