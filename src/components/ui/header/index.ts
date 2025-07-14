@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface HeaderRootProps {
   variant?: "default" | "transparent" | "dark";
   border?: boolean;
+  sticky?: boolean;
 }
 
 export const HeaderRoot = styled.header<HeaderRootProps>`
@@ -19,9 +20,9 @@ export const HeaderRoot = styled.header<HeaderRootProps>`
   }};
   border-bottom: ${({ theme, border = true }) =>
     border ? `1px solid ${theme.colors.border.default}` : "none"};
-  position: sticky;
-  top: 0;
-  z-index: 40;
+  position: ${({ sticky = false }) => (sticky ? "sticky" : "relative")};
+  top: ${({ sticky = false }) => (sticky ? "0" : "auto")};
+  z-index: ${({ sticky = false }) => (sticky ? "40" : "auto")};
   transition: all 0.3s ease;
   backdrop-filter: ${({ variant }) =>
     variant === "transparent" ? "blur(10px)" : "none"};

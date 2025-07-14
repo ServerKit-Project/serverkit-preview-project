@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { TableContainer as TableContainerBase, TableRoot as TableRootBase, TableHead as TableHeadBase, TableBody as TableBodyBase, TableRow as TableRowBase, TableCell as TableCellBase } from "@/components/ui/table";
 
 interface SortButtonProps {
   direction?: "asc" | "desc";
@@ -66,7 +66,7 @@ interface StyledTableRowProps {
   isSelected?: boolean;
 }
 
-export const StyledTableRow = styled(TableRow)<StyledTableRowProps>`
+export const StyledTableRow = styled(TableRowBase)<StyledTableRowProps>`
   background-color: ${({ theme, isSelected }) =>
     isSelected ? theme.colors.background.secondary : "inherit"};
 
@@ -77,3 +77,11 @@ export const StyledTableRow = styled(TableRow)<StyledTableRowProps>`
         : theme.colors.background.secondary};
   }
 `;
+
+
+export const TableContainer = styled(TableContainerBase)``;
+export const TableRoot = styled(TableRootBase)``;
+export const TableHead = styled(TableHeadBase)``;
+export const TableBody = styled(TableBodyBase)``;
+export const TableRow = styled(TableRowBase)``;
+export const TableCell = styled(TableCellBase)``;
