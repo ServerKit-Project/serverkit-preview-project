@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { FormItemRoot } from "@/components/ui/form";
+import { NavLink } from "react-router-dom";
 
 export const StyledCard = styled(CardRoot)`
   width: 400px;
@@ -55,7 +56,7 @@ export const FooterText = styled(Text)`
   color: ${({ theme }) => theme.colors.lightGray};
 `;
 
-export const StyledLink = styled(Text)`
+export const StyledLink = styled(NavLink)`
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
   &:hover {

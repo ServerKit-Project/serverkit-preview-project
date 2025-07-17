@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 interface FooterRootProps {
   variant?: "default" | "dark" | "light";
@@ -134,7 +135,7 @@ interface FooterLinkProps {
   variant?: "default" | "dark" | "light";
 }
 
-export const FooterLink = styled.a<FooterLinkProps>`
+export const FooterLink = styled(NavLink)<FooterLinkProps>`
   font-family: ${({ theme }) => theme.fontFamily.sans};
   font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme, variant = "default" }) => {
@@ -189,7 +190,7 @@ export const FooterSocialLinks = styled.div`
   align-items: center;
 `;
 
-export const SocialLink = styled.a`
+export const SocialLink = styled(NavLink)`
   color: ${({ theme }) => theme.colors.text.secondary};
   transition: all 0.2s ease;
   padding: 8px;

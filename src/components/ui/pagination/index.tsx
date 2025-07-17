@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { NavLink } from "react-router-dom";
 
 // Root Pagination Component
 export const StyledPagination = styled.nav`
@@ -61,7 +62,7 @@ const baseLinkStyles = css<{ disabled?: boolean }>`
 `;
 
 // Pagination Link
-export const StyledLink = styled.a<{
+export const StyledLink = styled(NavLink)<{
   isActive?: boolean;
   disabled?: boolean;
 }>`
@@ -72,14 +73,20 @@ export const StyledLink = styled.a<{
     isActive ? theme.colors.background.secondary : "transparent"};
   color: ${({ isActive, theme }) =>
     isActive ? theme.colors.text.primary : theme.colors.text.secondary};
+
+  &.active {
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    background-color: ${({ theme }) => theme.colors.background.secondary};
+    color: ${({ theme }) => theme.colors.text.primary};
+  }
 `;
 
-export const StyledPrevious = styled.a<{ disabled?: boolean }>`
+export const StyledPrevious = styled(NavLink)<{ disabled?: boolean }>`
   ${baseLinkStyles}
   gap: ${({ theme }) => theme.spacing.small};
 `;
 
-export const StyledNext = styled.a<{ disabled?: boolean }>`
+export const StyledNext = styled(NavLink)<{ disabled?: boolean }>`
   ${baseLinkStyles}
   gap: ${({ theme }) => theme.spacing.small};
 `;

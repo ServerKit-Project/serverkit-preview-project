@@ -5,7 +5,7 @@ export const StyledMenubar = styled.div`
   height: 40px;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.small};
-  padding: 0 ${({ theme }) => theme.spacing.small};
+  padding: ${({ theme }) => theme.spacing.small};
   border-radius: ${({ theme }) => theme.borderRadius};
   border: 1px solid ${({ theme }) => theme.colors.border.default};
   background-color: ${({ theme }) => theme.colors.pureWhite};

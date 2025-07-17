@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { NavLink } from "react-router-dom";
+
 export const BreadcrumbNav = styled.nav`
   display: flex;
   align-items: center;
@@ -19,7 +21,7 @@ export const BreadcrumbItem = styled.li`
   align-items: center;
 `;
 
-export const BreadcrumbLink = styled.a`
+export const BreadcrumbLink = styled(NavLink)`
   color: ${({ theme }) => theme.colors.text.primary};
   text-decoration: none;
   padding: ${({ theme }) => theme.spacing.small};
