@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { NavLink } from "react-router-dom";
 
 export const NavContainer = styled.nav<{
   variant?: string;
@@ -6,9 +7,7 @@ export const NavContainer = styled.nav<{
 }>`
   display: flex;
   ${({ variant }) =>
-    variant === "vertical"
-      ? "flex-direction: column;"
-      : "flex-direction: row;"}
+    variant === "vertical" ? "flex-direction: column;" : "flex-direction: row;"}
 
   ${({ background, theme }) =>
     background &&
@@ -20,8 +19,7 @@ export const NavContainer = styled.nav<{
   font-family: ${({ theme }) => theme.fontFamily.sans};
 `;
 
-export const NavItem = styled.a<{
-  active?: boolean;
+export const NavItem = styled(NavLink)<{
   variant?: string;
   size?: string;
   disabled?: boolean;
@@ -34,15 +32,19 @@ export const NavItem = styled.a<{
   transition: all 0.2s ease;
   border-radius: ${({ theme }) => theme.borderRadius};
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
 
-  color: ${({ active, disabled, theme }) => {
+  color: ${({ disabled, theme }) => {
     if (disabled) return theme.colors.text.secondary;
-    if (active) return theme.colors.primary;
     return theme.colors.text.primary;
   }};
 
-  background-color: ${({ active, theme }) =>
-    active ? `${theme.colors.primary}10` : "transparent"};
+  background-color: transparent;
+
+  &.active {
+    color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => `${theme.colors.primary}10`};
+  }
 
   ${({ size, theme }) => {
     switch (size) {
@@ -81,10 +83,11 @@ export const NavItem = styled.a<{
     `}
 
   &:hover:not(:disabled) {
-    background-color: ${({ active, theme }) =>
-      active
-        ? `${theme.colors.primary}20`
-        : theme.colors.background.hover.secondary};
+    background-color: ${({ theme }) => theme.colors.background.hover.secondary};
+  }
+
+  &.active:hover {
+    background-color: ${({ theme }) => `${theme.colors.primary}20`};
   }
 
   &:focus {

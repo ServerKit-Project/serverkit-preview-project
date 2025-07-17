@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 interface HeaderRootProps {
   variant?: "default" | "transparent" | "dark";
@@ -38,7 +39,7 @@ export const HeaderContainer = styled.div`
   height: 64px;
 `;
 
-export const HeaderLogo = styled.a`
+export const HeaderLogo = styled(NavLink)`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -90,11 +91,10 @@ interface HeaderLinkProps {
   active?: boolean;
 }
 
-export const HeaderLink = styled.a<HeaderLinkProps>`
+export const HeaderLink = styled(NavLink)<HeaderLinkProps>`
   font-family: ${({ theme }) => theme.fontFamily.sans};
   font-size: ${({ theme }) => theme.fontSize.small};
-  color: ${({ theme, variant = "default", active = false }) => {
-    if (active) return theme.colors.primary;
+  color: ${({ theme, variant = "default" }) => {
     switch (variant) {
       case "dark":
         return theme.colors.text.white;
@@ -113,15 +113,23 @@ export const HeaderLink = styled.a<HeaderLinkProps>`
     color: ${({ theme }) => theme.colors.primary};
   }
 
+  &.active {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
   &::after {
     content: "";
     position: absolute;
     bottom: 0;
     left: 0;
-    width: ${({ active }) => (active ? "100%" : "0")};
+    width: 0;
     height: 2px;
     background-color: ${({ theme }) => theme.colors.primary};
     transition: width 0.2s ease;
+  }
+
+  &.active::after {
+    width: 100%;
   }
 
   &:hover::after {

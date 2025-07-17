@@ -54,8 +54,10 @@ export const Button = styled.button<ButtonProps>`
           border: 1px solid ${theme.colors.border.default};
 
           &:hover:not(:disabled) {
-            background-color: ${theme.colors.background.hover.secondary};
-            border-color: ${theme.colors.border.hover};
+            background-color: ${theme.colors.background.secondary};
+            border-color: ${theme.colors.primary};
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
           }
         `;
       case "danger":
@@ -64,7 +66,9 @@ export const Button = styled.button<ButtonProps>`
           color: ${theme.colors.text.white};
 
           &:hover:not(:disabled) {
-            background-color: ${theme.colors.background.hover.danger};
+            background-color: ${theme.colors.danger};
+            opacity: 0.9;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
           }
         `;
       default:
@@ -73,7 +77,9 @@ export const Button = styled.button<ButtonProps>`
           color: ${theme.colors.text.white};
 
           &:hover:not(:disabled) {
-            background-color: ${theme.colors.background.hover.primary};
+            background-color: ${theme.colors.primary};
+            opacity: 0.9;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
           }
         `;
     }

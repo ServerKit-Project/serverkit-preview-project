@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
 export const NavigationMenuRoot = styled.nav`
   position: relative;
@@ -83,7 +84,7 @@ export const NavigationMenuContent = styled.div<{ isOpen?: boolean }>`
   }
 `;
 
-export const NavigationMenuLink = styled.a`
+export const NavigationMenuLink = styled(NavLink)`
   display: block;
   padding: 8px 12px;
   text-decoration: none;
@@ -101,6 +102,11 @@ export const NavigationMenuLink = styled.a`
 
   &:focus {
     outline: none;
+    background-color: hsl(240 5% 96%);
+    color: hsl(240 6% 10%);
+  }
+
+  &.active {
     background-color: hsl(240 5% 96%);
     color: hsl(240 6% 10%);
   }
