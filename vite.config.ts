@@ -11,11 +11,18 @@ const generate = (generateMod as any).default;
 import * as t from "@babel/types";
 
 // (dev only) mappingId.json Schema 정의
+const MimeComponentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: z.string()
+});
+
 const ComponentItemSchema: z.ZodType<any> = z.lazy(() => z.object({
   id: z.string(),
   component: z.string(),
   name: z.string(),
-  children: z.array(ComponentItemSchema)
+  children: z.array(ComponentItemSchema),
+  mimeComponents: z.array(MimeComponentSchema).optional()
 }));
 
 const MappingIdSchema = z.record(z.string(), z.array(ComponentItemSchema));
@@ -24,6 +31,7 @@ const MappingIdSchema = z.record(z.string(), z.array(ComponentItemSchema));
 function componentMappingPlugin() {
   let mappingData: any = {};
   let componentMapping: Map<string, string> = new Map();
+  let mimeComponentMapping: Map<string, any[]> = new Map();
 
   return {
     name: 'component-mapping-plugin',
@@ -66,6 +74,11 @@ function componentMappingPlugin() {
             function mapComponents(item: any) {
               if (item.name) {
                 componentMapping.set(item.name, item.id);
+                
+                // mimeComponents 매핑 추가
+                if (item.mimeComponents && Array.isArray(item.mimeComponents)) {
+                  mimeComponentMapping.set(item.name, item.mimeComponents);
+                }
               }
               if (item.children) {
                 item.children.forEach(mapComponents);
@@ -77,6 +90,7 @@ function componentMappingPlugin() {
         });
 
         console.log('🔗 Component mapping loaded:', componentMapping);
+        console.log('🎨 Mime component mapping loaded:', mimeComponentMapping);
       } catch (error) {
         console.warn('⚠️ Error loading mappingId.json:', error);
         console.warn('Component mapping disabled.');
@@ -90,15 +104,39 @@ function componentMappingPlugin() {
       // .tsx 파일만 처리
       if (!id.endsWith('.tsx')) return null;
 
-      // pages 폴더의 파일만 처리
-      if (!id.includes('/pages/')) return null;
+      // App.tsx 파일인지 확인 (pages 폴더에 있는 App.tsx는 제외)
+      const isAppFile = id.includes('App.tsx') && !id.includes('pages');
+      // pages 폴더의 파일인지 확인
+      const isPagesFile = id.includes('pages');
+      // main.tsx 파일인지 확인
+      const isMainFile = id.includes('main.tsx');
+      
+      // 디버깅을 위해 App.tsx 관련 모든 파일 로그
+      if (id.includes('App')) {
+        console.log(`🔍 App-related file detected: ${id}`);
+        console.log(`🔍 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
+      }
+      
+      console.log(`🔍 Checking file: ${id}`);
+      console.log(`📁 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
+      console.log(`🔍 id.includes('App.tsx'): ${id.includes('App.tsx')}`);
+      console.log(`🔍 id.includes('/pages/'): ${id.includes('/pages/')}`);
+      
+      // 모든 .tsx 파일 처리 (디버깅용)
+      console.log(`🔍 Processing all .tsx files for debugging`);
+      
+      // App.tsx, main.tsx 또는 pages 폴더의 파일만 처리
+      if (!isAppFile && !isPagesFile && !isMainFile) {
+        console.log(`❌ Skipping file: ${id} - not App.tsx, main.tsx or pages file`);
+        return null;
+      }
 
-      console.log(`🔍 Processing file: ${id}`);
+      console.log(`✅ Processing file: ${id}`);
 
       // AST를 사용해서 모든 분석 수행
       let componentName: string | null = null;
       let styledComponentNames = new Set<string>();
-      let mainReturnJSX: any = null;
+      let styledComponentDefinitions = new Map<string, any>();
       
       try {
         const ast = parse(code, {
@@ -108,28 +146,6 @@ function componentMappingPlugin() {
 
         // 한 번의 traverse로 모든 정보 수집
         traverse(ast, {
-          ExportDefaultDeclaration(path: any) {
-            if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id) {
-              componentName = path.node.declaration.id.name;
-              console.log(`🔍 Found export default declaration:`, path.node.declaration.type);
-              
-              const functionBody = path.node.declaration.body;
-              if (functionBody.type === 'BlockStatement') {
-                console.log(`🔍 Function body has ${functionBody.body.length} statements`);
-                for (const statement of functionBody.body) {
-                  console.log(`🔍 Statement type:`, statement.type);
-                  if (statement.type === 'ReturnStatement' && statement.argument) {
-                    console.log(`🔍 Return statement argument type:`, statement.argument.type);
-                    if (statement.argument.type === 'JSXElement') {
-                      mainReturnJSX = statement.argument;
-                      console.log(`✅ Found main return JSX`);
-                      break;
-                    }
-                  }
-                }
-              }
-            }
-          },
           VariableDeclarator(path: any) {
             if (path.node.init && 
                 path.node.init.type === 'TaggedTemplateExpression' &&
@@ -137,9 +153,26 @@ function componentMappingPlugin() {
                 path.node.init.tag.callee.type === 'Identifier' &&
                 path.node.init.tag.callee.name === 'styled') {
               if (path.node.id.type === 'Identifier') {
-                styledComponentNames.add(path.node.id.name);
-                console.log(`💅 Found styled-component: ${path.node.id.name}`);
+                const styledComponentName = path.node.id.name;
+                styledComponentNames.add(styledComponentName);
+                styledComponentDefinitions.set(styledComponentName, path.node);
+                console.log(`💅 Found styled-component: ${styledComponentName}`);
               }
+            }
+          }
+        });
+
+        // export default 함수 찾기
+        traverse(ast, {
+          ExportDefaultDeclaration(path: any) {
+            console.log(`🔍 Found export default declaration type: ${path.node.declaration.type}`);
+            
+            if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id) {
+              componentName = path.node.declaration.id.name;
+            } else if (path.node.declaration.type === 'Identifier') {
+              componentName = path.node.declaration.name;
+            } else {
+              console.log(`🔍 Unknown export default declaration type: ${path.node.declaration.type}`);
             }
           }
         });
@@ -155,57 +188,36 @@ function componentMappingPlugin() {
 
       console.log(`📦 Found component: ${componentName}`);
 
-      // componentMapping에서 해당 컴포넌트의 ID를 찾음
-      const componentId = componentMapping.get(componentName);
+      let componentId: string | undefined;
       
-      if (!componentId) {
-        console.log(`❌ No mapping found for component: ${componentName}`);
-        return null;
+      // App.tsx는 특별 처리
+      if (isAppFile) {
+        console.log(`🎯 Processing App.tsx specially`);
+        componentId = 'app-root-container'; // App.tsx용 기본 ID
+      } else {
+        // pages 폴더 파일들은 componentMapping에서 ID 찾기
+        componentId = componentMapping.get(componentName);
+        
+        if (!componentId) {
+          console.log(`❌ No mapping found for component: ${componentName}`);
+          return null;
+        }
       }
       
       console.log(`🎯 Found ID: ${componentId} for component: ${componentName}`);
 
-      if (!mainReturnJSX) {
-        console.log(`❌ No main return JSX found in component: ${componentName}`);
-        return null;
-      }
+      // mimeComponents 매핑 가져오기 (App.tsx는 빈 배열)
+      const mimeComponents = isAppFile ? [] : (mimeComponentMapping.get(componentName) || []);
+      console.log(`🎨 Found mime components for ${componentName}:`, mimeComponents);
 
-      const tagName = mainReturnJSX.openingElement.name.type === 'JSXIdentifier' 
-        ? mainReturnJSX.openingElement.name.name 
-        : null;
-      
-      if (!tagName) {
-        console.log(`❌ Could not get tag name from JSX element`);
-        return null;
-      }
-      // styled-component 여부에 관계없이 모든 컴포넌트에 시작 return에 data-component-name 추가
-      console.log(`🔍 Found main return tag: ${tagName}`);
-
-      // 이미 data-component-name이 있는지 확인
-      const existingProps = mainReturnJSX.openingElement.attributes || [];
-      const hasDataComponentName = existingProps.some((attr: any) => 
-        attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
-      );
-
-      if (!hasDataComponentName) {
-        // data-component-name 속성 추가
-        console.log(`🚀 Adding data-component-name="${componentId}" to ${componentName}`);
-        mainReturnJSX.openingElement.attributes.push(
-          t.jsxAttribute(
-            t.jsxIdentifier('data-component-name'),
-            t.stringLiteral(componentId)
-          )
-        );
-      }
-
-      // 변환된 코드 생성 (이미 파싱된 AST를 재사용하지 않고 새로 파싱)
+      // 변환된 코드 생성
       try {
         const newAst = parse(code, {
           sourceType: 'module',
           plugins: ['jsx', 'typescript']
         });
 
-        // data-component-name 속성 추가
+        // export default 함수의 return JSX에 data-component-id 추가 (루트 요소에만)
         traverse(newAst, {
           ExportDefaultDeclaration(path: any) {
             if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id?.name === componentName) {
@@ -216,17 +228,20 @@ function componentMappingPlugin() {
                     if (statement.argument.type === 'JSXElement') {
                       const jsxElement = statement.argument;
                       const existingProps = jsxElement.openingElement.attributes || [];
-                      const hasDataComponentName = existingProps.some((attr: any) => 
-                        attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
+                      
+                      // data-component-id 추가 (루트 요소에만)
+                      const hasDataComponentId = existingProps.some((attr: any) => 
+                        attr.type === 'JSXAttribute' && attr.name.name === 'data-component-id'
                       );
-
-                      if (!hasDataComponentName) {
+                      
+                      if (!hasDataComponentId) {
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
-                            t.jsxIdentifier('data-component-name'),
+                            t.jsxIdentifier('data-component-id'),
                             t.stringLiteral(componentId)
                           )
                         );
+                        console.log(`🚀 Added data-component-id="${componentId}" to root element of ${componentName}`);
                       }
                       break;
                     }
@@ -237,8 +252,86 @@ function componentMappingPlugin() {
           }
         });
 
+        // App.tsx의 경우 모든 JSX 요소에 랜덤 data-component-id 추가
+        if (isAppFile) {
+          console.log(`🎯 Processing App.tsx - adding data-component-id to all JSX elements`);
+          traverse(newAst, {
+            JSXElement(path: any) {
+              const jsxElement = path.node;
+              const elementName = jsxElement.openingElement.name;
+              
+              if (elementName.type === 'JSXIdentifier') {
+                const tagName = elementName.name;
+                const existingProps = jsxElement.openingElement.attributes || [];
+                
+                // 이미 data-component-id가 있는지 확인
+                const hasDataComponentId = existingProps.some((attr: any) => 
+                  attr.type === 'JSXAttribute' && attr.name.name === 'data-component-id'
+                );
+                
+                if (!hasDataComponentId) {
+                  const randomId = `app-root-container`;
+                  jsxElement.openingElement.attributes.push(
+                    t.jsxAttribute(
+                      t.jsxIdentifier('data-component-id'),
+                      t.stringLiteral(randomId)
+                    )
+                  );
+                  console.log(`🚀 Added data-component-id="${randomId}" to ${tagName} in App.tsx`);
+                } else {
+                  console.log(`⏭️ Skipping ${tagName} - already has data-component-id`);
+                }
+              }
+            }
+          });
+          console.log(`✅ Processed App Root Container JSX elements in App.tsx`);
+        }
+
+        // styled-component JSX 요소에 data-component-name 추가 (App.tsx 제외)
+        if (!isAppFile) {
+          traverse(newAst, {
+            JSXElement(path: any) {
+              const jsxElement = path.node;
+              const elementName = jsxElement.openingElement.name;
+              
+              if (elementName.type === 'JSXIdentifier') {
+                const tagName = elementName.name;
+                
+                // styled-component인지 확인
+                if (styledComponentNames.has(tagName)) {
+                  // mimeComponents에서 해당 styled-component 찾기
+                  const mimeComponent = mimeComponents.find(mc => mc.name === tagName);
+                  
+                  if (mimeComponent) {
+                    const existingProps = jsxElement.openingElement.attributes || [];
+                    
+                    // data-component-name 추가
+                    const hasDataComponentName = existingProps.some((attr: any) => 
+                      attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
+                    );
+                    
+                    if (!hasDataComponentName) {
+                      jsxElement.openingElement.attributes.push(
+                        t.jsxAttribute(
+                          t.jsxIdentifier('data-component-name'),
+                          t.stringLiteral(mimeComponent.name)
+                        )
+                      );
+                      console.log(`🚀 Added data-component-name="${mimeComponent.name}" to ${tagName}`);
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }
+
         const result = generate(newAst, { retainLines: true });
-        console.log(`✅ Added data-component-name to ${componentName} (${tagName})`);
+        if (isAppFile) {
+          console.log(`✅ Added data-component-id to root element in ${componentName}`);
+        } else {
+          console.log(`✅ Added data-component-id to root and data-component-name to styled-components in ${componentName}`);
+        }
         return result.code;
       } catch (error) {
         console.log(`❌ Error generating code: ${error}`);
