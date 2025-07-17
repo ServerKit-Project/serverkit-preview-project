@@ -169,8 +169,10 @@ function componentMappingPlugin() {
             
             if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id) {
               componentName = path.node.declaration.id.name;
+              console.log(`🔍 Found export default function declaration: ${componentName}`);
             } else if (path.node.declaration.type === 'Identifier') {
               componentName = path.node.declaration.name;
+              console.log(`🔍 Found export default identifier: ${componentName}`);
             } else {
               console.log(`🔍 Unknown export default declaration type: ${path.node.declaration.type}`);
             }
@@ -287,7 +289,7 @@ function componentMappingPlugin() {
           console.log(`✅ Processed App Root Container JSX elements in App.tsx`);
         }
 
-        // styled-component JSX 요소에 data-component-name 추가 (App.tsx 제외)
+        // styled-component JSX 요소에 data-component-name과 data-component-id 추가 (App.tsx 제외)
         if (!isAppFile) {
           traverse(newAst, {
             JSXElement(path: any) {
@@ -318,6 +320,21 @@ function componentMappingPlugin() {
                         )
                       );
                       console.log(`🚀 Added data-component-name="${mimeComponent.name}" to ${tagName}`);
+                    }
+                    
+                    // data-component-id 추가
+                    const hasDataComponentId = existingProps.some((attr: any) => 
+                      attr.type === 'JSXAttribute' && attr.name.name === 'data-component-id'
+                    );
+                    
+                    if (!hasDataComponentId) {
+                      jsxElement.openingElement.attributes.push(
+                        t.jsxAttribute(
+                          t.jsxIdentifier('data-component-id'),
+                          t.stringLiteral(mimeComponent.id)
+                        )
+                      );
+                      console.log(`🚀 Added data-component-id="${mimeComponent.id}" to ${tagName}`);
                     }
                   }
                 }
