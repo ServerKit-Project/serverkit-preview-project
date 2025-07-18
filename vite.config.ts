@@ -219,7 +219,7 @@ function componentMappingPlugin() {
           plugins: ['jsx', 'typescript']
         });
 
-        // export default 함수의 return JSX에 data-component-id 추가 (루트 요소에만)
+        // export default 함수의 return JSX에 data-component-id와 data-component-name 추가 (루트 요소에만)
         traverse(newAst, {
           ExportDefaultDeclaration(path: any) {
             if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id?.name === componentName) {
@@ -231,6 +231,23 @@ function componentMappingPlugin() {
                       const jsxElement = statement.argument;
                       const existingProps = jsxElement.openingElement.attributes || [];
                       
+                      // mimeComponents가 있고 subComponents도 있는 경우, 해당 컴포넌트 자체에 id와 name 추가
+                      const hasMimeComponents = mimeComponents.length > 0;
+                      const hasSubComponents = componentName && componentMapping.has(componentName) && 
+                        mappingData[Object.keys(mappingData)[0]]?.[0]?.subComponents?.some((sc: any) => sc.name === componentName);
+                      
+                      let idToUse = componentId;
+                      let nameToUse = componentName || '';
+                      
+                      if (hasMimeComponents && hasSubComponents && componentName) {
+                        // 해당 컴포넌트의 mimeComponent 정보 찾기
+                        const componentMimeComponent = mimeComponents.find(mc => mc.name === componentName);
+                        if (componentMimeComponent) {
+                          idToUse = componentMimeComponent.id;
+                          nameToUse = componentMimeComponent.name;
+                        }
+                      }
+                      
                       // data-component-id 추가 (루트 요소에만)
                       const hasDataComponentId = existingProps.some((attr: any) => 
                         attr.type === 'JSXAttribute' && attr.name.name === 'data-component-id'
@@ -240,10 +257,27 @@ function componentMappingPlugin() {
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
                             t.jsxIdentifier('data-component-id'),
-                            t.stringLiteral(componentId)
+                            t.stringLiteral(idToUse)
                           )
                         );
-                        console.log(`🚀 Added data-component-id="${componentId}" to root element of ${componentName}`);
+                        console.log(`🚀 Added data-component-id="${idToUse}" to root element of ${componentName}`);
+                      }
+                      
+                      // data-component-name 추가 (mimeComponents가 있고 subComponents도 있는 경우)
+                      if (hasMimeComponents && hasSubComponents) {
+                        const hasDataComponentName = existingProps.some((attr: any) => 
+                          attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
+                        );
+                        
+                        if (!hasDataComponentName) {
+                          jsxElement.openingElement.attributes.push(
+                            t.jsxAttribute(
+                              t.jsxIdentifier('data-component-name'),
+                              t.stringLiteral(nameToUse)
+                            )
+                          );
+                          console.log(`🚀 Added data-component-name="${nameToUse}" to root element of ${componentName}`);
+                        }
                       }
                       break;
                     }
