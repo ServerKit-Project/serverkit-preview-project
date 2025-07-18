@@ -21,7 +21,7 @@ const ComponentItemSchema: z.ZodType<any> = z.lazy(() => z.object({
   id: z.string(),
   component: z.string(),
   name: z.string(),
-  children: z.array(ComponentItemSchema),
+  subComponents: z.array(ComponentItemSchema),
   mimeComponents: z.array(MimeComponentSchema).optional()
 }));
 
@@ -80,8 +80,8 @@ function componentMappingPlugin() {
                   mimeComponentMapping.set(item.name, item.mimeComponents);
                 }
               }
-              if (item.children) {
-                item.children.forEach(mapComponents);
+              if (item.subComponents) {
+                item.subComponents.forEach(mapComponents);
               }
             }
 
