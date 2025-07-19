@@ -63,18 +63,18 @@ function componentMappingPlugin() {
         // 컴포넌트 매핑 테이블 생성
         Object.keys(mappingData).forEach(rootKey => {
           const rootDataArray = mappingData[rootKey];
-          
+
           // 배열의 첫 번째 요소가 실제 루트 데이터
           if (Array.isArray(rootDataArray) && rootDataArray.length > 0) {
             const rootData = rootDataArray[0];
-            
+
             // Root 컴포넌트 자체 매핑 (Root_ef0cbdb6.tsx 같은 파일용)
             componentMapping.set(rootKey, rootData.id);
 
             function mapComponents(item: any) {
               if (item.name) {
                 componentMapping.set(item.name, item.id);
-                
+
                 // mimeComponents 매핑 추가
                 if (item.mimeComponents && Array.isArray(item.mimeComponents)) {
                   mimeComponentMapping.set(item.name, item.mimeComponents);
@@ -110,21 +110,21 @@ function componentMappingPlugin() {
       const isPagesFile = id.includes('pages');
       // main.tsx 파일인지 확인
       const isMainFile = id.includes('main.tsx');
-      
+
       // 디버깅을 위해 App.tsx 관련 모든 파일 로그
       if (id.includes('App')) {
         console.log(`🔍 App-related file detected: ${id}`);
         console.log(`🔍 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
       }
-      
+
       console.log(`🔍 Checking file: ${id}`);
       console.log(`📁 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
       console.log(`🔍 id.includes('App.tsx'): ${id.includes('App.tsx')}`);
       console.log(`🔍 id.includes('/pages/'): ${id.includes('/pages/')}`);
-      
+
       // 모든 .tsx 파일 처리 (디버깅용)
       console.log(`🔍 Processing all .tsx files for debugging`);
-      
+
       // App.tsx, main.tsx 또는 pages 폴더의 파일만 처리
       if (!isAppFile && !isPagesFile && !isMainFile) {
         console.log(`❌ Skipping file: ${id} - not App.tsx, main.tsx or pages file`);
@@ -137,7 +137,7 @@ function componentMappingPlugin() {
       let componentName: string | null = null;
       let styledComponentNames = new Set<string>();
       let styledComponentDefinitions = new Map<string, any>();
-      
+
       try {
         const ast = parse(code, {
           sourceType: 'module',
@@ -147,11 +147,11 @@ function componentMappingPlugin() {
         // 한 번의 traverse로 모든 정보 수집
         traverse(ast, {
           VariableDeclarator(path: any) {
-            if (path.node.init && 
-                path.node.init.type === 'TaggedTemplateExpression' &&
-                path.node.init.tag.type === 'CallExpression' &&
-                path.node.init.tag.callee.type === 'Identifier' &&
-                path.node.init.tag.callee.name === 'styled') {
+            if (path.node.init &&
+              path.node.init.type === 'TaggedTemplateExpression' &&
+              path.node.init.tag.type === 'CallExpression' &&
+              path.node.init.tag.callee.type === 'Identifier' &&
+              path.node.init.tag.callee.name === 'styled') {
               if (path.node.id.type === 'Identifier') {
                 const styledComponentName = path.node.id.name;
                 styledComponentNames.add(styledComponentName);
@@ -166,7 +166,7 @@ function componentMappingPlugin() {
         traverse(ast, {
           ExportDefaultDeclaration(path: any) {
             console.log(`🔍 Found export default declaration type: ${path.node.declaration.type}`);
-            
+
             if (path.node.declaration.type === 'FunctionDeclaration' && path.node.declaration.id) {
               componentName = path.node.declaration.id.name;
               console.log(`🔍 Found export default function declaration: ${componentName}`);
@@ -191,7 +191,7 @@ function componentMappingPlugin() {
       console.log(`📦 Found component: ${componentName}`);
 
       let componentId: string | undefined;
-      
+
       // App.tsx는 특별 처리
       if (isAppFile) {
         console.log(`🎯 Processing App.tsx specially`);
@@ -199,13 +199,13 @@ function componentMappingPlugin() {
       } else {
         // pages 폴더 파일들은 componentMapping에서 ID 찾기
         componentId = componentMapping.get(componentName);
-        
+
         if (!componentId) {
           console.log(`❌ No mapping found for component: ${componentName}`);
           return null;
         }
       }
-      
+
       console.log(`🎯 Found ID: ${componentId} for component: ${componentName}`);
 
       // mimeComponents 매핑 가져오기 (App.tsx는 빈 배열)
@@ -230,29 +230,58 @@ function componentMappingPlugin() {
                     if (statement.argument.type === 'JSXElement') {
                       const jsxElement = statement.argument;
                       const existingProps = jsxElement.openingElement.attributes || [];
-                      
-                      // mimeComponents가 있고 subComponents도 있는 경우, 해당 컴포넌트 자체에 id와 name 추가
+
+                      // subComponents에서 해당 컴포넌트 찾기
+                      let subComponentInfo: any = null;
+                      function findSubComponent(components: any[]): any {
+                        for (const comp of components) {
+                          if (comp.name === componentName) {
+                            return comp;
+                          }
+                          if (comp.subComponents && comp.subComponents.length > 0) {
+                            const found = findSubComponent(comp.subComponents);
+                            if (found) return found;
+                          }
+                        }
+                        return null;
+                      }
+
+                      // mappingData에서 subComponent 정보 찾기
+                      Object.keys(mappingData).forEach(rootKey => {
+                        if (!subComponentInfo && mappingData[rootKey][0]?.subComponents) {
+                          subComponentInfo = findSubComponent(mappingData[rootKey][0].subComponents);
+                        }
+                      });
+
                       const hasMimeComponents = mimeComponents.length > 0;
-                      const hasSubComponents = componentName && componentMapping.has(componentName) && 
-                        mappingData[Object.keys(mappingData)[0]]?.[0]?.subComponents?.some((sc: any) => sc.name === componentName);
-                      
+                      const hasSubComponents = componentName && componentMapping.has(componentName);
+                      const isSubComponentWithEmptyMimes = subComponentInfo &&
+                        subComponentInfo.mimeComponents &&
+                        Array.isArray(subComponentInfo.mimeComponents) &&
+                        subComponentInfo.mimeComponents.length === 0;
+
                       let idToUse = componentId;
                       let nameToUse = componentName || '';
-                      
+
+                      // Case 1: mimeComponents가 있는 경우 (기존 로직)
                       if (hasMimeComponents && hasSubComponents && componentName) {
-                        // 해당 컴포넌트의 mimeComponent 정보 찾기
                         const componentMimeComponent = mimeComponents.find(mc => mc.name === componentName);
                         if (componentMimeComponent) {
                           idToUse = componentMimeComponent.id;
                           nameToUse = componentMimeComponent.name;
                         }
                       }
-                      
+                      // Case 2: subComponents에 있으면서 mimeComponents가 빈 배열인 경우 (새로운 케이스)
+                      else if (isSubComponentWithEmptyMimes) {
+                        idToUse = subComponentInfo.id;
+                        nameToUse = subComponentInfo.name;
+                      }
+
                       // data-component-id 추가 (루트 요소에만)
-                      const hasDataComponentId = existingProps.some((attr: any) => 
+                      const hasDataComponentId = existingProps.some((attr: any) =>
                         attr.type === 'JSXAttribute' && attr.name.name === 'data-component-id'
                       );
-                      
+
                       if (!hasDataComponentId) {
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
@@ -262,13 +291,15 @@ function componentMappingPlugin() {
                         );
                         console.log(`🚀 Added data-component-id="${idToUse}" to root element of ${componentName}`);
                       }
-                      
-                      // data-component-name 추가 (mimeComponents가 있고 subComponents도 있는 경우)
-                      if (hasMimeComponents && hasSubComponents) {
-                        const hasDataComponentName = existingProps.some((attr: any) => 
+
+                      // data-component-name 추가 
+                      // Case 1: mimeComponents가 있고 subComponents도 있는 경우 (기존)
+                      // Case 2: subComponents에 있으면서 mimeComponents가 빈 배열인 경우 (새로운 케이스)
+                      if ((hasMimeComponents && hasSubComponents) || isSubComponentWithEmptyMimes) {
+                        const hasDataComponentName = existingProps.some((attr: any) =>
                           attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
                         );
-                        
+
                         if (!hasDataComponentName) {
                           jsxElement.openingElement.attributes.push(
                             t.jsxAttribute(
@@ -276,7 +307,7 @@ function componentMappingPlugin() {
                               t.stringLiteral(nameToUse)
                             )
                           );
-                          console.log(`🚀 Added data-component-name="${nameToUse}" to root element of ${componentName}`);
+                          console.log(`🚀 Added data-component-name="${nameToUse}" to root element of ${componentName} ${isSubComponentWithEmptyMimes ? '(empty mimeComponents case)' : '(existing case)'}`);
                         }
                       }
                       break;
@@ -295,16 +326,16 @@ function componentMappingPlugin() {
             JSXElement(path: any) {
               const jsxElement = path.node;
               const elementName = jsxElement.openingElement.name;
-              
+
               if (elementName.type === 'JSXIdentifier') {
                 const tagName = elementName.name;
                 const existingProps = jsxElement.openingElement.attributes || [];
-                
+
                 // 이미 data-component-id가 있는지 확인
-                const hasDataComponentId = existingProps.some((attr: any) => 
+                const hasDataComponentId = existingProps.some((attr: any) =>
                   attr.type === 'JSXAttribute' && attr.name.name === 'data-component-id'
                 );
-                
+
                 if (!hasDataComponentId) {
                   const randomId = `app-root-container`;
                   jsxElement.openingElement.attributes.push(
@@ -329,23 +360,23 @@ function componentMappingPlugin() {
             JSXElement(path: any) {
               const jsxElement = path.node;
               const elementName = jsxElement.openingElement.name;
-              
+
               if (elementName.type === 'JSXIdentifier') {
                 const tagName = elementName.name;
-                
+
                 // styled-component인지 확인
                 if (styledComponentNames.has(tagName)) {
                   // mimeComponents에서 해당 styled-component 찾기
                   const mimeComponent = mimeComponents.find(mc => mc.name === tagName);
-                  
+
                   if (mimeComponent) {
                     const existingProps = jsxElement.openingElement.attributes || [];
-                    
+
                     // data-component-name 추가
-                    const hasDataComponentName = existingProps.some((attr: any) => 
+                    const hasDataComponentName = existingProps.some((attr: any) =>
                       attr.type === 'JSXAttribute' && attr.name.name === 'data-component-name'
                     );
-                    
+
                     if (!hasDataComponentName) {
                       jsxElement.openingElement.attributes.push(
                         t.jsxAttribute(
@@ -355,12 +386,12 @@ function componentMappingPlugin() {
                       );
                       console.log(`🚀 Added data-component-name="${mimeComponent.name}" to ${tagName}`);
                     }
-                    
+
                     // data-component-id 추가
-                    const hasDataComponentId = existingProps.some((attr: any) => 
+                    const hasDataComponentId = existingProps.some((attr: any) =>
                       attr.type === 'JSXAttribute' && attr.name.name === 'data-component-id'
                     );
-                    
+
                     if (!hasDataComponentId) {
                       jsxElement.openingElement.attributes.push(
                         t.jsxAttribute(
