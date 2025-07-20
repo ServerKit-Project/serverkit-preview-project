@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-interface ButtonProps {
+export interface ButtonProps {
   children: React.ReactNode;
   size?: "small" | "medium" | "large";
   variant?: "primary" | "secondary" | "danger";

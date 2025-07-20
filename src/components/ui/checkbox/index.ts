@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-type CheckboxSize = "small" | "medium" | "large";
+export type CheckboxSize = "small" | "medium" | "large";
 
-const getSize = (size: CheckboxSize = "medium") => {
+export const getSize = (size: CheckboxSize = "medium") => {
   switch (size) {
     case "small":
       return { box: "14px", font: "0.875rem" };

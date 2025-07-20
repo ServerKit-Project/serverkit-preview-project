@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
 
-interface SidebarProps {
+export interface SidebarProps {
   width?: string;
   collapsed?: boolean;
   position?: "left" | "right";
 }
 
-interface SidebarItemProps {
+export interface SidebarItemProps {
   active?: boolean;
   disabled?: boolean;
 }
@@ -88,7 +88,8 @@ export const SidebarSectionTitle = styled.h3`
 export const SidebarItem = styled.div<SidebarItemProps>`
   display: flex;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.large};
+  padding: ${({ theme }) => theme.spacing.medium}
+    ${({ theme }) => theme.spacing.large};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s ease;
   position: relative;
@@ -113,7 +114,9 @@ export const SidebarItem = styled.div<SidebarItemProps>`
 
   &:hover:not([disabled]) {
     background: ${({ active, theme }) =>
-      active ? theme.colors.background.hover.primary : theme.colors.background.hover.secondary};
+      active
+        ? theme.colors.background.hover.primary
+        : theme.colors.background.hover.secondary};
   }
 `;
 
@@ -175,4 +178,4 @@ export const SidebarOverlay = styled.div`
     opacity: 1;
     visibility: visible;
   }
-`; 
+`;

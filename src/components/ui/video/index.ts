@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
 
-interface VideoContainerProps {
+export interface VideoContainerProps {
   aspectRatio?: "16:9" | "4:3" | "1:1";
   isFullWidth?: boolean;
 }
 
-interface VideoControlsProps {
+export interface VideoControlsProps {
   position?: "bottom" | "overlay";
   visible?: boolean;
 }

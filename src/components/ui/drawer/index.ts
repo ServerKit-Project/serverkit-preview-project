@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-type DrawerPlacement = "left" | "right" | "top" | "bottom";
-type DrawerSize = "small" | "medium" | "large" | "extraLarge" | "full";
+export type DrawerPlacement = "left" | "right" | "top" | "bottom";
+export type DrawerSize = "small" | "medium" | "large" | "extraLarge" | "full";
 
-const getSize = (size: DrawerSize) => {
+export const getSize = (size: DrawerSize) => {
   switch (size) {
     case "small":
       return "280px";

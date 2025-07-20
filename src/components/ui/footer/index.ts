@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-interface FooterRootProps {
+export interface FooterRootProps {
   variant?: "default" | "dark" | "light";
   size?: "compact" | "normal" | "expanded";
 }
@@ -42,7 +42,7 @@ export const FooterRoot = styled.footer<FooterRootProps>`
     variant === "light" ? `1px solid ${theme.colors.border.default}` : "none"};
 `;
 
-interface FooterContainerProps {
+export interface FooterContainerProps {
   layout?: "grid" | "columns" | "centered";
 }
 
@@ -99,7 +99,7 @@ export const FooterSection = styled.div`
   }
 `;
 
-interface FooterTitleProps {
+export interface FooterTitleProps {
   variant?: "default" | "dark" | "light";
 }
 
@@ -131,7 +131,7 @@ export const FooterTitle = styled.h3<FooterTitleProps>`
   }
 `;
 
-interface FooterLinkProps {
+export interface FooterLinkProps {
   variant?: "default" | "dark" | "light";
 }
 

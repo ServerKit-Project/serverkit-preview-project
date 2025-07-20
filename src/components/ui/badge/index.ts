@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-type BadgeVariant =
+export type BadgeVariant =
   | "default"
   | "primary"
   | "secondary"
@@ -8,7 +8,10 @@ type BadgeVariant =
   | "warning"
   | "danger";
 
-const getVariantStyles = (variant: BadgeVariant = "default", theme: any) => {
+export const getVariantStyles = (
+  variant: BadgeVariant = "default",
+  theme: any
+) => {
   switch (variant) {
     case "primary":
       return {

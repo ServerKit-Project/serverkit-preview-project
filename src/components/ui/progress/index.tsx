@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { keyframes, css } from "styled-components";
 
-const indeterminateAnim = keyframes`
+export const indeterminateAnim = keyframes`
   from {
     transform: translateX(-100%) scaleX(0.5);
   }

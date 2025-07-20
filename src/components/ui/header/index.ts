@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-interface HeaderRootProps {
+export interface HeaderRootProps {
   variant?: "default" | "transparent" | "dark";
   border?: boolean;
   sticky?: boolean;

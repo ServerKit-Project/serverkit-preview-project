@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-interface MenuItem {
+export interface MenuItem {
   label: string;
   icon?: React.ReactNode;
   onClick?: () => void;
@@ -9,7 +9,7 @@ interface MenuItem {
   items?: MenuItem[];
 }
 
-interface Position {
+export interface Position {
   x: number;
   y: number;
 }

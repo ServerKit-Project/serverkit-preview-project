@@ -45,10 +45,10 @@ const slideLeftAndFade = keyframes`
   }
 `;
 
-type Side = NonNullable<PopoverContentProps["side"]>;
-type Align = NonNullable<PopoverContentProps["align"]>;
+export type Side = NonNullable<PopoverContentProps["side"]>;
+export type Align = NonNullable<PopoverContentProps["align"]>;
 
-const getTransformOrigin = (side?: Side, align?: Align) => {
+export const getTransformOrigin = (side?: Side, align?: Align) => {
   const sides: Record<Side, string> = {
     top: "bottom",
     right: "left",

@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-interface InputProps {
+export interface InputProps {
   type?: "text" | "number" | "email" | "password" | "tel" | "url";
   value?: string | number;
   placeholder?: string;

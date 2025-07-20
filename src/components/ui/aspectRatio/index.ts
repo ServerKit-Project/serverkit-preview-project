@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-interface AspectRatioProps {
+export interface AspectRatioProps {
   ratio?: number;
 }
 

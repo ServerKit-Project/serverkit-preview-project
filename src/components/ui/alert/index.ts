@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-type AlertVariant = "info" | "success" | "warning" | "error";
+export type AlertVariant = "info" | "success" | "warning" | "error";
 
 export const getAlertColor = (variant: AlertVariant, theme: any) => {
   switch (variant) {

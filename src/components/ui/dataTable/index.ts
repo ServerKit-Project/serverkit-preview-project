@@ -1,9 +1,16 @@
 import styled from "styled-components";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { TableContainer as TableContainerBase, TableRoot as TableRootBase, TableHead as TableHeadBase, TableBody as TableBodyBase, TableRow as TableRowBase, TableCell as TableCellBase } from "@/components/ui/table";
+import {
+  TableContainer as TableContainerBase,
+  TableRoot as TableRootBase,
+  TableHead as TableHeadBase,
+  TableBody as TableBodyBase,
+  TableRow as TableRowBase,
+  TableCell as TableCellBase,
+} from "@/components/ui/table";
 
-interface SortButtonProps {
+export interface SortButtonProps {
   direction?: "asc" | "desc";
 }
 
@@ -77,7 +84,6 @@ export const StyledTableRow = styled(TableRowBase)<StyledTableRowProps>`
         : theme.colors.background.secondary};
   }
 `;
-
 
 export const TableContainer = styled(TableContainerBase)``;
 export const TableRoot = styled(TableRootBase)``;

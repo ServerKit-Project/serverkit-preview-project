@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-type FormSpacing = "small" | "medium" | "large";
+export type FormSpacing = "small" | "medium" | "large";
 
 export const FormRoot = styled.form<{ spacing?: FormSpacing }>`
   display: flex;

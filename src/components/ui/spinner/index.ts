@@ -9,13 +9,13 @@ const spin = keyframes`
   }
 `;
 
-interface SpinnerSize {
+export interface SpinnerSize {
   small: string;
   medium: string;
   large: string;
 }
 
-const sizes: SpinnerSize = {
+export const sizes: SpinnerSize = {
   small: "1rem",
   medium: "2rem",
   large: "3rem",

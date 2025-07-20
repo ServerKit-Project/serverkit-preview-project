@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-type AvatarSize = "small" | "medium" | "large";
+export type AvatarSize = "small" | "medium" | "large";
 
 const getSize = (size: AvatarSize = "medium") => {
   switch (size) {
