@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-type TextVariant =
+export type TextVariant =
   | "h1"
   | "h2"
   | "h3"
@@ -12,11 +12,11 @@ type TextVariant =
   | "caption"
   | "subtitle";
 
-type TextColor = "primary" | "secondary" | "danger" | "inherit";
-type TextAlign = "left" | "center" | "right" | "justify";
-type TextWeight = "normal" | "medium" | "semibold" | "bold";
+export type TextColor = "primary" | "secondary" | "danger" | "inherit";
+export type TextAlign = "left" | "center" | "right" | "justify";
+export type TextWeight = "normal" | "medium" | "semibold" | "bold";
 
-export const Text = styled.span<{
+export const Text = styled.p<{
   variant?: TextVariant;
   color?: TextColor;
   align?: TextAlign;
