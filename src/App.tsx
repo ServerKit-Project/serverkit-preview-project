@@ -4,6 +4,7 @@ import WelcomeServerkit from "./pages/welcome-serverkit";
 import NotFound from "./pages/404";
 import ServerError from "./pages/500";
 import { ProtectedRoute } from "@/sdk/route/ProtectedRoute";
+/*PackageImport*/
 /*PackageImport start*/
 /*PackageImport end*/
 
@@ -16,6 +17,8 @@ function App() {
   return (
     <Container>
       <Routes>
+        {/*PackageRoutes*/}
+
         {/*PackageRoutes start*/}
         
         {/*PackageRoutes end*/}
