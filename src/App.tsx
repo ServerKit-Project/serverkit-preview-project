@@ -4,7 +4,8 @@ import WelcomeServerkit from "./pages/welcome-serverkit";
 import NotFound from "./pages/404";
 import ServerError from "./pages/500";
 import { ProtectedRoute } from "@/sdk/route/ProtectedRoute";
-/*PackageImport*/
+/*PackageImport start*/
+/*PackageImport end*/
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.background.secondary};
