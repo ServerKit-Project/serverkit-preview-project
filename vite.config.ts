@@ -24,7 +24,7 @@ const ComponentItemSchema: z.ZodType<any> = z.lazy(() =>
     name: z.string(),
     subComponents: z.array(ComponentItemSchema),
     mimeComponents: z.array(MimeComponentSchema).optional(),
-    mediaType: z.string(),
+    mediaType: z.string().optional(),
   })
 );
 
