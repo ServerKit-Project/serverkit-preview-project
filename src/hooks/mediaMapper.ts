@@ -33,24 +33,57 @@ export function createMediaMap(mediaConfig: MediaEntry[]) {
 
   for (const item of mediaConfig) {
     for (const media of item.mediaSrcData) {
-      mediaPathMap[media.name] = {
+      // componentName과 mediaType을 조합하여 고유한 키 생성
+      const uniqueKey = `${item.componentName}_${item.type}_${media.name}`;
+      mediaPathMap[uniqueKey] = {
         path: media.data,
         type: media.type,
         recommendedSize: item.recommendedSize,
         mediaType: item.type,
       };
+      
+      // 하위 호환성을 위해 기존 방식도 유지 (mediaType이 없는 키)
+      // 단, 이미 존재하지 않는 경우에만 추가
+      if (!mediaPathMap[media.name]) {
+        mediaPathMap[media.name] = {
+          path: media.data,
+          type: media.type,
+          recommendedSize: item.recommendedSize,
+          mediaType: item.type,
+        };
+      }
     }
   }
 
-  function getMediaSrc(key: string): string {
-    const filename = mediaPathMap[key];
+  function getMediaSrc(key: string, mediaType?: MediaType): string {
+    let filename: mediaPathMap | undefined;
+    
+    // mediaType이 제공된 경우 타입별 키로 먼저 검색
+    if (mediaType) {
+      // 먼저 componentName_type_mediaName 형식으로 검색
+      const keys = Object.keys(mediaPathMap);
+      const typeSpecificKey = keys.find(k => 
+        k.includes(`_${mediaType}_`) && (k.endsWith(`_${key}`) || k === `${key}_${mediaType}_${key}`)
+      );
+      
+      if (typeSpecificKey) {
+        filename = mediaPathMap[typeSpecificKey];
+      }
+    }
+    
+    // 타입별 키로 찾지 못한 경우 기존 방식으로 검색
+    if (!filename) {
+      filename = mediaPathMap[key];
+    }
+    
     if (!filename) return "";
+    
     if (filename.type === "import") {
       return (
         getMediaSrcFromManager(filename.path) || getMediaDefaultSrc(filename)
       );
     } else {
-      return filename.path != "" ? filename.path : getMediaDefaultSrc(filename);
+      return filename.path !== "" ? filename.path : getMediaDefaultSrc(filename);
     }
   }
 
@@ -62,5 +95,14 @@ export function createMediaMap(mediaConfig: MediaEntry[]) {
     }
   }
 
-  return { getMediaSrc };
+  // video와 image를 구분하여 가져오는 헬퍼 함수들
+  function getVideoSrc(key: string): string {
+    return getMediaSrc(key, "video");
+  }
+
+  function getImageSrc(key: string): string {
+    return getMediaSrc(key, "image");
+  }
+
+  return { getMediaSrc, getVideoSrc, getImageSrc };
 }
