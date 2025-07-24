@@ -156,6 +156,16 @@ function componentMappingPlugin() {
       }
 
       log(`✅ Processing file: ${id}`);
+      
+      // mimeComponent 확인을 위한 헬퍼 함수
+      const isMimeComponent = (componentName: string): boolean => {
+        for (const [key, mimeComponents] of mimeComponentMapping.entries()) {
+          if (mimeComponents.some((mc: any) => mc.name === componentName)) {
+            return true;
+          }
+        }
+        return false;
+      };
 
       // AST를 사용해서 모든 분석 수행
       let componentName: string | null = null;
@@ -255,271 +265,141 @@ function componentMappingPlugin() {
           plugins: ["jsx", "typescript"],
         });
 
-        // export default 함수의 return JSX에 data-component-id와 data-component-name 추가 (루트 요소에만)
-        traverse(newAst, {
-          ExportDefaultDeclaration(path: any) {
-            if (
-              path.node.declaration.type === "FunctionDeclaration" &&
-              path.node.declaration.id?.name === componentName
-            ) {
-              const functionBody = path.node.declaration.body;
-              if (functionBody.type === "BlockStatement") {
-                for (const statement of functionBody.body) {
-                  if (
-                    statement.type === "ReturnStatement" &&
-                    statement.argument
-                  ) {
-                    if (statement.argument.type === "JSXElement") {
+        // 1. 먼저 export default 컴포넌트의 루트 요소 처리 (기존 로직 유지)
+        if (componentName && componentMapping.has(componentName)) {
+          traverse(newAst, {
+            ExportDefaultDeclaration(path: any) {
+              if (
+                path.node.declaration.type === "FunctionDeclaration" &&
+                path.node.declaration.id?.name === componentName
+              ) {
+                const functionBody = path.node.declaration.body;
+                if (functionBody.type === "BlockStatement") {
+                  for (const statement of functionBody.body) {
+                    if (
+                      statement.type === "ReturnStatement" &&
+                      statement.argument &&
+                      statement.argument.type === "JSXElement"
+                    ) {
                       const jsxElement = statement.argument;
-                      const existingProps =
-                        jsxElement.openingElement.attributes || [];
+                      const existingProps = jsxElement.openingElement.attributes || [];
 
-                      // subComponents에서 해당 컴포넌트 찾기
-                      let subComponentInfo: any = null;
-                      function findSubComponent(components: any[]): any {
-                        for (const comp of components) {
-                          if (comp.name === componentName) {
-                            return comp;
-                          }
-                          if (
-                            comp.subComponents &&
-                            comp.subComponents.length > 0
-                          ) {
-                            const found = findSubComponent(comp.subComponents);
-                            if (found) return found;
-                          }
-                        }
-                        return null;
-                      }
-
-                      // mappingData에서 subComponent 정보 찾기
-                      Object.keys(mappingData).forEach((rootKey) => {
-                        if (
-                          !subComponentInfo &&
-                          mappingData[rootKey][0]?.subComponents
-                        ) {
-                          subComponentInfo = findSubComponent(
-                            mappingData[rootKey][0].subComponents
-                          );
-                        }
-                      });
-
-                      const hasMimeComponents = mimeComponents.length > 0;
-                      const hasSubComponents =
-                        componentName && componentMapping.has(componentName);
-                      const isSubComponentWithEmptyMimes =
-                        subComponentInfo &&
-                        subComponentInfo.mimeComponents &&
-                        Array.isArray(subComponentInfo.mimeComponents) &&
-                        subComponentInfo.mimeComponents.length === 0;
-
-                      let idToUse = componentId;
-                      let nameToUse = componentName || "";
-                      let mediaTypeToUse = defaultMediaType;
-
-                      // Case 1: mimeComponents가 있는 경우 (기존 로직)
-                      if (
-                        hasMimeComponents &&
-                        hasSubComponents &&
-                        componentName
-                      ) {
-                        const componentMimeComponent = mimeComponents.find(
-                          (mc) => mc.name === componentName
-                        );
-                        if (componentMimeComponent) {
-                          idToUse = componentMimeComponent.id;
-                          nameToUse = componentMimeComponent.name;
-                          mediaTypeToUse =
-                            componentMimeComponent.mediaType ||
-                            defaultMediaType;
-                        }
-                      }
-                      // Case 2: subComponents에 있으면서 mimeComponents가 빈 배열인 경우 (새로운 케이스)
-                      else if (isSubComponentWithEmptyMimes) {
-                        idToUse = subComponentInfo.id;
-                        nameToUse = subComponentInfo.name;
-                        mediaTypeToUse =
-                          subComponentInfo.mediaType || defaultMediaType;
-                      }
-
-                      // data-component-id 추가 (루트 요소에만)
-                      const hasDataComponentId = existingProps.some(
-                        (attr: any) =>
-                          attr.type === "JSXAttribute" &&
-                          attr.name.name === "data-component-id"
-                      );
-
-                      if (!hasDataComponentId) {
+                      // data-component-id가 없으면 추가
+                      if (!existingProps.some((attr: any) => 
+                        attr.type === "JSXAttribute" && 
+                        attr.name.name === "data-component-id"
+                      )) {
+                        const id = componentMapping.get(componentName);
+                        const mediaType = isMimeComponent(componentName) ? "none" : 
+                          (mediaTypeMapping.get(componentName) || "none");
+                        
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
                             t.jsxIdentifier("data-component-id"),
-                            t.stringLiteral(idToUse)
+                            t.stringLiteral(id)
                           )
                         );
-                        log(`🚀 Added data-component-id="${idToUse}" to root element of ${componentName}`);
-                      }
-
-                      // data-component-name 추가
-                      // Case 1: mimeComponents가 있고 subComponents도 있는 경우 (기존)
-                      // Case 2: subComponents에 있으면서 mimeComponents가 빈 배열인 경우 (새로운 케이스)
-                      if (
-                        (hasMimeComponents && hasSubComponents) ||
-                        isSubComponentWithEmptyMimes
-                      ) {
-                        const hasDataComponentName = existingProps.some(
-                          (attr: any) =>
-                            attr.type === "JSXAttribute" &&
-                            attr.name.name === "data-component-name"
+                        log(`🚀 Added data-component-id="${id}" to root element of ${componentName}`);
+                        
+                        // data-component-name 추가
+                        jsxElement.openingElement.attributes.push(
+                          t.jsxAttribute(
+                            t.jsxIdentifier("data-component-name"),
+                            t.stringLiteral(componentName)
+                          )
                         );
-
-                        if (!hasDataComponentName) {
-                          jsxElement.openingElement.attributes.push(
-                            t.jsxAttribute(
-                              t.jsxIdentifier("data-component-name"),
-                              t.stringLiteral(nameToUse)
-                            )
-                          );
-                          log(
-                            `🚀 Added data-component-name="${nameToUse}" to root element of ${componentName} ${
-                              isSubComponentWithEmptyMimes
-                                ? "(empty mimeComponents case)"
-                                : "(existing case)"
-                            }`
-                          );
-                        }
-                      }
-
-                      // data-media-type 추가 (루트 요소에만)
-                      const hasDataMediaType = existingProps.some(
-                        (attr: any) =>
-                          attr.type === "JSXAttribute" &&
-                          attr.name.name === "data-media-type"
-                      );
-                      if (!hasDataMediaType) {
+                        log(`🚀 Added data-component-name="${componentName}" to root element`);
+                        
+                        // data-media-type 추가
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
                             t.jsxIdentifier("data-media-type"),
-                            t.stringLiteral(mediaTypeToUse)
+                            t.stringLiteral(mediaType)
                           )
                         );
-                        log(`🚀 Added data-media-type="${mediaTypeToUse}" to root element of ${componentName}`);
-                        log(`  - Was default value: ${mediaTypeToUse === "none"}`);
-                        log(`  - MediaType source: ${isAppFile ? "App.tsx default" : (mediaTypeToUse === defaultMediaType ? "from mapping" : "from mimeComponent")}`);
+                        log(`🚀 Added data-media-type="${mediaType}" to root element of ${componentName}`);
                       }
                       break;
                     }
                   }
                 }
               }
+            },
+          });
+        }
+
+        // 2. 모든 JSX 요소를 순회하며 componentMapping에 있는 컴포넌트 처리
+        traverse(newAst, {
+          JSXElement(path: any) {
+            const jsxElement = path.node;
+            const elementName = jsxElement.openingElement.name;
+
+            if (elementName.type === "JSXIdentifier") {
+              const tagName = elementName.name;
+              const existingProps = jsxElement.openingElement.attributes || [];
+
+              // 이미 data-component-id가 있으면 건너뛰기
+              const hasDataComponentId = existingProps.some(
+                (attr: any) =>
+                  attr.type === "JSXAttribute" &&
+                  attr.name.name === "data-component-id"
+              );
+
+              if (hasDataComponentId) {
+                return;
+              }
+
+              // componentMapping에 있는지 확인 (subComponents 포함)
+              if (componentMapping.has(tagName)) {
+                const componentId = componentMapping.get(tagName);
+                const isStyled = styledComponentNames.has(tagName);
+                const isMime = isMimeComponent(tagName);
+                
+                // mediaType 결정: mimeComponent는 무조건 "none"
+                const mediaType = isMime ? "none" : (mediaTypeMapping.get(tagName) || "none");
+
+                // data-component-id 추가
+                jsxElement.openingElement.attributes.push(
+                  t.jsxAttribute(
+                    t.jsxIdentifier("data-component-id"),
+                    t.stringLiteral(componentId)
+                  )
+                );
+                log(`🚀 Added data-component-id="${componentId}" to <${tagName}>`);
+
+                // data-component-name 추가
+                jsxElement.openingElement.attributes.push(
+                  t.jsxAttribute(
+                    t.jsxIdentifier("data-component-name"),
+                    t.stringLiteral(tagName)
+                  )
+                );
+                log(`🚀 Added data-component-name="${tagName}" to <${tagName}>`);
+
+                // data-media-type 추가
+                jsxElement.openingElement.attributes.push(
+                  t.jsxAttribute(
+                    t.jsxIdentifier("data-media-type"),
+                    t.stringLiteral(mediaType)
+                  )
+                );
+                log(`🚀 Added data-media-type="${mediaType}" to <${tagName}> (${isMime ? "mimeComponent" : "regular component"})`);
+              }
+              // App.tsx의 일반 요소들 처리
+              else if (isAppFile && !hasDataComponentId) {
+                jsxElement.openingElement.attributes.push(
+                  t.jsxAttribute(
+                    t.jsxIdentifier("data-component-id"),
+                    t.stringLiteral("app-root-container")
+                  )
+                );
+                log(`🚀 Added data-component-id="app-root-container" to <${tagName}> in App.tsx`);
+              }
             }
           },
         });
 
-        // App.tsx의 경우 모든 JSX 요소에 랜덤 data-component-id 추가
-        if (isAppFile) {
-          log(`🎯 Processing App.tsx - adding data-component-id to all JSX elements`);
-          traverse(newAst, {
-            JSXElement(path: any) {
-              const jsxElement = path.node;
-              const elementName = jsxElement.openingElement.name;
-
-              if (elementName.type === "JSXIdentifier") {
-                const tagName = elementName.name;
-                const existingProps =
-                  jsxElement.openingElement.attributes || [];
-
-                // 이미 data-component-id가 있는지 확인
-                const hasDataComponentId = existingProps.some(
-                  (attr: any) =>
-                    attr.type === "JSXAttribute" &&
-                    attr.name.name === "data-component-id"
-                );
-
-                if (!hasDataComponentId) {
-                  const randomId = `app-root-container`;
-                  jsxElement.openingElement.attributes.push(
-                    t.jsxAttribute(
-                      t.jsxIdentifier("data-component-id"),
-                      t.stringLiteral(randomId)
-                    )
-                  );
-                  log(`🚀 Added data-component-id="${randomId}" to ${tagName} in App.tsx`);
-                } else {
-                  log(`⏭️ Skipping ${tagName} - already has data-component-id`);
-                }
-              }
-            },
-          });
-          log(`✅ Processed App Root Container JSX elements in App.tsx`);
-        }
-
-        // styled-component JSX 요소에 data-component-name과 data-component-id 추가 (App.tsx 제외)
-        if (!isAppFile) {
-          traverse(newAst, {
-            JSXElement(path: any) {
-              const jsxElement = path.node;
-              const elementName = jsxElement.openingElement.name;
-
-              if (elementName.type === "JSXIdentifier") {
-                const tagName = elementName.name;
-
-                // styled-component인지 확인
-                if (styledComponentNames.has(tagName)) {
-                  // mimeComponents에서 해당 styled-component 찾기
-                  const mimeComponent = mimeComponents.find(
-                    (mc) => mc.name === tagName
-                  );
-
-                  if (mimeComponent) {
-                    const existingProps =
-                      jsxElement.openingElement.attributes || [];
-
-                    // data-component-name 추가
-                    const hasDataComponentName = existingProps.some(
-                      (attr: any) =>
-                        attr.type === "JSXAttribute" &&
-                        attr.name.name === "data-component-name"
-                    );
-
-                    if (!hasDataComponentName) {
-                      jsxElement.openingElement.attributes.push(
-                        t.jsxAttribute(
-                          t.jsxIdentifier("data-component-name"),
-                          t.stringLiteral(mimeComponent.name)
-                        )
-                      );
-                      log(`🚀 Added data-component-name="${mimeComponent.name}" to ${tagName}`);
-                    }
-
-                    // data-component-id 추가
-                    const hasDataComponentId = existingProps.some(
-                      (attr: any) =>
-                        attr.type === "JSXAttribute" &&
-                        attr.name.name === "data-component-id"
-                    );
-
-                    if (!hasDataComponentId) {
-                      jsxElement.openingElement.attributes.push(
-                        t.jsxAttribute(
-                          t.jsxIdentifier("data-component-id"),
-                          t.stringLiteral(mimeComponent.id)
-                        )
-                      );
-                      log(`🚀 Added data-component-id="${mimeComponent.id}" to ${tagName}`);
-                    }
-                  }
-                }
-              }
-            },
-          });
-        }
-
         const result = generate(newAst, { retainLines: true });
-        if (isAppFile) {
-          log(`✅ Added data-component-id to root element in ${componentName}`);
-        } else {
-          log(`✅ Added data-component-id to root and data-component-name to styled-components in ${componentName}`);
-        }
         log(`✅ Transform completed for ${id}`);
         return result.code;
       } catch (error) {
