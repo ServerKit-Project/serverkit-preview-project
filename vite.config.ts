@@ -464,7 +464,7 @@ function componentMappingPlugin() {
           );
         }
 
-        // styled-component JSX 요소에 data-component-name과 data-component-id, data-media-type 추가 (App.tsx 제외)
+        // styled-component JSX 요소에 data-component-name과 data-component-id 추가 (App.tsx 제외)
         if (!isAppFile) {
           traverse(newAst, {
             JSXElement(path: any) {
@@ -520,28 +520,6 @@ function componentMappingPlugin() {
                       );
                       console.log(
                         `🚀 Added data-component-id="${mimeComponent.id}" to ${tagName}`
-                      );
-                    }
-
-                    // data-media-type 추가
-                    const hasDataMediaType = existingProps.some(
-                      (attr: any) =>
-                        attr.type === "JSXAttribute" &&
-                        attr.name.name === "data-media-type"
-                    );
-                    if (!hasDataMediaType) {
-                      jsxElement.openingElement.attributes.push(
-                        t.jsxAttribute(
-                          t.jsxIdentifier("data-media-type"),
-                          t.stringLiteral(
-                            mimeComponent.mediaType || defaultMediaType
-                          )
-                        )
-                      );
-                      console.log(
-                        `🚀 Added data-media-type="${
-                          mimeComponent.mediaType || defaultMediaType
-                        }" to ${tagName}`
                       );
                     }
                   }
