@@ -36,6 +36,15 @@ function componentMappingPlugin() {
   let componentMapping: Map<string, string> = new Map();
   let mimeComponentMapping: Map<string, any[]> = new Map();
   let mediaTypeMapping: Map<string, string> = new Map();
+  
+  // 로그 수집을 위한 배열
+  const logs: string[] = [];
+  
+  // 로그 함수
+  const log = (message: string) => {
+    console.log(message);
+    logs.push(`[${new Date().toISOString()}] ${message}`);
+  };
 
   return {
     name: "component-mapping-plugin",
@@ -46,9 +55,7 @@ function componentMappingPlugin() {
 
         // 파일 존재 여부 확인
         if (!fs.existsSync(mappingPath)) {
-          console.warn(
-            "⚠️ mappingId.json file not found. Component mapping disabled."
-          );
+          log("⚠️ mappingId.json file not found. Component mapping disabled.");
           return;
         }
 
@@ -59,10 +66,8 @@ function componentMappingPlugin() {
         const validationResult = MappingIdSchema.safeParse(rawData);
 
         if (!validationResult.success) {
-          console.warn(
-            "⚠️ mappingId.json has invalid format. Component mapping disabled."
-          );
-          console.warn("Validation errors:", validationResult.error.errors);
+          log("⚠️ mappingId.json has invalid format. Component mapping disabled.");
+          log(`Validation errors: ${JSON.stringify(validationResult.error.errors)}`);
           return;
         }
 
@@ -98,11 +103,21 @@ function componentMappingPlugin() {
           }
         });
 
-        console.log("🔗 Component mapping loaded:", componentMapping);
-        console.log("🎨 Mime component mapping loaded:", mimeComponentMapping);
+        log("🔗 Component mapping loaded:");
+        componentMapping.forEach((value, key) => {
+          log(`  - ${key}: ${value}`);
+        });
+        log("🎨 Mime component mapping loaded:");
+        mimeComponentMapping.forEach((value, key) => {
+          log(`  - ${key}: ${JSON.stringify(value)}`);
+        });
+        log("📊 MediaType mapping loaded:");
+        mediaTypeMapping.forEach((value, key) => {
+          log(`  - ${key}: ${value}`);
+        });
       } catch (error) {
-        console.warn("⚠️ Error loading mappingId.json:", error);
-        console.warn("Component mapping disabled.");
+        log(`⚠️ Error loading mappingId.json: ${error}`);
+        log("Component mapping disabled.");
       }
     },
 
@@ -122,27 +137,25 @@ function componentMappingPlugin() {
 
       // 디버깅을 위해 App.tsx 관련 모든 파일 로그
       if (id.includes("App")) {
-        console.log(`🔍 App-related file detected: ${id}`);
-        console.log(`🔍 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
+        log(`🔍 App-related file detected: ${id}`);
+        log(`🔍 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
       }
 
-      console.log(`🔍 Checking file: ${id}`);
-      console.log(`📁 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
-      console.log(`🔍 id.includes('App.tsx'): ${id.includes("App.tsx")}`);
-      console.log(`🔍 id.includes('/pages/'): ${id.includes("/pages/")}`);
+      log(`🔍 Checking file: ${id}`);
+      log(`📁 isAppFile: ${isAppFile}, isPagesFile: ${isPagesFile}`);
+      log(`🔍 id.includes('App.tsx'): ${id.includes("App.tsx")}`);
+      log(`🔍 id.includes('/pages/'): ${id.includes("/pages/")}`);
 
       // 모든 .tsx 파일 처리 (디버깅용)
-      console.log(`🔍 Processing all .tsx files for debugging`);
+      log(`🔍 Processing all .tsx files for debugging`);
 
       // App.tsx, main.tsx 또는 pages 폴더의 파일만 처리
       if (!isAppFile && !isPagesFile && !isMainFile) {
-        console.log(
-          `❌ Skipping file: ${id} - not App.tsx, main.tsx or pages file`
-        );
+        log(`❌ Skipping file: ${id} - not App.tsx, main.tsx or pages file`);
         return null;
       }
 
-      console.log(`✅ Processing file: ${id}`);
+      log(`✅ Processing file: ${id}`);
 
       // AST를 사용해서 모든 분석 수행
       let componentName: string | null = null;
@@ -169,9 +182,7 @@ function componentMappingPlugin() {
                 const styledComponentName = path.node.id.name;
                 styledComponentNames.add(styledComponentName);
                 styledComponentDefinitions.set(styledComponentName, path.node);
-                console.log(
-                  `💅 Found styled-component: ${styledComponentName}`
-                );
+                log(`💅 Found styled-component: ${styledComponentName}`);
               }
             }
           },
@@ -180,61 +191,51 @@ function componentMappingPlugin() {
         // export default 함수 찾기
         traverse(ast, {
           ExportDefaultDeclaration(path: any) {
-            console.log(
-              `🔍 Found export default declaration type: ${path.node.declaration.type}`
-            );
+            log(`🔍 Found export default declaration type: ${path.node.declaration.type}`);
 
             if (
               path.node.declaration.type === "FunctionDeclaration" &&
               path.node.declaration.id
             ) {
               componentName = path.node.declaration.id.name;
-              console.log(
-                `🔍 Found export default function declaration: ${componentName}`
-              );
+              log(`🔍 Found export default function declaration: ${componentName}`);
             } else if (path.node.declaration.type === "Identifier") {
               componentName = path.node.declaration.name;
-              console.log(
-                `🔍 Found export default identifier: ${componentName}`
-              );
+              log(`🔍 Found export default identifier: ${componentName}`);
             } else {
-              console.log(
-                `🔍 Unknown export default declaration type: ${path.node.declaration.type}`
-              );
+              log(`🔍 Unknown export default declaration type: ${path.node.declaration.type}`);
             }
           },
         });
       } catch (error) {
-        console.log(`❌ Error parsing AST: ${error}`);
+        log(`❌ Error parsing AST: ${error}`);
         return null;
       }
 
       if (!componentName) {
-        console.log(`❌ No export default function found in file: ${id}`);
+        log(`❌ No export default function found in file: ${id}`);
         return null;
       }
 
-      console.log(`📦 Found component: ${componentName}`);
+      log(`📦 Found component: ${componentName}`);
 
       let componentId: string | undefined;
 
       // App.tsx는 특별 처리
       if (isAppFile) {
-        console.log(`🎯 Processing App.tsx specially`);
+        log(`🎯 Processing App.tsx specially`);
         componentId = "app-root-container"; // App.tsx용 기본 ID
       } else {
         // pages 폴더 파일들은 componentMapping에서 ID 찾기
         componentId = componentMapping.get(componentName);
 
         if (!componentId) {
-          console.log(`❌ No mapping found for component: ${componentName}`);
+          log(`❌ No mapping found for component: ${componentName}`);
           return null;
         }
       }
 
-      console.log(
-        `🎯 Found ID: ${componentId} for component: ${componentName}`
-      );
+      log(`🎯 Found ID: ${componentId} for component: ${componentName}`);
 
       // mimeComponents 매핑 가져오기 (App.tsx는 빈 배열)
       const mimeComponents = isAppFile
@@ -244,10 +245,8 @@ function componentMappingPlugin() {
       const defaultMediaType = isAppFile
         ? "none"
         : mediaTypeMapping.get(componentName) || "none";
-      console.log(
-        `🎨 Found mime components for ${componentName}:`,
-        mimeComponents
-      );
+      log(`🎨 Found mime components for ${componentName}: ${JSON.stringify(mimeComponents)}`);
+      log(`📊 Default mediaType for ${componentName}: ${defaultMediaType}`);
 
       // 변환된 코드 생성
       try {
@@ -357,9 +356,7 @@ function componentMappingPlugin() {
                             t.stringLiteral(idToUse)
                           )
                         );
-                        console.log(
-                          `🚀 Added data-component-id="${idToUse}" to root element of ${componentName}`
-                        );
+                        log(`🚀 Added data-component-id="${idToUse}" to root element of ${componentName}`);
                       }
 
                       // data-component-name 추가
@@ -382,7 +379,7 @@ function componentMappingPlugin() {
                               t.stringLiteral(nameToUse)
                             )
                           );
-                          console.log(
+                          log(
                             `🚀 Added data-component-name="${nameToUse}" to root element of ${componentName} ${
                               isSubComponentWithEmptyMimes
                                 ? "(empty mimeComponents case)"
@@ -405,9 +402,9 @@ function componentMappingPlugin() {
                             t.stringLiteral(mediaTypeToUse)
                           )
                         );
-                        console.log(
-                          `🚀 Added data-media-type="${mediaTypeToUse}" to root element of ${componentName}`
-                        );
+                        log(`🚀 Added data-media-type="${mediaTypeToUse}" to root element of ${componentName}`);
+                        log(`  - Was default value: ${mediaTypeToUse === "none"}`);
+                        log(`  - MediaType source: ${isAppFile ? "App.tsx default" : (mediaTypeToUse === defaultMediaType ? "from mapping" : "from mimeComponent")}`);
                       }
                       break;
                     }
@@ -420,9 +417,7 @@ function componentMappingPlugin() {
 
         // App.tsx의 경우 모든 JSX 요소에 랜덤 data-component-id 추가
         if (isAppFile) {
-          console.log(
-            `🎯 Processing App.tsx - adding data-component-id to all JSX elements`
-          );
+          log(`🎯 Processing App.tsx - adding data-component-id to all JSX elements`);
           traverse(newAst, {
             JSXElement(path: any) {
               const jsxElement = path.node;
@@ -448,20 +443,14 @@ function componentMappingPlugin() {
                       t.stringLiteral(randomId)
                     )
                   );
-                  console.log(
-                    `🚀 Added data-component-id="${randomId}" to ${tagName} in App.tsx`
-                  );
+                  log(`🚀 Added data-component-id="${randomId}" to ${tagName} in App.tsx`);
                 } else {
-                  console.log(
-                    `⏭️ Skipping ${tagName} - already has data-component-id`
-                  );
+                  log(`⏭️ Skipping ${tagName} - already has data-component-id`);
                 }
               }
             },
           });
-          console.log(
-            `✅ Processed App Root Container JSX elements in App.tsx`
-          );
+          log(`✅ Processed App Root Container JSX elements in App.tsx`);
         }
 
         // styled-component JSX 요소에 data-component-name과 data-component-id 추가 (App.tsx 제외)
@@ -499,9 +488,7 @@ function componentMappingPlugin() {
                           t.stringLiteral(mimeComponent.name)
                         )
                       );
-                      console.log(
-                        `🚀 Added data-component-name="${mimeComponent.name}" to ${tagName}`
-                      );
+                      log(`🚀 Added data-component-name="${mimeComponent.name}" to ${tagName}`);
                     }
 
                     // data-component-id 추가
@@ -518,9 +505,7 @@ function componentMappingPlugin() {
                           t.stringLiteral(mimeComponent.id)
                         )
                       );
-                      console.log(
-                        `🚀 Added data-component-id="${mimeComponent.id}" to ${tagName}`
-                      );
+                      log(`🚀 Added data-component-id="${mimeComponent.id}" to ${tagName}`);
                     }
                   }
                 }
@@ -531,20 +516,26 @@ function componentMappingPlugin() {
 
         const result = generate(newAst, { retainLines: true });
         if (isAppFile) {
-          console.log(
-            `✅ Added data-component-id to root element in ${componentName}`
-          );
+          log(`✅ Added data-component-id to root element in ${componentName}`);
         } else {
-          console.log(
-            `✅ Added data-component-id to root and data-component-name to styled-components in ${componentName}`
-          );
+          log(`✅ Added data-component-id to root and data-component-name to styled-components in ${componentName}`);
         }
+        log(`✅ Transform completed for ${id}`);
         return result.code;
       } catch (error) {
-        console.log(`❌ Error generating code: ${error}`);
+        log(`❌ Error generating code: ${error}`);
         return null;
       }
     },
+    
+    // 빌드 종료 시 로그 파일 저장
+    buildEnd() {
+      const logContent = logs.join('\n');
+      const logPath = path.resolve(process.cwd(), 'vite-plugin-logs.txt');
+      fs.writeFileSync(logPath, logContent, 'utf-8');
+      console.log(`📝 Logs saved to: ${logPath}`);
+      console.log(`📊 Total log entries: ${logs.length}`);
+    }
   };
 }
 
