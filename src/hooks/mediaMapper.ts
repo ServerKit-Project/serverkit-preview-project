@@ -38,7 +38,7 @@ export function createMediaMap(mediaConfig: MediaEntry[]) {
       mediaPathMap[uniqueKey] = {
         path: media.data,
         type: media.type,
-        recommendedSize: item.recommendedSize,
+        recommendedSize: media.recommendedSize,
         mediaType: item.type,
       };
 
@@ -48,7 +48,7 @@ export function createMediaMap(mediaConfig: MediaEntry[]) {
         mediaPathMap[media.name] = {
           path: media.data,
           type: media.type,
-          recommendedSize: item.recommendedSize,
+          recommendedSize: media.recommendedSize,
           mediaType: item.type,
         };
       }
