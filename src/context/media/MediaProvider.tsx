@@ -55,30 +55,6 @@ export const MediaProvider = ({
     );
   }, []);
 
-  // 기존 함수들도 유지 (하위 호환성)
-  const addMediaConfig = useCallback(
-    (config: MediaEntry[]) => {
-      const videoConfigs = config.filter((item) => item.type === "video");
-      const imageConfigs = config.filter((item) => item.type === "image");
-
-      if (videoConfigs.length > 0) {
-        addVideoMediaConfig(videoConfigs);
-      }
-      if (imageConfigs.length > 0) {
-        addImageMediaConfig(imageConfigs);
-      }
-    },
-    [addVideoMediaConfig, addImageMediaConfig]
-  );
-
-  const removeMediaConfig = useCallback(
-    (componentName: string) => {
-      removeVideoMediaConfig(componentName);
-      removeImageMediaConfig(componentName);
-    },
-    [removeVideoMediaConfig, removeImageMediaConfig]
-  );
-
   // 전체 mediaConfig는 video와 image를 합친 것
   const dynamicMediaConfig = useMemo(
     () => [...videoMediaConfig, ...imageMediaConfig],
@@ -91,12 +67,8 @@ export const MediaProvider = ({
   );
 
   const value: MediaContextType = {
-    getMediaSrc: mediaMap.getMediaSrc,
     getVideoSrc: mediaMap.getVideoSrc,
     getImageSrc: mediaMap.getImageSrc,
-    mediaConfig: dynamicMediaConfig,
-    addMediaConfig,
-    removeMediaConfig,
     addVideoMediaConfig,
     removeVideoMediaConfig,
     addImageMediaConfig,

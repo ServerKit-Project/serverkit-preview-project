@@ -2,12 +2,8 @@ import { createContext } from "react";
 import { MediaEntry } from "../../hooks/mediaMapper";
 
 export interface MediaContextType {
-  getMediaSrc: (key: string, mediaType?: "image" | "video") => string;
   getVideoSrc: (key: string) => string;
   getImageSrc: (key: string) => string;
-  mediaConfig: MediaEntry[];
-  addMediaConfig: (config: MediaEntry[]) => void;
-  removeMediaConfig: (componentName: string) => void;
   // Video 전용 함수들
   addVideoMediaConfig: (config: MediaEntry[]) => void;
   removeVideoMediaConfig: (componentName: string) => void;
