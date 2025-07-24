@@ -36,10 +36,10 @@ function componentMappingPlugin() {
   let componentMapping: Map<string, string> = new Map();
   let mimeComponentMapping: Map<string, any[]> = new Map();
   let mediaTypeMapping: Map<string, string> = new Map();
-  
+
   // 로그 수집을 위한 배열
   const logs: string[] = [];
-  
+
   // 로그 함수
   const log = (message: string) => {
     console.log(message);
@@ -66,8 +66,14 @@ function componentMappingPlugin() {
         const validationResult = MappingIdSchema.safeParse(rawData);
 
         if (!validationResult.success) {
-          log("⚠️ mappingId.json has invalid format. Component mapping disabled.");
-          log(`Validation errors: ${JSON.stringify(validationResult.error.errors)}`);
+          log(
+            "⚠️ mappingId.json has invalid format. Component mapping disabled."
+          );
+          log(
+            `Validation errors: ${JSON.stringify(
+              validationResult.error.errors
+            )}`
+          );
           return;
         }
 
@@ -156,7 +162,7 @@ function componentMappingPlugin() {
       }
 
       log(`✅ Processing file: ${id}`);
-      
+
       // mimeComponent 확인을 위한 헬퍼 함수
       const isMimeComponent = (componentName: string): boolean => {
         for (const [key, mimeComponents] of mimeComponentMapping.entries()) {
@@ -201,19 +207,25 @@ function componentMappingPlugin() {
         // export default 함수 찾기
         traverse(ast, {
           ExportDefaultDeclaration(path: any) {
-            log(`🔍 Found export default declaration type: ${path.node.declaration.type}`);
+            log(
+              `🔍 Found export default declaration type: ${path.node.declaration.type}`
+            );
 
             if (
               path.node.declaration.type === "FunctionDeclaration" &&
               path.node.declaration.id
             ) {
               componentName = path.node.declaration.id.name;
-              log(`🔍 Found export default function declaration: ${componentName}`);
+              log(
+                `🔍 Found export default function declaration: ${componentName}`
+              );
             } else if (path.node.declaration.type === "Identifier") {
               componentName = path.node.declaration.name;
               log(`🔍 Found export default identifier: ${componentName}`);
             } else {
-              log(`🔍 Unknown export default declaration type: ${path.node.declaration.type}`);
+              log(
+                `🔍 Unknown export default declaration type: ${path.node.declaration.type}`
+              );
             }
           },
         });
@@ -255,7 +267,11 @@ function componentMappingPlugin() {
       const defaultMediaType = isAppFile
         ? "none"
         : mediaTypeMapping.get(componentName) || "none";
-      log(`🎨 Found mime components for ${componentName}: ${JSON.stringify(mimeComponents)}`);
+      log(
+        `🎨 Found mime components for ${componentName}: ${JSON.stringify(
+          mimeComponents
+        )}`
+      );
       log(`📊 Default mediaType for ${componentName}: ${defaultMediaType}`);
 
       // 변환된 코드 생성
@@ -282,34 +298,47 @@ function componentMappingPlugin() {
                       statement.argument.type === "JSXElement"
                     ) {
                       const jsxElement = statement.argument;
-                      const existingProps = jsxElement.openingElement.attributes || [];
+                      const existingProps =
+                        jsxElement.openingElement.attributes || [];
 
                       // data-component-id가 없으면 추가
-                      if (!existingProps.some((attr: any) => 
-                        attr.type === "JSXAttribute" && 
-                        attr.name.name === "data-component-id"
-                      )) {
-                        const id = componentMapping.get(componentName);
-                        const mediaType = isMimeComponent(componentName) ? "none" : 
-                          (mediaTypeMapping.get(componentName) || "none");
-                        
+                      if (
+                        !existingProps.some(
+                          (attr: any) =>
+                            attr.type === "JSXAttribute" &&
+                            attr.name.name === "data-component-id"
+                        )
+                      ) {
+                        const id = componentMapping.get(componentName || "");
+                        if (!id) {
+                          log(`⚠️ No component ID found for ${componentName}`);
+                          return;
+                        }
+                        const mediaType = isMimeComponent(componentName || "")
+                          ? "none"
+                          : mediaTypeMapping.get(componentName || "") || "none";
+
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
                             t.jsxIdentifier("data-component-id"),
                             t.stringLiteral(id)
                           )
                         );
-                        log(`🚀 Added data-component-id="${id}" to root element of ${componentName}`);
-                        
+                        log(
+                          `🚀 Added data-component-id="${id}" to root element of ${componentName}`
+                        );
+
                         // data-component-name 추가
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
                             t.jsxIdentifier("data-component-name"),
-                            t.stringLiteral(componentName)
+                            t.stringLiteral(componentName || "")
                           )
                         );
-                        log(`🚀 Added data-component-name="${componentName}" to root element`);
-                        
+                        log(
+                          `🚀 Added data-component-name="${componentName}" to root element`
+                        );
+
                         // data-media-type 추가
                         jsxElement.openingElement.attributes.push(
                           t.jsxAttribute(
@@ -317,7 +346,9 @@ function componentMappingPlugin() {
                             t.stringLiteral(mediaType)
                           )
                         );
-                        log(`🚀 Added data-media-type="${mediaType}" to root element of ${componentName}`);
+                        log(
+                          `🚀 Added data-media-type="${mediaType}" to root element of ${componentName}`
+                        );
                       }
                       break;
                     }
@@ -352,11 +383,17 @@ function componentMappingPlugin() {
               // componentMapping에 있는지 확인 (subComponents 포함)
               if (componentMapping.has(tagName)) {
                 const componentId = componentMapping.get(tagName);
+                if (!componentId) {
+                  log(`⚠️ No component ID found for ${tagName}`);
+                  return;
+                }
                 const isStyled = styledComponentNames.has(tagName);
                 const isMime = isMimeComponent(tagName);
-                
+
                 // mediaType 결정: mimeComponent는 무조건 "none"
-                const mediaType = isMime ? "none" : (mediaTypeMapping.get(tagName) || "none");
+                const mediaType = isMime
+                  ? "none"
+                  : mediaTypeMapping.get(tagName) || "none";
 
                 // data-component-id 추가
                 jsxElement.openingElement.attributes.push(
@@ -365,7 +402,9 @@ function componentMappingPlugin() {
                     t.stringLiteral(componentId)
                   )
                 );
-                log(`🚀 Added data-component-id="${componentId}" to <${tagName}>`);
+                log(
+                  `🚀 Added data-component-id="${componentId}" to <${tagName}>`
+                );
 
                 // data-component-name 추가
                 jsxElement.openingElement.attributes.push(
@@ -374,7 +413,9 @@ function componentMappingPlugin() {
                     t.stringLiteral(tagName)
                   )
                 );
-                log(`🚀 Added data-component-name="${tagName}" to <${tagName}>`);
+                log(
+                  `🚀 Added data-component-name="${tagName}" to <${tagName}>`
+                );
 
                 // data-media-type 추가
                 jsxElement.openingElement.attributes.push(
@@ -383,7 +424,11 @@ function componentMappingPlugin() {
                     t.stringLiteral(mediaType)
                   )
                 );
-                log(`🚀 Added data-media-type="${mediaType}" to <${tagName}> (${isMime ? "mimeComponent" : "regular component"})`);
+                log(
+                  `🚀 Added data-media-type="${mediaType}" to <${tagName}> (${
+                    isMime ? "mimeComponent" : "regular component"
+                  })`
+                );
               }
               // App.tsx의 일반 요소들 처리
               else if (isAppFile && !hasDataComponentId) {
@@ -393,7 +438,9 @@ function componentMappingPlugin() {
                     t.stringLiteral("app-root-container")
                   )
                 );
-                log(`🚀 Added data-component-id="app-root-container" to <${tagName}> in App.tsx`);
+                log(
+                  `🚀 Added data-component-id="app-root-container" to <${tagName}> in App.tsx`
+                );
               }
             }
           },
@@ -407,15 +454,15 @@ function componentMappingPlugin() {
         return null;
       }
     },
-    
+
     // 빌드 종료 시 로그 파일 저장
     buildEnd() {
-      const logContent = logs.join('\n');
-      const logPath = path.resolve(process.cwd(), 'vite-plugin-logs.txt');
-      fs.writeFileSync(logPath, logContent, 'utf-8');
+      const logContent = logs.join("\n");
+      const logPath = path.resolve(process.cwd(), "vite-plugin-logs.txt");
+      fs.writeFileSync(logPath, logContent, "utf-8");
       console.log(`📝 Logs saved to: ${logPath}`);
       console.log(`📊 Total log entries: ${logs.length}`);
-    }
+    },
   };
 }
 
