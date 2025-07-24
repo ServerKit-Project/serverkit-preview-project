@@ -8,6 +8,7 @@ interface RecommendedSize {
 }
 
 interface mediaSrcData {
+  recommendedSize: RecommendedSize;
   name: string;
   data: string;
   type: "import" | "url";
@@ -17,7 +18,6 @@ export interface MediaEntry {
   purpose: string;
   type: MediaType;
   componentName: string;
-  recommendedSize: RecommendedSize;
   mediaSrcData: mediaSrcData[];
 }
 
@@ -41,7 +41,7 @@ export function createMediaMap(mediaConfig: MediaEntry[]) {
         recommendedSize: item.recommendedSize,
         mediaType: item.type,
       };
-      
+
       // 하위 호환성을 위해 기존 방식도 유지 (mediaType이 없는 키)
       // 단, 이미 존재하지 않는 경우에만 추가
       if (!mediaPathMap[media.name]) {
@@ -57,33 +57,37 @@ export function createMediaMap(mediaConfig: MediaEntry[]) {
 
   function getMediaSrc(key: string, mediaType?: MediaType): string {
     let filename: mediaPathMap | undefined;
-    
+
     // mediaType이 제공된 경우 타입별 키로 먼저 검색
     if (mediaType) {
       // 먼저 componentName_type_mediaName 형식으로 검색
       const keys = Object.keys(mediaPathMap);
-      const typeSpecificKey = keys.find(k => 
-        k.includes(`_${mediaType}_`) && (k.endsWith(`_${key}`) || k === `${key}_${mediaType}_${key}`)
+      const typeSpecificKey = keys.find(
+        (k) =>
+          k.includes(`_${mediaType}_`) &&
+          (k.endsWith(`_${key}`) || k === `${key}_${mediaType}_${key}`)
       );
-      
+
       if (typeSpecificKey) {
         filename = mediaPathMap[typeSpecificKey];
       }
     }
-    
+
     // 타입별 키로 찾지 못한 경우 기존 방식으로 검색
     if (!filename) {
       filename = mediaPathMap[key];
     }
-    
+
     if (!filename) return "";
-    
+
     if (filename.type === "import") {
       return (
         getMediaSrcFromManager(filename.path) || getMediaDefaultSrc(filename)
       );
     } else {
-      return filename.path !== "" ? filename.path : getMediaDefaultSrc(filename);
+      return filename.path !== ""
+        ? filename.path
+        : getMediaDefaultSrc(filename);
     }
   }
 
