@@ -165,7 +165,7 @@ function componentMappingPlugin() {
 
       // mimeComponent 확인을 위한 헬퍼 함수
       const isMimeComponent = (componentName: string): boolean => {
-        for (const [key, mimeComponents] of mimeComponentMapping.entries()) {
+        for (const [_key, mimeComponents] of mimeComponentMapping.entries()) {
           if (mimeComponents.some((mc: any) => mc.name === componentName)) {
             return true;
           }
@@ -387,7 +387,7 @@ function componentMappingPlugin() {
                   log(`⚠️ No component ID found for ${tagName}`);
                   return;
                 }
-                const isStyled = styledComponentNames.has(tagName);
+                // const isStyled = styledComponentNames.has(tagName);
                 const isMime = isMimeComponent(tagName);
 
                 // mediaType 결정: mimeComponent는 무조건 "none"
