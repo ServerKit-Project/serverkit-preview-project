@@ -15,7 +15,7 @@ import {
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/base/button";
 
 export interface CalendarEvent {
   date: Date;
@@ -39,7 +39,6 @@ export function Calendar({
   onDateClick,
   onEventClick,
   className,
-  showWeekNumbers = false,
 }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = React.useState(value);
 

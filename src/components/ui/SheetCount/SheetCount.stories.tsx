@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
-import { Stepper } from "./SheetCount";
+import { Stepper } from ".";
 
 const meta = {
   title: "Components/SheetCount",

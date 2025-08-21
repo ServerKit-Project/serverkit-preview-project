@@ -2,7 +2,7 @@ import {
   Avatar as ShadcnAvatar,
   AvatarFallback as ShadcnAvatarFallback,
   AvatarImage,
-} from "@/components/ui/avatar";
+} from "@/components/base/avatar";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { IconAt } from "@tabler/icons-react";

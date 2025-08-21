@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from ".";
 
 const meta = {
   title: "components/Avatar",
@@ -96,7 +96,8 @@ export const WithMentionIcon: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Avatars with mention (@) icon overlay for notification contexts",
+        story:
+          "Avatars with mention (@) icon overlay for notification contexts",
       },
     },
   },

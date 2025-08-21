@@ -5,7 +5,7 @@ import {
   IconDots,
   IconGripVertical,
 } from "@tabler/icons-react";
-import SidebarMenu, { type SidebarMenuItemData } from "./SidebarMenu";
+import SidebarMenu, { type SidebarMenuItemData } from ".";
 
 const meta = {
   title: "Components/SidebarMenu",

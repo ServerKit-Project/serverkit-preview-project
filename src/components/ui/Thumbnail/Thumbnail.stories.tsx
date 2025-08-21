@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Thumbnail } from "./Thumbnail";
-import { Button } from "@/components/shared/Button/Button";
+import { Thumbnail } from ".";
+import { Button } from "@/components/ui/Button";
 import { IconStar, IconDots } from "@tabler/icons-react";
 
 const meta = {
@@ -167,38 +167,14 @@ export const Grid: Story = {
   },
   render: (args) => (
     <div className="grid grid-cols-4 gap-4">
-      <Thumbnail
-        {...args}
-        size="sm"
-        imageUrl="/img/thumbnail_fallback.png"
-      />
-      <Thumbnail
-        {...args}
-        size="sm"
-        imageUrl="/img/thumbnail_fallback.png"
-      />
-      <Thumbnail
-        {...args}
-        size="sm"
-        imageUrl="/img/thumbnail_fallback.png"
-      />
+      <Thumbnail {...args} size="sm" imageUrl="/img/thumbnail_fallback.png" />
+      <Thumbnail {...args} size="sm" imageUrl="/img/thumbnail_fallback.png" />
+      <Thumbnail {...args} size="sm" imageUrl="/img/thumbnail_fallback.png" />
       <Thumbnail {...args} size="sm" />
-      <Thumbnail
-        {...args}
-        size="lg"
-        imageUrl="/img/thumbnail_fallback.png"
-      />
-      <Thumbnail
-        {...args}
-        size="lg"
-        imageUrl="/img/thumbnail_fallback.png"
-      />
+      <Thumbnail {...args} size="lg" imageUrl="/img/thumbnail_fallback.png" />
+      <Thumbnail {...args} size="lg" imageUrl="/img/thumbnail_fallback.png" />
       <Thumbnail {...args} size="lg" />
-      <Thumbnail
-        {...args}
-        size="lg"
-        imageUrl="/img/thumbnail_fallback.png"
-      />
+      <Thumbnail {...args} size="lg" imageUrl="/img/thumbnail_fallback.png" />
     </div>
   ),
   parameters: {

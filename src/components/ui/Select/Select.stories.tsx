@@ -6,8 +6,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { LanguageSelect } from "./Select";
+} from "@/components/base/select";
+import { LanguageSelect } from ".";
 
 const meta: Meta<typeof Select> = {
   title: "Components/Select",
@@ -50,8 +50,8 @@ export const LanguageSelectStory: Story = {
     const [value, setValue] = React.useState<string>("ko");
 
     return (
-      <LanguageSelect 
-        value={value} 
+      <LanguageSelect
+        value={value}
         onValueChange={setValue}
         className="w-[280px]"
       />

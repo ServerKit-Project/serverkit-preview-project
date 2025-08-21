@@ -9,7 +9,7 @@ import {
   ListSearchProjectTile,
   ListTrashProjectTile,
   ListModalProjectTile,
-} from "./ProjectTile";
+} from ".";
 
 const meta = {
   title: "components/ProjectTile",
@@ -21,7 +21,15 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["dashboard", "home", "list", "list_simple", "list_search", "list_trash", "list_modal"],
+      options: [
+        "dashboard",
+        "home",
+        "list",
+        "list_simple",
+        "list_search",
+        "list_trash",
+        "list_modal",
+      ],
       description: "The visual style variant of the project tile",
     },
     title: {
@@ -223,7 +231,9 @@ export const DirectComponentUsage: Story = {
   render: () => (
     <div className="space-y-8">
       <div>
-        <h3 className="text-sm font-semibold mb-2">DetailedProjectTile (Direct Usage)</h3>
+        <h3 className="text-sm font-semibold mb-2">
+          DetailedProjectTile (Direct Usage)
+        </h3>
         <DetailedProjectTile
           title="Design System Project"
           description="Building comprehensive design system components"
@@ -239,7 +249,9 @@ export const DirectComponentUsage: Story = {
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold mb-2">SimpleProjectTile (Direct Usage)</h3>
+        <h3 className="text-sm font-semibold mb-2">
+          SimpleProjectTile (Direct Usage)
+        </h3>
         <SimpleProjectTile
           title="Quick Prototype"
           editedTime="Edited 5 minutes ago"
@@ -250,7 +262,9 @@ export const DirectComponentUsage: Story = {
       </div>
 
       <div>
-        <h3 className="text-sm font-semibold mb-2">List Components (Direct Usage)</h3>
+        <h3 className="text-sm font-semibold mb-2">
+          List Components (Direct Usage)
+        </h3>
         <div className="border rounded-lg overflow-hidden max-w-2xl">
           <ListProjectTile
             title="Team Collaboration Tool"
@@ -287,12 +301,12 @@ export const DirectComponentUsage: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Examples of using each ProjectTile component directly instead of through the main ProjectTile wrapper",
+        story:
+          "Examples of using each ProjectTile component directly instead of through the main ProjectTile wrapper",
       },
     },
   },
 };
-
 
 export const TextOverflow: Story = {
   args: {
@@ -556,7 +570,7 @@ export const ListExamples: Story = {
 };
 
 export const ListWithLongText: Story = {
-  args:{
+  args: {
     variant: "list",
     title: "List with Long Titles and Descriptions",
     description: "This is a list example with long titles and descriptions",
@@ -569,7 +583,9 @@ export const ListWithLongText: Story = {
   render: () => (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <h3 className="text-sm font-semibold mb-2">List with Long Titles and Descriptions</h3>
+        <h3 className="text-sm font-semibold mb-2">
+          List with Long Titles and Descriptions
+        </h3>
         <div className="border rounded-lg overflow-hidden">
           <ProjectTile
             variant="list"
@@ -664,7 +680,8 @@ export const InteractiveStarToggle: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Interactive example with working star toggles using React state",
+        story:
+          "Interactive example with working star toggles using React state",
       },
     },
   },
@@ -706,7 +723,9 @@ export const TrashAndModalExamples: Story = {
     return (
       <div className="space-y-6 max-w-4xl">
         <div>
-          <h3 className="text-sm font-semibold mb-2">List Trash Variant (Direct Component Usage)</h3>
+          <h3 className="text-sm font-semibold mb-2">
+            List Trash Variant (Direct Component Usage)
+          </h3>
           <div className="border rounded-lg overflow-hidden">
             <ListTrashProjectTile
               title="Deleted Project 1"
@@ -737,7 +756,9 @@ export const TrashAndModalExamples: Story = {
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold mb-2">List Modal Variant (Direct Component Usage)</h3>
+          <h3 className="text-sm font-semibold mb-2">
+            List Modal Variant (Direct Component Usage)
+          </h3>
           <div className="border rounded-lg overflow-hidden">
             <ListModalProjectTile
               title="Team Project 1"
@@ -769,7 +790,8 @@ export const TrashAndModalExamples: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Examples of trash and modal variants using direct component imports with interactive controls",
+        story:
+          "Examples of trash and modal variants using direct component imports with interactive controls",
       },
     },
   },
@@ -793,7 +815,9 @@ export const InteractiveJoinLeave: Story = {
 
     return (
       <div className="space-y-4 max-w-4xl">
-        <h3 className="text-sm font-semibold mb-2">Interactive Join/Leave Buttons</h3>
+        <h3 className="text-sm font-semibold mb-2">
+          Interactive Join/Leave Buttons
+        </h3>
         <div className="border rounded-lg overflow-hidden">
           <ProjectTile
             variant="list_search"
@@ -833,7 +857,8 @@ export const InteractiveJoinLeave: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Interactive example with working Join/Leave buttons using React state",
+        story:
+          "Interactive example with working Join/Leave buttons using React state",
       },
     },
   },

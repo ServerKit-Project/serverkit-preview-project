@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { UploadImageButton } from "./UploadImageButton";
-import { mockMembers } from "@/components/shared/Members/members.mock";
+import { UploadImageButton } from ".";
+import { mockMembers } from "@/components/ui/Members/members.mock";
 
 const meta = {
   title: "Components/UploadImageButton",

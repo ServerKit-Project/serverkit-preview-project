@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "@/components/shared/Button/Button";
+import { Button } from "@/components/ui/Button";
 import {
   IconHeart,
   IconDownload,
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
-import { CHIP_TEXTS } from "@/components/shared/Chip/Chip";
+import { CHIP_TEXTS } from "@/components/ui/Chip";
 
 const meta = {
   title: "Components/Button",

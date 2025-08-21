@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { PlayBar } from "./PlayBar";
+import { PlayBar } from ".";
 
 const meta = {
   title: "Components/PlayBar",

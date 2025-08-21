@@ -1,7 +1,7 @@
 import React from "react";
 import { IconChevronDown } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/shared/Avatar/Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/base/dropdown-menu";
 
 export interface ProfileMenuItem {
   label: string;
@@ -28,8 +28,11 @@ export interface ProfileProps {
   onAvatarClick?: () => void;
 }
 
-export const Profile = React.forwardRef<HTMLDivElement, ProfileProps>(
-  ({ avatarUrl, name, email, menuItems = [], className, onAvatarClick, ...props }, ref) => {
+export const Profile = React.forwardRef<HTMLButtonElement, ProfileProps>(
+  (
+    { avatarUrl, name, email, menuItems = [], className, onAvatarClick },
+    ref
+  ) => {
     const defaultMenuItems: ProfileMenuItem[] = [
       { label: "프로필", onClick: () => {} },
       { label: "설정", onClick: () => {} },
@@ -53,7 +56,9 @@ export const Profile = React.forwardRef<HTMLDivElement, ProfileProps>(
           >
             <Avatar size="md">
               <AvatarImage src={avatarUrl} alt={name || "Profile"} />
-              <AvatarFallback>{name?.charAt(0)?.toUpperCase() || "U"}</AvatarFallback>
+              <AvatarFallback>
+                {name?.charAt(0)?.toUpperCase() || "U"}
+              </AvatarFallback>
             </Avatar>
             {name && (
               <span className="text-sm font-medium text-[var(--scale-primary-text)]">
@@ -68,8 +73,14 @@ export const Profile = React.forwardRef<HTMLDivElement, ProfileProps>(
             <>
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
-                  {name && <p className="text-sm font-medium leading-none">{name}</p>}
-                  {email && <p className="text-xs leading-none text-muted-foreground">{email}</p>}
+                  {name && (
+                    <p className="text-sm font-medium leading-none">{name}</p>
+                  )}
+                  {email && (
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {email}
+                    </p>
+                  )}
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -77,13 +88,16 @@ export const Profile = React.forwardRef<HTMLDivElement, ProfileProps>(
           )}
           {items.map((item, index) => (
             <React.Fragment key={index}>
-              {index > 0 && items[index - 1].variant !== item.variant && <DropdownMenuSeparator />}
+              {index > 0 && items[index - 1].variant !== item.variant && (
+                <DropdownMenuSeparator />
+              )}
               <DropdownMenuItem
                 onClick={item.onClick}
                 disabled={item.disabled}
                 variant={item.variant}
                 className={cn(
-                  item.variant === "destructive" && "text-[var(--error-base)] focus:text-[var(--error-base)]"
+                  item.variant === "destructive" &&
+                    "text-[var(--error-base)] focus:text-[var(--error-base)]"
                 )}
               >
                 {item.icon && <span className="mr-2">{item.icon}</span>}

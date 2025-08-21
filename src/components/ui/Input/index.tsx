@@ -75,8 +75,8 @@ function Input({
   const currentStatus = disabled
     ? "disabled"
     : focus
-      ? "focus"
-      : status || "default";
+    ? "focus"
+    : status || "default";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

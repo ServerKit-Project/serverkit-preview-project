@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Profile } from "./Profile";
+import { Profile } from ".";
 import {
   IconUser,
   IconSettings,

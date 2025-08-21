@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   getIconForVariant,
   type VariantType,
-} from "@/components/shared/VariantIcons/VariantIcons";
+} from "@/components/ui/VariantIcons";
 
 const calloutVariants = cva(
   ["box-border flex items-center border", "[&>svg]:flex-shrink-0"],

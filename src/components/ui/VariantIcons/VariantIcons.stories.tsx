@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { getIconForVariant, VariantType } from "./VariantIcons";
+import { getIconForVariant, VariantType } from ".";
 
 const meta = {
   title: "components/VariantIcons",

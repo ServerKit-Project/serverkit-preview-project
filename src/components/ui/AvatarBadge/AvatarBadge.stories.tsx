@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { AvatarBadge } from "./AvatarBadge";
+import { AvatarBadge } from ".";
 
 const meta = {
   title: "components/AvatarBadge",

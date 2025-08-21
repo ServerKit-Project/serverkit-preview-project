@@ -1,10 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/shared/Avatar/Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const membersVariants = cva("flex items-center gap-1", {
@@ -46,7 +42,9 @@ export const Members = React.forwardRef<HTMLDivElement, MembersProps>(
   ({ members, totalCount, size = "sm", className }, ref) => {
     const maxVisible = getMaxVisible(size);
     const visibleMembers = members.slice(0, maxVisible);
-    const remainingCount = totalCount ? totalCount - maxVisible : members.length - maxVisible;
+    const remainingCount = totalCount
+      ? totalCount - maxVisible
+      : members.length - maxVisible;
 
     return (
       <div ref={ref} className={cn(membersVariants({ size }), className)}>

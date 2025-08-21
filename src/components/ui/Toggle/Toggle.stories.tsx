@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 // Docs는 shadcn 기본 토글로 노출
-import { Toggle as UIToggle } from "@/components/ui/toggle";
+import { Toggle as UIToggle } from "@/components/base/toggle";
 // 카테고리 데모는 shared 토글로 렌더링
-import { Toggle as SharedToggle } from "./Toggle";
+import { Toggle as SharedToggle } from ".";
 
 const meta = {
   title: "Components/Toggle",

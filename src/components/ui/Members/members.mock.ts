@@ -1,4 +1,4 @@
-import type { ProjectMember } from "@/components/shared/ProjectTile/types";
+import type { ProjectMember } from "@/components/ui/ProjectTile/types";
 
 export const mockMembers: ProjectMember[] = [
   {

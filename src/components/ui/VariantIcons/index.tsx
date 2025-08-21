@@ -4,9 +4,7 @@ export type VariantType = "default" | "success" | "warning" | "info" | "error";
 
 export const getIconForVariant = (variant: VariantType) => {
   const icons = {
-    default: (
-      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-    ),
+    default: <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />,
     success: (
       <svg
         className="w-5 h-5 text-success-base"

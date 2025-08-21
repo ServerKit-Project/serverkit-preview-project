@@ -4,13 +4,13 @@ import * as React from "react";
 import { format, parse, isValid } from "date-fns";
 
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/base/input";
+import { Calendar } from "@/components/base/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/base/popover";
 
 export interface DatePickerProps {
   value?: Date;
@@ -32,7 +32,6 @@ export function DatePicker({
   disabled = false,
   className,
   inputClassName,
-  buttonClassName,
   calendarClassName,
   dateFormat = "PPP",
   inputFormat = "yyyy-MM-dd",

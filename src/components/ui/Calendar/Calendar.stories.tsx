@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { Calendar, CalendarEvent } from "./Calendar"
+import type { Meta, StoryObj } from "@storybook/react";
+import { Calendar, CalendarEvent } from ".";
 
 const meta = {
   title: "components/Calendar",
@@ -21,10 +21,10 @@ const meta = {
       description: "Show week numbers",
     },
   },
-} satisfies Meta<typeof Calendar>
+} satisfies Meta<typeof Calendar>;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const sampleEvents: CalendarEvent[] = [
   {
@@ -77,20 +77,20 @@ const sampleEvents: CalendarEvent[] = [
     title: "Monthly Review",
     type: "review",
   },
-]
+];
 
 export const Default: Story = {
   args: {
     value: new Date(2025, 7, 14),
   },
-}
+};
 
 export const WithEvents: Story = {
   args: {
     value: new Date(2025, 7, 14),
     events: sampleEvents,
   },
-}
+};
 
 export const CurrentMonth: Story = {
   args: {
@@ -103,7 +103,7 @@ export const CurrentMonth: Story = {
       },
     ],
   },
-}
+};
 
 export const ManyEvents: Story = {
   args: {
@@ -114,7 +114,7 @@ export const ManyEvents: Story = {
       type: i % 3 === 0 ? "meeting" : i % 3 === 1 ? "deadline" : "other",
     })),
   },
-}
+};
 
 export const WithCustomColors: Story = {
   args: {
@@ -140,22 +140,22 @@ export const WithCustomColors: Story = {
       },
     ],
   },
-}
+};
 
 export const Interactive: Story = {
   args: {
     value: new Date(2025, 7, 14),
     events: sampleEvents,
     onDateClick: (date) => {
-      console.log("Date clicked:", date)
-      alert(`Date clicked: ${date.toDateString()}`)
+      console.log("Date clicked:", date);
+      alert(`Date clicked: ${date.toDateString()}`);
     },
     onEventClick: (event) => {
-      console.log("Event clicked:", event)
-      alert(`Event clicked: ${event.title}`)
+      console.log("Event clicked:", event);
+      alert(`Event clicked: ${event.title}`);
     },
   },
-}
+};
 
 export const SeptemberExample: Story = {
   args: {
@@ -338,4 +338,4 @@ export const SeptemberExample: Story = {
       },
     ],
   },
-}
+};
