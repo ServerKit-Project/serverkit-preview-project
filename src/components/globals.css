@@ -1,0 +1,469 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Custom scale colors */
+  --color-scale-primary-text: var(--scale-primary-text);
+  --color-scale-secondary-text: var(--scale-secondary-text);
+  --color-scale-tertiary-text: var(--scale-tertiary-text);
+
+  /* Base semantic colors */
+  --color-background: var(--scale-bg);
+  --color-foreground: var(--scale-primary-text);
+  --color-card: var(--scale-white);
+  --color-card-foreground: var(--scale-primary-text);
+  --color-popover: var(--scale-white);
+  --color-popover-foreground: var(--scale-primary-text);
+
+  /* Primary colors */
+  --color-primary: var(--scale-primary-text);
+  --color-primary-foreground: var(--scale-white);
+
+  /* Secondary colors */
+  --color-secondary: var(--scale-hover);
+  --color-secondary-foreground: var(--scale-primary-text);
+
+  /* Muted colors */
+  --color-muted: var(--scale-hover);
+  --color-muted-foreground: var(--scale-tertiary-text);
+
+  /* Accent colors */
+  --color-accent: var(--scale-hover);
+  --color-accent-foreground: var(--scale-primary-text);
+
+  /* Semantic colors */
+  --color-destructive: var(--error-base);
+  --color-destructive-foreground: var(--scale-white);
+
+  /* Success colors */
+  --color-success-light: var(--success-light);
+  --color-success: var(--success-base);
+  --color-success-deep: var(--success-deep);
+  --color-success-deeper: var(--success-deeper);
+  --color-success-foreground: var(--scale-white);
+
+  /* Error colors */
+  --color-error-light: var(--error-light);
+  --color-error: var(--error-base);
+  --color-error-deep: var(--error-deep);
+  --color-error-deeper: var(--error-deeper);
+
+  /* Warning colors */
+  --color-warning-light: var(--warning-light);
+  --color-warning: var(--warning-base);
+  --color-warning-deep: var(--warning-deep);
+  --color-warning-deeper: var(--warning-deeper);
+  --color-warning-foreground: var(--scale-primary-text);
+
+  /* Info colors */
+  --color-info-light: var(--info-light);
+  --color-info: var(--info-base);
+  --color-info-deep: var(--info-deep);
+  --color-info-deeper: var(--info-deeper);
+  --color-info-foreground: var(--scale-white);
+
+  /* Purple colors */
+  --color-purple-light: var(--purple-light);
+  --color-purple-base: var(--purple-base);
+  --color-purple-deep: var(--purple-deep);
+  --color-purple-deeper: var(--purple-deeper);
+
+  /* Orange colors */
+  --color-orange-light: var(--orange-light);
+  --color-orange-base: var(--orange-base);
+  --color-orange-deep: var(--orange-deep);
+  --color-orange-deeper: var(--orange-deeper);
+
+  /* Gray colors */
+  --color-gray-light: var(--gray-light);
+  --color-gray-base: var(--gray-base);
+  --color-gray-deep: var(--gray-deep);
+  --color-gray-deeper: var(--gray-deeper);
+
+  /* Border and input */
+  --color-border: var(--scale-actived-clicked);
+  --color-input: var(--scale-actived-clicked);
+  --color-ring: var(--scale-secondary-text);
+
+  /* Typography */
+  --font-family-pretendard: "Pretendard", -apple-system, BlinkMacSystemFont,
+    system-ui, sans-serif;
+  --font-family-sans: var(--font-family-pretendard);
+
+  /* Font sizes - PC */
+  --font-size-h1-landing: 2.5rem; /* 40px */
+  --font-size-display: 2rem; /* 32px */
+  --font-size-title: 1.5rem; /* 24px */
+  --font-size-subtitle: 1.25rem; /* 20px */
+  --font-size-body: 1rem; /* 16px */
+  --font-size-subbody: 0.875rem; /* 14px */
+  --font-size-caption: 0.75rem; /* 12px */
+  --font-size-button1: 1rem; /* 16px */
+  --font-size-button2: 0.875rem; /* 14px */
+
+  /* Font sizes - Mobile/Tablet */
+  --font-size-h1-landing-mobile: 2rem; /* 32px */
+  --font-size-display-mobile: 1.5rem; /* 24px */
+  --font-size-title-mobile: 1.25rem; /* 20px */
+  --font-size-subtitle-mobile: 1rem; /* 16px */
+  --font-size-body-mobile: 0.875rem; /* 14px */
+  --font-size-subbody-mobile: 0.75rem; /* 12px */
+  --font-size-caption-mobile: 0.75rem; /* 12px */
+  --font-size-button1-mobile: 0.875rem; /* 14px */
+  --font-size-button2-mobile: 0.75rem; /* 12px */
+
+  /* Font weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Line height */
+  --line-height-base: 1.45;
+
+  /* Border radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Icon sizes */
+  --icon-size-sm: 1rem; /* 16px */
+  --icon-size-lg: 1.5rem; /* 24px */
+
+  /* Avatar sizes */
+  --avatar-size-sm: 1.25rem; /* 20px */
+  --avatar-size-md: 2rem; /* 32px */
+  --avatar-size-lg: 2.75rem; /* 44px */
+  --avatar-size-xl: 4rem; /* 64px */
+
+  /* Shadow */
+  --shadow-base: var(--shadow);
+  --modal-backdrop: var(--modal-backdrop);
+}
+
+:root {
+  --radius: 0.625rem;
+
+  --scale-white: #ffffff;
+  --scale-bg: #f9fafb;
+  --scale-hover: #f3f4f6;
+  --scale-actived-clicked: #e5e7eb;
+  --scale-disabled-text: #99a1af;
+  --scale-tertiary-text: #6a7282;
+  --scale-secondary-text: #4a5565;
+  --scale-primary-text: #030712;
+
+  --success-light: #d6fae3;
+  --success-base: #4caf50;
+  --success-deep: #2e7d32;
+  --success-deeper: #1b5e20;
+
+  --error-light: #feebea;
+  --error-base: #e57373;
+  --error-deep: #d32f2f;
+  --error-deeper: #c62828;
+
+  --warning-light: #fff8db;
+  --warning-base: #ffc107;
+  --warning-deep: #ffa000;
+  --warning-deeper: #ff8f00;
+
+  --info-light: #e0f2f7;
+  --info-base: #2196f3;
+  --info-deep: #1976d2;
+  --info-deeper: #1565c0;
+
+  --purple-light: #eae6ed;
+  --purple-base: #9575cd;
+  --purple-deep: #673ab7;
+  --purple-deeper: #4527a0;
+
+  --orange-light: #fff3e0;
+  --orange-base: #ff9800;
+  --orange-deep: #fb8c00;
+  --orange-deeper: #f57c00;
+
+  --gray-light: #f5f5f5;
+  --gray-base: #bdbdbd;
+  --gray-deep: #757575;
+  --gray-deeper: #424242;
+
+  --dark-bg: #09090b;
+  --dark-hover: #18181b;
+  --dark-actived-clicked: #27272a;
+
+  --shadow: #03071219;
+  --modal-backdrop: #000000bf;
+}
+
+.dark {
+  --scale-white: #151515;
+  --scale-bg: #09090b;
+  --scale-hover: #18181b;
+  --scale-actived-clicked: #27272a;
+  --scale-disabled-text: #52525c;
+  --scale-tertiary-text: #71717b;
+  --scale-secondary-text: #9f9fa9;
+  --scale-primary-text: #fafafa;
+
+  --success-light: #21392a;
+  --success-base: #6ccf70;
+  --success-deep: #a3eea6;
+  --success-deeper: #e0ffe0;
+
+  --error-light: #412323;
+  --error-base: #ef5656;
+  --error-deep: #ffb3b3;
+  --error-deeper: #ffdada;
+
+  --warning-light: #4c3a19;
+  --warning-base: #ffdd8a;
+  --warning-deep: #ffefb3;
+  --warning-deeper: #fff5e0;
+
+  --info-light: #233742;
+  --info-base: #78b9ed;
+  --info-deep: #aed8f7;
+  --info-deeper: #d4eafa;
+
+  --purple-light: #2e213d;
+  --purple-base: #b28eef;
+  --purple-deep: #c7a9f5;
+  --purple-deeper: #dfd2f9;
+
+  --orange-light: #3d2619;
+  --orange-base: #ffb766;
+  --orange-deep: #ffce8b;
+  --orange-deeper: #ffe6b7;
+
+  --gray-light: #1a1a1a;
+  --gray-base: #4d4d4d;
+  --gray-deep: #a3a3a3;
+  --gray-deeper: #d9d9d9;
+
+  --dark-bg: #f9fafb;
+  --dark-hover: #f3f4f6;
+  --dark-actived-clicked: #e5e7eb;
+
+  --shadow: #fafafa14;
+  --modal-backdrop: #000000bf;
+}
+
+/* H1 Typography (40px) */
+.text-h1-medium {
+  font-size: var(--font-size-h1-landing);
+  font-weight: var(--font-weight-medium);
+  color: var(--scale-primary-text);
+}
+
+.text-h1-bold {
+  font-size: var(--font-size-h1-landing);
+  font-weight: var(--font-weight-bold);
+  color: var(--scale-primary-text);
+}
+
+/* Display Typography (32px) */
+.text-display-medium {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-medium);
+  color: var(--scale-primary-text);
+}
+
+.text-display-bold {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--scale-primary-text);
+}
+
+/* Title Typography (24px) */
+.text-title-regular {
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-primary-text);
+}
+
+.text-title-semibold {
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-semibold);
+  color: var(--scale-primary-text);
+}
+
+/* Subtitle Typography (20px) */
+.text-subtitle-regular {
+  font-size: var(--font-size-subtitle);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-primary-text);
+}
+
+.text-subtitle-semibold {
+  font-size: var(--font-size-subtitle);
+  font-weight: var(--font-weight-semibold);
+  color: var(--scale-primary-text);
+}
+
+/* Body Typography (16px) */
+.text-body-regular {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-primary-text);
+}
+
+.text-body-semibold {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  color: var(--scale-primary-text);
+}
+
+/* Sub Body Typography (14px) */
+.text-subbody-regular {
+  font-size: var(--font-size-subbody);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-secondary-text);
+}
+
+.text-subbody-semibold {
+  font-size: var(--font-size-subbody);
+  font-weight: var(--font-weight-semibold);
+  color: var(--scale-secondary-text);
+}
+
+/* Caption Typography (12px) */
+.text-caption-regular {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-tertiary-text);
+}
+
+.text-caption-bold {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  color: var(--scale-tertiary-text);
+}
+
+/* Button Typography */
+.text-button1-regular {
+  font-size: var(--font-size-button1);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-primary-text);
+}
+
+.text-button1-semibold {
+  font-size: var(--font-size-button1);
+  font-weight: var(--font-weight-semibold);
+  color: var(--scale-primary-text);
+}
+
+.text-button2-regular {
+  font-size: var(--font-size-button2);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-primary-text);
+}
+
+.text-button2-semibold {
+  font-size: var(--font-size-button2);
+  font-weight: var(--font-weight-semibold);
+  color: var(--scale-primary-text);
+}
+
+/* Legacy classes - kept for backwards compatibility */
+.text-caption {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  color: var(--scale-tertiary-text);
+}
+
+/* Avatar sizes */
+.size-avatar-sm {
+  width: var(--avatar-size-sm);
+  height: var(--avatar-size-sm);
+}
+
+.size-avatar-md {
+  width: var(--avatar-size-md);
+  height: var(--avatar-size-md);
+}
+
+.size-avatar-lg {
+  width: var(--avatar-size-lg);
+  height: var(--avatar-size-lg);
+}
+
+.size-avatar-xl {
+  width: var(--avatar-size-xl);
+  height: var(--avatar-size-xl);
+}
+
+/* Toast */
+.toast-base {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 356px;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  backdrop-filter: blur(4px);
+  transition: all 0.2s;
+}
+
+.toast-default {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+}
+
+.toast-success {
+  background: var(--color-card);
+  border: 1px solid var(--color-success-deep);
+  color: var(--color-success-deep);
+}
+
+.toast-warning {
+  background: var(--color-card);
+  border: 1px solid var(--color-warning-deep);
+  color: var(--color-warning-deep);
+}
+
+.toast-info {
+  background: var(--color-card);
+  border: 1px solid var(--color-info-deep);
+  color: var(--color-info-deep);
+}
+
+.toast-error {
+  background: var(--color-card);
+  border: 1px solid var(--color-error-deep);
+  color: var(--color-error-deep);
+}
+
+/* Variant text colors */
+/* TODO: 나머지 추가하기 */
+.text-success-base {
+  color: var(--success-base);
+}
+
+.text-warning-base {
+  color: var(--warning-base);
+}
+
+.text-info-base {
+  color: var(--info-base);
+}
+
+.text-error-base {
+  color: var(--error-base);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

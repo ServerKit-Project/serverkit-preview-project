@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import WelcomeServerkit from "./pages/welcome-serverkit";
 import NotFound from "./pages/404";
 import ServerError from "./pages/500";
+import "./components/globals.css";
 
 /*PackageImport*/
 /*PackageImport start*/
