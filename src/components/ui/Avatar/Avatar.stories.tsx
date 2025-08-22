@@ -58,7 +58,7 @@ export const Large: Story = {
   render: () => (
     <Avatar size="lg">
       <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-      <AvatarFallback>C</AvatarFallback>
+      <AvatarFallback>LG</AvatarFallback>
     </Avatar>
   ),
 };
@@ -77,11 +77,11 @@ export const WithMentionIcon: Story = {
     <div className="flex items-center gap-4">
       <Avatar size="sm" showMentionIcon>
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-        <AvatarFallback>S</AvatarFallback>
+        <AvatarFallback>SM</AvatarFallback>
       </Avatar>
       <Avatar size="md" showMentionIcon>
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-        <AvatarFallback>M</AvatarFallback>
+        <AvatarFallback>MD</AvatarFallback>
       </Avatar>
       <Avatar size="lg" showMentionIcon>
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
@@ -108,11 +108,11 @@ export const AllSizes: Story = {
     <div className="flex items-center gap-4">
       <Avatar size="sm">
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-        <AvatarFallback>S</AvatarFallback>
+        <AvatarFallback>SM</AvatarFallback>
       </Avatar>
       <Avatar size="md">
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-        <AvatarFallback>M</AvatarFallback>
+        <AvatarFallback>MD</AvatarFallback>
       </Avatar>
       <Avatar size="lg">
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />

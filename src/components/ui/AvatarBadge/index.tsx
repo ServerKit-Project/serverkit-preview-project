@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarImage, AvatarFallback } from "../Avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../avatar";
 
 export interface AvatarBadgeProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

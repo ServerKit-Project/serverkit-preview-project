@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AvatarBadge } from ".";
 
 const meta = {
-  title: "components/AvatarBadge",
+  title: "componen../avatarBadge",
   component: AvatarBadge,
   parameters: {
     layout: "centered",

@@ -1,10 +1,10 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Card, CardHeader } from "@/components/base/card";
-import { Members } from "@/components/ui/Members";
-import { Button } from "@/components/ui/Button";
-import { WorkspaceBadge } from "@/components/ui/WorkspaceBadge";
-import { Thumbnail } from "@/components/ui/Thumbnail";
+import { Members } from "@/components/ui/members";
+import { Button } from "@/components/ui/button";
+import { WorkspaceBadge } from "@/components/ui/workspacebadge";
+import { Thumbnail } from "@/components/ui/thumbnail";
 import { IconStar, IconDots, IconLock } from "@tabler/icons-react";
 import { Switch } from "@/components/base/switch";
 import { cva } from "class-variance-authority";

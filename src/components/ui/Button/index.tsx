@@ -2,8 +2,8 @@ import React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { Spinner } from "@/components/ui/Spinner";
-import { Chip, type chipVariants } from "@/components/ui/Chip";
+import { Spinner } from "@/components/ui/spinner";
+import { Chip, type chipVariants } from "@/components/ui/chip";
 
 const buttonVariants = cva(
   [

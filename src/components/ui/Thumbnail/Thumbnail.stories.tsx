@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Thumbnail } from ".";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { IconStar, IconDots } from "@tabler/icons-react";
 
 const meta = {

@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Members, type MembersProps } from ".";
 import { IconChevronDown } from "@tabler/icons-react";
-import { Button } from "../Button";
+import { Button } from "../button";
 
 export interface MembersButtonProps extends MembersProps {
   onClick?: () => void;

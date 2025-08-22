@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   getIconForVariant,
   type VariantType,
-} from "@/components/ui/VariantIcons";
+} from "@/components/ui/varianticons";
 
 interface ToastOptions {
   variant?: VariantType;
