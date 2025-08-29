@@ -10,29 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/base/dropdown-menu";
+import { ProfileProps, ProfileMenuItem } from "./Profile.types";
 
-export interface ProfileMenuItem {
-  label: string;
-  onClick?: () => void;
-  icon?: React.ReactNode;
-  variant?: "default" | "destructive";
-  disabled?: boolean;
-}
-
-export interface ProfileProps {
-  avatarUrl?: string;
-  name?: string;
-  email?: string;
-  menuItems?: ProfileMenuItem[];
-  className?: string;
-  onAvatarClick?: () => void;
-}
-
-export const Profile = React.forwardRef<HTMLButtonElement, ProfileProps>(
-  (
-    { avatarUrl, name, email, menuItems = [], className, onAvatarClick },
-    ref
-  ) => {
+export const Profile = React.forwardRef<HTMLDivElement, ProfileProps>(
+  ({ avatarUrl, name, email, menuItems = [], className, onAvatarClick }) => {
     const defaultMenuItems: ProfileMenuItem[] = [
       { label: "프로필", onClick: () => {} },
       { label: "설정", onClick: () => {} },
@@ -45,7 +26,6 @@ export const Profile = React.forwardRef<HTMLButtonElement, ProfileProps>(
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
-            ref={ref}
             className={cn(
               "flex items-center gap-2 rounded-lg px-2 py-1 outline-none",
               "hover:bg-[var(--scale-hover)] transition-colors",

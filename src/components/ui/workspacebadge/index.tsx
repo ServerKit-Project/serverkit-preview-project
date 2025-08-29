@@ -21,7 +21,11 @@ export interface WorkspaceBadgeProps
   children?: React.ReactNode;
 }
 
-export function WorkspaceBadge({ size, onClick, children }: WorkspaceBadgeProps) {
+export function WorkspaceBadge({
+  size,
+  onClick,
+  children,
+}: WorkspaceBadgeProps) {
   return (
     <div className={workspaceBadgeVariants({ size })} onClick={onClick}>
       {children}

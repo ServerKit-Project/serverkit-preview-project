@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const triggerCva = cva(
   [
-    "relative inline-flex h-5 items-center font[var--(--font-size-subbody)] whitespace-nowrap cursor-pointer",
+    "relative inline-flex h-5 items-center text-[var(--font-size-subbody)] whitespace-nowrap cursor-pointer",
   ],
   {
     variants: {
@@ -26,8 +26,10 @@ const triggerCva = cva(
 );
 
 type TriggerVariants = VariantProps<typeof triggerCva>;
+type TabsTriggerProps = React.ComponentProps<typeof TabsPrimitive.Trigger> &
+  TriggerVariants;
 
-function Tabs({
+export function Tabs({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Root>) {
@@ -39,7 +41,7 @@ function Tabs({
   );
 }
 
-function TabsList({
+export function TabsList({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List>) {
@@ -51,23 +53,13 @@ function TabsList({
   );
 }
 
-interface TabsTriggerProps
-  extends Omit<
-      React.ComponentProps<typeof TabsPrimitive.Trigger>,
-      "children" | "value"
-    >,
-    TriggerVariants {
-  children?: React.ReactNode;
-  value?: string;
-}
-
-function TabsTrigger({
+export const TabsTrigger = ({
   variant,
   className,
   children,
   value,
   ...props
-}: TabsTriggerProps) {
+}: TabsTriggerProps) => {
   const triggerValue =
     value ?? (typeof children === "string" ? children : String(children));
 
@@ -80,6 +72,11 @@ function TabsTrigger({
       {children}
     </TabsPrimitive.Trigger>
   );
-}
+};
 
-export { Tabs, TabsList, TabsTrigger };
+export function TabsContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+  return <TabsPrimitive.Content className={cn("mt-2", className)} {...props} />;
+}

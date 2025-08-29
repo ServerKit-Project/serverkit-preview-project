@@ -2,26 +2,23 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const thumbnailVariants = cva(
-  "relative overflow-hidden flex-shrink-0",
-  {
-    variants: {
-      size: {
-        sm: "w-24 h-[54px]",
-        lg: "w-28 h-[63px]",
-        xl: "w-64 h-36",
-      },
-      variant: {
-        default: "rounded-lg border border-gray-200",
-        card: "rounded-sm border-1 border-scale-active-clicked",
-      },
+const thumbnailVariants = cva("relative overflow-hidden flex-shrink-0", {
+  variants: {
+    size: {
+      sm: "w-24 h-[54px]",
+      lg: "w-28 h-[63px]",
+      xl: "w-64 h-36",
     },
-    defaultVariants: {
-      size: "sm",
-      variant: "default",
+    variant: {
+      default: "rounded-lg border border-gray-200",
+      card: "rounded-sm border-1 border-scale-actived-clicked",
     },
-  }
-);
+  },
+  defaultVariants: {
+    size: "sm",
+    variant: "default",
+  },
+});
 
 export interface ThumbnailProps
   extends React.HTMLAttributes<HTMLDivElement>,

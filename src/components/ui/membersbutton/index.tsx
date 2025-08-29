@@ -1,12 +1,9 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Members, type MembersProps } from ".";
+import { Members } from "@/components/ui/members";
 import { IconChevronDown } from "@tabler/icons-react";
-import { Button } from "../button";
-
-export interface MembersButtonProps extends MembersProps {
-  onClick?: () => void;
-}
+import { Button } from "@/components/ui/button";
+import { MembersButtonProps } from "./MembersButton.types";
 
 export const MembersButton = React.forwardRef<
   HTMLButtonElement,

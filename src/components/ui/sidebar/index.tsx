@@ -1,177 +1,150 @@
 import * as React from "react";
 import { IconChevronRight } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import { cva } from "class-variance-authority";
+import {
+  SidebarMenu as ShadcnSidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuAction,
+  SidebarMenuSub as ShadcnSidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+} from "@/components/base/sidebar";
+import {
+  SidebarMenuItemProps,
+  SidebarMenuSubItemProps,
+  SidebarMenuProps,
+} from "./Sidebar.types";
 
-const itemVariants = cva(
-  "group flex h-8 w-[192px] items-center gap-2 rounded px-1 text-sm " +
-    "text-[var(--scale-primary-text)]/80 hover:text-[var(--scale-primary-text)] " +
-    "transition-all cursor-pointer text-body-regular",
-  {
-    variants: {
-      active: {
-        true: "bg-[var(--scale-actived-clicked)]",
-      },
-    },
-  }
-);
+export {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuAction,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+} from "@/components/base/sidebar";
 
-export type SidebarMenuItemData = {
-  id: string;
-  label: string;
-  href?: string;
-  leftSlot?: React.ReactNode;
-  rightSlot?: React.ReactNode;
-  defaultOpen?: boolean;
-  isActive?: boolean;
-  subItems?: SidebarMenuSubItemData[];
-};
+export function SidebarMenuSub({
+  className,
+  ...props
+}: React.ComponentProps<typeof ShadcnSidebarMenuSub>) {
+  return <ShadcnSidebarMenuSub className={cn("gap-2", className)} {...props} />;
+}
 
-export type SidebarMenuSubItemData = {
-  id: string;
-  label: string;
-  href?: string;
-  leftSlot?: React.ReactNode;
-  isActive?: boolean;
-  onDragHandleClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  // 왼쪽 아이콘 클릭 핸들러입니다.
-  // 현재는 dnd 용도인 것 같아서 이렇게 네이밍했는데 혹시 아니라면 네이밍은 수정하도록 하겠습니다.
-  // @Todo: 용도 확인 후 핸들러 네이밍 수정(필요 시)
-};
-
-type SidebarMenuProps = {
-  items: SidebarMenuItemData[];
-  className?: string;
-};
-
-const iconCls =
-  "size-5 shrink-0 text-[var(--scale-tertiary-text)] group-hover:text-[var(--scale-primary-text)]";
-
-export default function SidebarMenu({ items, className }: SidebarMenuProps) {
+export function SidebarMenu({ items, className }: SidebarMenuProps) {
   return (
-    <ul className={cn("w-full flex flex-col gap-1", className)}>
+    <ShadcnSidebarMenu className={className}>
       {items.map((item) => (
-        <SidebarMenuItemRow key={item.id} item={item} />
+        <MenuItem key={item.id} item={item} />
       ))}
-    </ul>
+    </ShadcnSidebarMenu>
   );
 }
 
-function SidebarMenuItemRow({ item }: { item: SidebarMenuItemData }) {
+function MenuItem({ item }: { item: SidebarMenuItemProps }) {
   const hasChildren = !!item.subItems?.length;
   const [open, setOpen] = React.useState<boolean>(!!item.defaultOpen);
 
   const Left =
     item.leftSlot ??
-    (hasChildren ? <IconChevronRight className="size-5" /> : null);
+    (hasChildren ? (
+      <IconChevronRight
+        className={cn(
+          "size-icon-lg transition-transform duration-200",
+          open && "rotate-90"
+        )}
+      />
+    ) : null);
 
   const Right = item.rightSlot ? (
-    <button
-      type="button"
-      className={cn(
-        iconCls,
-        "cursor-pointer hover:text-[var(--scale-primary-text)]"
-      )}
-    >
-      {item.rightSlot}
-    </button>
+    <SidebarMenuAction asChild>
+      <button type="button">{item.rightSlot}</button>
+    </SidebarMenuAction>
   ) : null;
 
-  const ButtonInner = (
-    <>
-      <span
-        className={cn(
-          iconCls,
-          "w-5 h-5 flex items-center justify-center transition-transform duration-200",
-          open ? "" : "-rotate-90"
-        )}
-      >
+  const renderMenuItemContent = () => {
+    const content = (
+      <div className="flex gap-2 text-body-regular">
         {Left}
-      </span>
-      <span className="truncate">{item.label}</span>
-    </>
-  );
+        <span>{item.label}</span>
+      </div>
+    );
+
+    return item.href ? (
+      <a href={item.href}>{content}</a>
+    ) : (
+      <button type="button">{content}</button>
+    );
+  };
 
   return (
-    <li>
-      {hasChildren ? (
-        <div
-          className={cn(
-            "flex items-center",
-            itemVariants({ active: item.isActive })
-          )}
-        >
-          <button
-            type="button"
-            className={itemVariants({ active: item.isActive })}
-            onClick={() => setOpen((p) => !p)}
-            aria-expanded={open}
-          >
-            {ButtonInner}
-          </button>
-          {Right && <span className="ml-auto">{Right}</span>}
-        </div>
-      ) : item.href ? (
-        <a href={item.href} className={itemVariants({ active: item.isActive })}>
-          {ButtonInner}
-        </a>
-      ) : (
-        <button
-          type="button"
-          className={itemVariants({ active: item.isActive })}
-        >
-          {ButtonInner}
-        </button>
-      )}
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        asChild
+        isActive={item.isActive}
+        onClick={() => hasChildren && setOpen((prev) => !prev)}
+      >
+        {renderMenuItemContent()}
+      </SidebarMenuButton>
 
-      {open && (
-        <ul className="pl-4 py-0.5 flex flex-col gap-1">
+      {Right}
+
+      {hasChildren && open && (
+        <SidebarMenuSub>
           {item.subItems!.map((sub) => (
-            <SidebarMenuSubItem key={sub.id} item={sub} />
+            <MenuSubItem key={sub.id} item={sub} />
           ))}
-        </ul>
+        </SidebarMenuSub>
       )}
-    </li>
+    </SidebarMenuItem>
   );
 }
 
-export function SidebarMenuSubItem({ item }: { item: SidebarMenuSubItemData }) {
-  const Comp = item.href ? "a" : ("button" as const);
+function MenuSubItem({
+  item,
+  className,
+}: {
+  item: SidebarMenuSubItemProps;
+  className?: string;
+}) {
+  const renderSubItemContent = () => {
+    const content = (
+      <div className="flex items-center gap-2 text-body-regular">
+        {item.leftSlot && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              item.onDragHandleClick?.(e);
+            }}
+          >
+            {item.leftSlot}
+          </button>
+        )}
+        <span>{item.label}</span>
+      </div>
+    );
+
+    return item.href ? (
+      <a href={item.href}>{content}</a>
+    ) : (
+      <button type="button">{content}</button>
+    );
+  };
 
   return (
-    <li className="relative">
-      <div
-        className={cn(
-          "group flex h-8 w-[192px] items-center gap-2 rounded px-1 text-sm",
-          "text-[var(--scale-primary-text)]/80 hover:text-[var(--scale-primary-text)]"
-        )}
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton
+        asChild
+        isActive={item.isActive}
+        className={className}
       >
-        <div className="w-5 h-5 flex items-center justify-center">
-          {item.leftSlot && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                item.onDragHandleClick?.(e);
-              }}
-              className={cn(
-                "w-5 h-5 flex items-center justify-center",
-                iconCls,
-                "cursor-pointer text-[var(--scale-tertiary-text)]"
-              )}
-            >
-              {item.leftSlot}
-            </button>
-          )}
-        </div>
-        <Comp
-          {...(item.href ? { href: item.href } : { type: "button" })}
-          className={cn("flex-1 truncate text-left cursor-pointer")}
-          data-active={item.isActive}
-        >
-          <span className="truncate text-body-regular">{item.label}</span>
-        </Comp>
-      </div>
-    </li>
+        {renderSubItemContent()}
+      </SidebarMenuSubButton>
+    </SidebarMenuSubItem>
   );
 }

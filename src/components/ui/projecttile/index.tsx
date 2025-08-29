@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Card, CardHeader } from "@/components/base/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Members } from "@/components/ui/members";
 import { Button } from "@/components/ui/button";
 import { WorkspaceBadge } from "@/components/ui/workspacebadge";
@@ -17,7 +17,7 @@ import type {
   ListSearchProjectTileProps,
   ListTrashProjectTileProps,
   ListModalProjectTileProps,
-} from "./types";
+} from "./ProjectTile.types";
 
 const projectTileVariants = cva(
   "relative overflow-hidden transition-all w-64 h-48 gap-1 cursor-pointer py-0 border-0 shadow-none rounded-none"
@@ -35,6 +35,7 @@ const DetailedProjectTile = React.forwardRef<
       date,
       imageUrl,
       members = [],
+      memberCount = 0,
       isStarred = false,
       onStarClick,
       onMenuClick,
@@ -151,7 +152,7 @@ SimpleProjectTile.displayName = "SimpleProjectTile";
 const ListSimpleProjectTile = React.forwardRef<
   HTMLDivElement,
   ListSimpleProjectTileProps
->(({ className, title, imageUrl, onTileClick }, ref) => {
+>(({ className, title, date, imageUrl, onTileClick }, ref) => {
   return (
     <div
       ref={ref}
@@ -183,8 +184,10 @@ const ListProjectTile = React.forwardRef<HTMLDivElement, ListProjectTileProps>(
       date,
       imageUrl,
       members = [],
+      memberCount = 0,
       isStarred = false,
       onStarClick,
+      onMenuClick,
       onTileClick,
     },
     ref
@@ -234,7 +237,7 @@ const ListProjectTile = React.forwardRef<HTMLDivElement, ListProjectTileProps>(
 
         <div className="flex items-center gap-3 flex-shrink-0">
           {members.length > 0 && (
-            <Members members={members} totalCount={members.length} size="sm" />
+            <Members members={members} totalCount={memberCount} size="sm" />
           )}
           {date && <span className="text-caption">{date}</span>}
         </div>

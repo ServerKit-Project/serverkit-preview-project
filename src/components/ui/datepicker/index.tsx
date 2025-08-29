@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { format, parse, isValid } from "date-fns";
+import { useState, useEffect } from "react";
 
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/base/input";
@@ -11,19 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/base/popover";
-
-export interface DatePickerProps {
-  value?: Date;
-  onChange?: (date: Date | undefined) => void;
-  placeholder?: string;
-  disabled?: boolean;
-  className?: string;
-  inputClassName?: string;
-  buttonClassName?: string;
-  calendarClassName?: string;
-  dateFormat?: string;
-  inputFormat?: string;
-}
+import { DatePickerProps } from "./DatePicker.types";
 
 export function DatePicker({
   value,
@@ -36,12 +24,12 @@ export function DatePicker({
   dateFormat = "PPP",
   inputFormat = "yyyy-MM-dd",
 }: DatePickerProps) {
-  const [date, setDate] = React.useState<Date | undefined>(value);
-  const [inputValue, setInputValue] = React.useState<string>("");
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [month, setMonth] = React.useState<Date>(value || new Date());
+  const [date, setDate] = useState<Date | undefined>(value);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [month, setMonth] = useState<Date>(value || new Date());
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDate(value);
     if (value && isValid(value)) {
       setInputValue(format(value, inputFormat));

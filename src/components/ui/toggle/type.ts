@@ -10,7 +10,7 @@ export type Common = Omit<
 
 export type DefaultToggleProps = Common & {
   type: "default";
-  size: "m" | "s";
+  size: "md" | "sm";
 };
 
 export type TextToggleProps = Common & {
@@ -21,7 +21,7 @@ export type TextToggleProps = Common & {
 
 export type IconToggleProps = Common & {
   type: "icon";
-  size: "m" | "s";
+  size: "md" | "sm";
   icon?: React.ReactNode;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -29,10 +29,10 @@ export type IconToggleProps = Common & {
 
 export type ButtonToggleProps = Common & {
   type: "button";
-  size: "m" | "s";
+  size: "md" | "sm";
   outlined?: boolean;
   color: "default" | "disabled" | "active";
-  buttonKind: "withText" | "noText";
+  withText: boolean;
   label?: string;
 };
 

@@ -1,39 +1,23 @@
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
+import { radioItemVariants } from "./RadioGroup.variants";
+import type { RadioGroupProps, RadioGroupItemProps } from "./RadioGroup.types";
 
 // @TODO: hover 시 radio, 텍스트에 bg효과 추가하기
-function RadioGroup({
-  className,
-  ...props
-}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
+export const RadioGroup = ({ className, ...props }: RadioGroupProps) => {
   return <RadioGroupPrimitive.Root {...props} />;
-}
+};
 
-const radioItem = cva(
-  "group border-2 border-input shrink-0 rounded-full transition-colors outline-none hover:cursor-pointer flex items-center justify-center ",
-  {
-    variants: {
-      size: {
-        lg: "size-7 ",
-        sm: "size-5 ",
-      },
-    },
-    defaultVariants: { size: "lg" },
-  }
-);
-
-function RadioGroupItem({
+export const RadioGroupItem = ({
   className,
   size = "lg",
   ...props
-}: React.ComponentProps<typeof RadioGroupPrimitive.Item> &
-  VariantProps<typeof radioItem>) {
+}: RadioGroupItemProps) => {
   return (
     <RadioGroupPrimitive.Item
       className={cn(
-        radioItem({ size }),
+        radioItemVariants({ size }),
         "hover:border-[var(--scale-actived-clicked)] ",
         "data-[state=checked]:border-[var(--info-base)] focus-visible:border-[var(--info-base)]",
         className
@@ -60,6 +44,4 @@ function RadioGroupItem({
       </span>
     </RadioGroupPrimitive.Item>
   );
-}
-
-export { RadioGroup, RadioGroupItem };
+};

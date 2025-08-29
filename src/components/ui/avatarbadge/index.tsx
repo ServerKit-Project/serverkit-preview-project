@@ -1,14 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarImage, AvatarFallback } from "../avatar";
-
-export interface AvatarBadgeProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  src?: string;
-  alt?: string;
-  fallback?: string;
-  isSelected?: boolean;
-}
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { AvatarBadgeProps } from "./AvatarBadge.types";
 
 export const AvatarBadge = React.forwardRef<
   HTMLButtonElement,

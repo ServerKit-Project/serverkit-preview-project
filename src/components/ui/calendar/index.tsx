@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   format,
   startOfMonth,
@@ -13,25 +12,12 @@ import {
   subMonths,
 } from "date-fns";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { useState, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/base/button";
 
-export interface CalendarEvent {
-  date: Date;
-  title: string;
-  type?: string;
-  color?: string;
-}
-
-export interface CalendarProps {
-  value?: Date;
-  events?: CalendarEvent[];
-  onDateClick?: (date: Date) => void;
-  onEventClick?: (event: CalendarEvent) => void;
-  className?: string;
-  showWeekNumbers?: boolean;
-}
+import { CalendarProps } from "./Calendar.types";
 
 export function Calendar({
   value = new Date(),
@@ -40,7 +26,7 @@ export function Calendar({
   onEventClick,
   className,
 }: CalendarProps) {
-  const [currentMonth, setCurrentMonth] = React.useState(value);
+  const [currentMonth, setCurrentMonth] = useState(value);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -48,7 +34,7 @@ export function Calendar({
 
   const startingDayOfWeek = getDay(monthStart);
 
-  const previousMonthDays = React.useMemo(() => {
+  const previousMonthDays = useMemo(() => {
     const prevMonth = subMonths(monthStart, 1);
     const prevMonthEnd = endOfMonth(prevMonth);
     const days = [];
@@ -64,7 +50,7 @@ export function Calendar({
     return days;
   }, [monthStart, startingDayOfWeek]);
 
-  const nextMonthDays = React.useMemo(() => {
+  const nextMonthDays = useMemo(() => {
     const totalCells = 42;
     const currentCells = previousMonthDays.length + monthDays.length;
     const remainingCells = totalCells - currentCells;

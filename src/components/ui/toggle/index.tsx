@@ -20,25 +20,24 @@ const toggleVariants = cva(
   {
     variants: {
       type: { default: "", text: "", icon: "", button: "", star: "" },
-      // default, icon에서만 사용
-      size: { m: null, s: null },
-      // button 전용
-      buttonKind: { withText: null, noText: null },
-      btnSize: { m: null, s: null },
-      btnOutline: { on: null, off: null },
-      btnColor: { default: null, disabled: null, active: null },
+      size: { md: null, sm: null },
+
+      buttonSize: { md: null, sm: null },
+      withText: { true: null, false: null },
+      outline: { true: null, false: null },
+      state: { default: null, disabled: null, active: null },
     },
     compoundVariants: [
-      // default (m/s)
+      // default
       {
         type: "default",
-        size: "m",
+        size: "md",
         class:
           "h-7 w-12 px-1 bg-[var(--scale-disabled-text)] data-[state=on]:bg-[var(--info-base)]",
       },
       {
         type: "default",
-        size: "s",
+        size: "sm",
         class:
           "h-5 w-9 bg-[var(--scale-disabled-text)] data-[state=on]:bg-[var(--info-base)]",
       },
@@ -52,70 +51,70 @@ const toggleVariants = cva(
       // icon
       {
         type: "icon",
-        size: "m",
-        class: "h-10 w-[72px] bg-[var(--scale-hover)] rounded-lg p-1",
+        size: "md",
+        class: "h-10 w-18 bg-[var(--scale-hover)] rounded-lg p-1",
       },
       {
         type: "icon",
-        size: "s",
+        size: "sm",
         class: "h-7 w-[52px] bg-[var(--scale-hover)] rounded p-0.5",
       },
 
-      // button 크기 (noText / withText , m/s)
+      // button withText
       {
         type: "button",
-        buttonKind: "noText",
-        btnSize: "m",
-        class: "h-11 w-11 rounded-[8px]",
+        withText: false,
+        buttonSize: "md",
+        class: "size-11 aspect-square rounded-lg",
       },
       {
         type: "button",
-        buttonKind: "withText",
-        btnSize: "m",
-        class: "h-11 w-[95px] px-4 text-m rounded-[8px]",
+        withText: true,
+        buttonSize: "md",
+        class: "h-11 w-[95px] px-4 text-button1-regular rounded-lg",
       },
       {
         type: "button",
-        buttonKind: "noText",
-        btnSize: "s",
-        class: "h-7 w-7 rounded-[4px]",
+        withText: false,
+        buttonSize: "sm",
+        class: "size-7 aspect-square rounded",
       },
       {
         type: "button",
-        buttonKind: "withText",
-        btnSize: "s",
-        class: "h-7 w-[63px] px-2 text-s rounded-[4px]",
+        withText: true,
+        buttonSize: "sm",
+        class: "h-7 w-[63px] px-2 text-sm  rounded",
       },
 
-      // button 색상 (default/disabled/active)
+      // button state
       {
         type: "button",
-        btnColor: "default",
+        state: "default",
         class: "bg-[var(--scale-white)] text-[var(--scale-disabled-text)]",
       },
       {
         type: "button",
-        btnColor: "disabled",
+        state: "disabled",
         class: "bg-[var(--scale-hover)] text-[var(--scale-disabled-text)]",
       },
       {
         type: "button",
-        btnColor: "active",
+        state: "active",
         class: "bg-[var(--scale-primary-text)] text-[var(--scale-white)]",
       },
 
-      // button 아웃라인 (on/off)
+      // button outline
       {
         type: "button",
-        btnOutline: "on",
+        outline: true,
         class: "border border-[var(--scale-actived-clicked)]",
       },
-      { type: "button", btnOutline: "off", class: "" },
+      { type: "button", outline: false, class: "" },
 
       {
         type: "star",
         class:
-          "size-7 rounded bg-[var(--scale-white)] border border-[var(--scale-actived-clicked)]",
+          "size-7 aspect-square rounded bg-[var(--scale-white)] border border-[var(--scale-actived-clicked)]",
       },
     ],
   }
@@ -144,10 +143,10 @@ export const Toggle = React.forwardRef<
         <span
           aria-hidden
           className={cn(
-            "absolute left-1 rounded-full bg-[var(--scale-bg)] transition-transform duration-200",
-            size === "m"
-              ? "h-5 w-5 translate-x-0 group-data-[state=on]:translate-x-5"
-              : "h-4 w-4 translate-x-0 group-data-[state=on]:translate-x-3"
+            "absolute left-1 top-1/2 -translate-y-1/2 rounded-full bg-[var(--scale-bg)] transition-transform duration-200",
+            size === "md"
+              ? "size-5 translate-x-0 group-data-[state=on]:translate-x-5"
+              : "size-4 -translate-x-0.5 group-data-[state=on]:translate-x-3.5"
           )}
         />
       </TogglePrimitive.Root>
@@ -171,7 +170,7 @@ export const Toggle = React.forwardRef<
         <span
           aria-hidden
           className={cn(
-            "flex justify-center items-center pointer-events-none absolute h-[32px] w-[78px] inset-y-1 left-1 rounded-full bg-[var(--scale-white)] transition-transform duration-200 group-data-[state=on]:translate-x-[78px]"
+            "flex justify-center items-center pointer-events-none absolute h-8 w-[78px] inset-y-1 left-1 rounded-full bg-[var(--scale-white)] transition-transform duration-200 group-data-[state=on]:translate-x-[78px]"
           )}
         />
 
@@ -214,32 +213,44 @@ export const Toggle = React.forwardRef<
         <span
           aria-hidden
           className={cn(
-            "pointer-events-none absolute flex justify-center items-center top-1/2 -translate-y-1/2 left-1 rounded-[4px] bg-[var(--scale-white)] transition-transform duration-200",
-            size === "m"
+            "pointer-events-none absolute flex justify-center items-center top-1/2 -translate-y-1/2 left-1 rounded bg-[var(--scale-white)] transition-transform duration-200",
+            size === "md"
               ? "size-8 group-data-[state=on]:translate-x-8"
-              : "size-6 group-data-[state=on]:translate-x-5"
+              : "size-6 -translate-x-0.5 group-data-[state=on]:translate-x-5.5"
           )}
         />
 
-        <div className="relative z-10 flex w-full items-center pt-0.5 justify-between">
+        <div className="relative z-10 grid w-full grid-cols-2 place-items-center">
           <span
             className={cn(
-              "flex w-1/2 items-center justify-center",
+              "flex items-center justify-center",
               "text-[var(--scale-primary-text)] group-data-[state=on]:text-[var(--scale-tertiary-text)]"
             )}
           >
-            <span className="size-5 [&>*]:w-full [&>*]:h-full">
+            <span
+              className={cn(
+                "[&>*]:w-full [&>*]:h-full",
+                size === "md" ? "size-5" : "size-4"
+              )}
+              aria-hidden
+            >
               {leftIcon ?? icon}
             </span>
           </span>
           <span
             className={cn(
-              "flex w-1/2 items-center justify-center",
+              "flex items-center justify-center",
               "text-[var(--scale-tertiary-text)] group-data-[state=on]:text-[var(--scale-primary-text)]"
             )}
           >
-            <span className=" size-5 [&>*]:w-full [&>*]:h-full">
-              {leftIcon ?? icon}
+            <span
+              className={cn(
+                "[&>*]:w-full [&>*]:h-full",
+                size === "md" ? "size-5" : "size-4"
+              )}
+              aria-hidden
+            >
+              {rightIcon ?? icon}
             </span>
           </span>
         </div>
@@ -272,7 +283,7 @@ export const Toggle = React.forwardRef<
 
   const {
     type,
-    buttonKind,
+    withText,
     size,
     outlined = false,
     color,
@@ -292,22 +303,27 @@ export const Toggle = React.forwardRef<
       className={cn(
         toggleVariants({
           type,
-          buttonKind,
-          btnSize: size,
-          btnOutline: outlined ? "on" : "off",
-          btnColor: color,
+          withText,
+          buttonSize: size,
+          outline: outlined ? true : false,
+          state: color,
         }),
         className
       )}
       {...rootProps}
     >
-      {buttonKind === "withText" ? (
-        <span className="relative z-10 inline-flex items-center gap-2">
+      {withText === true ? (
+        <span
+          className={cn(
+            "relative z-10 inline-flex items-center",
+            size === "md" ? "gap-2" : "gap-1"
+          )}
+        >
           {slotChildren ? (
             <span
               className={cn(
                 "shrink-0 [&>*]:w-full [&>*]:h-full",
-                size === "m" ? "w-6 h-6" : "w-4 h-4"
+                size === "md" ? "size-6" : "size-4"
               )}
               aria-hidden
             >
@@ -322,7 +338,7 @@ export const Toggle = React.forwardRef<
             <span
               className={cn(
                 "relative z-10 flex items-center justify-center [&>*]:w-full [&>*]:h-full",
-                size === "m" ? "w-6 h-6" : "w-4 h-4"
+                size === "md" ? "size-6" : "size-4"
               )}
             >
               {slotChildren}

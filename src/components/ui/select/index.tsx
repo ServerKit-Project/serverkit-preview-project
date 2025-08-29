@@ -4,50 +4,23 @@ import * as React from "react";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/base/select";
+import { LANGUAGE_OPTIONS } from "./Select.constants";
+import type { LanguageSelectProps } from "./Select.types";
 
-export interface LanguageOption {
-  value: string;
-  label: string;
-  localLabel: string;
-  isBeta?: boolean;
-}
-
-const LANGUAGE_OPTIONS: LanguageOption[] = [
-  {
-    value: "ko",
-    label: "한국어",
-    localLabel: "한국어",
-    isBeta: false,
-  },
-  {
-    value: "en",
-    label: "English",
-    localLabel: "영어",
-    isBeta: true,
-  },
-  {
-    value: "ja",
-    label: "日本語",
-    localLabel: "일본어",
-    isBeta: true,
-  },
-];
-
-export interface LanguageSelectProps {
-  value?: string;
-  onValueChange?: (value: string) => void;
-  className?: string;
-}
-
-export function LanguageSelect({
+export const LanguageSelect = ({
   value,
   onValueChange,
   className,
-}: LanguageSelectProps) {
+}: LanguageSelectProps) => {
   const selectedOption = LANGUAGE_OPTIONS.find(
     (option) => option.value === value
   );
@@ -82,4 +55,17 @@ export function LanguageSelect({
       </Select>
     </div>
   );
-}
+};
+
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+};

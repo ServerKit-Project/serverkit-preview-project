@@ -1,33 +1,9 @@
 import { useState, useId } from "react";
 import { Button } from "@/components/base/button";
 import { cn } from "@/lib/utils";
-import { cva } from "class-variance-authority";
-
-type StepperProps = {
-  value?: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  status?: "default" | "error" | "focus";
-  onChange?: (v: number) => void;
-  className?: string;
-};
-
-const stepperVariants = cva(
-  "flex h-11 w-[31px] items-center justify-center rounded-lg border text-title-semibold",
-  {
-    variants: {
-      status: {
-        default: "ring-1 ring-[var(--scale-actived-clicked)]",
-        error: "ring-1 ring-[var(--error-deep)]",
-        focus: "ring-1 ring-[var(--info-base)]",
-      },
-    },
-    defaultVariants: {
-      status: "default",
-    },
-  }
-);
+import { IconMinus, IconPlus } from "@tabler/icons-react";
+import { StepperProps } from "./SheetCount.types";
+import { stepperVariants } from "./SheetCount.variants";
 
 export function Stepper({
   value: valueProp,
@@ -67,7 +43,7 @@ export function Stepper({
         aria-controls={id}
         aria-label="Decrease"
       >
-        <img alt="minus" src="/minusIcon.svg" width={16} />
+        <IconMinus className="size-4" aria-hidden="true" />
       </Button>
 
       <div
@@ -101,7 +77,7 @@ export function Stepper({
         aria-controls={id}
         aria-label="Increase"
       >
-        <img alt="plus" src="/plusIcon.svg" width={16} />
+        <IconPlus className="size-4" aria-hidden="true" />
       </Button>
     </div>
   );

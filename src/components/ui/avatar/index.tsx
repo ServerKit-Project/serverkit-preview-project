@@ -4,32 +4,10 @@ import {
   AvatarImage,
 } from "@/components/base/avatar";
 import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import { IconAt } from "@tabler/icons-react";
+import { IconAt, IconUser } from "@tabler/icons-react";
 import React from "react";
-
-const avatarVariants = cva(
-  "relative flex shrink-0 overflow-hidden rounded-full",
-  {
-    variants: {
-      size: {
-        sm: "size-avatar-sm",
-        md: "size-avatar-md",
-        lg: "size-avatar-lg",
-        xl: "size-avatar-xl",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-    },
-  }
-);
-
-export interface AvatarProps
-  extends React.ComponentPropsWithoutRef<typeof ShadcnAvatar>,
-    VariantProps<typeof avatarVariants> {
-  showMentionIcon?: boolean;
-}
+import { avatarVariants } from "./Avatar.variants";
+import type { AvatarProps, AvatarFallbackProps } from "./Avatar.types";
 
 export const Avatar = React.forwardRef<
   React.ComponentRef<typeof ShadcnAvatar>,
@@ -55,14 +33,24 @@ Avatar.displayName = "Avatar";
 
 export const AvatarFallback = React.forwardRef<
   React.ComponentRef<typeof ShadcnAvatarFallback>,
-  React.ComponentPropsWithoutRef<typeof ShadcnAvatarFallback>
->(({ className, children, ...props }, ref) => {
+  AvatarFallbackProps
+>(({ className, children, size = "md", ...props }, ref) => {
+  const iconSizeClass =
+    size === "sm" || size === "md" ? "size-icon-sm" : "size-icon-lg";
+
   return (
     <ShadcnAvatarFallback
       ref={ref}
-      className={cn("bg-[var(--warning-deep)]", className)}
+      className={cn(
+        "bg-[var(--scale-actived-clicked)] flex items-center justify-center",
+        className
+      )}
       {...props}
-    ></ShadcnAvatarFallback>
+    >
+      <IconUser
+        className={cn(iconSizeClass, "text-[var(--scale-secondary-text)]")}
+      />
+    </ShadcnAvatarFallback>
   );
 });
 

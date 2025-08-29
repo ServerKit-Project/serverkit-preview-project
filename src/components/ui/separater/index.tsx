@@ -1,18 +1,12 @@
-import * as React from "react";
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
 import { cn } from "@/lib/utils";
+import { SeparatorProps } from "./Separator.types";
 
-interface SeparatorProps
-  extends React.ComponentProps<typeof SeparatorPrimitive.Root> {
-  className?: string;
-  orientation?: "horizontal" | "vertical";
-}
-
-function Separator({
+export const Separator = ({
   className,
   orientation = "horizontal",
   ...props
-}: SeparatorProps) {
+}: SeparatorProps) => {
   return (
     <SeparatorPrimitive.Root
       decorative={true}
@@ -26,13 +20,13 @@ function Separator({
       {...props}
     />
   );
-}
+};
 
-function SeparatorNoPadding({
+export const SeparatorNoPadding = ({
   className,
   orientation = "horizontal",
   ...props
-}: SeparatorProps) {
+}: SeparatorProps) => {
   return (
     <SeparatorPrimitive.Root
       decorative={true}
@@ -46,6 +40,4 @@ function SeparatorNoPadding({
       {...props}
     />
   );
-}
-
-export { Separator, SeparatorNoPadding };
+};

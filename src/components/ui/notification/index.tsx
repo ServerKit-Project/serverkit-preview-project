@@ -1,35 +1,10 @@
 "use client";
 
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { formatRelativeDate } from "@/lib/time";
-import { Avatar, AvatarImage, AvatarFallback } from "../avatar";
-
-const notificationVariants = cva(
-  "flex items-start gap-3 p-4 bg-white rounded-lg border border-[var(--scale-actived-clicked)] max-w-md hover:border-[var(--scale-secondary-text)] transition-colors",
-  {
-    variants: {
-      variant: {
-        default: "",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-);
-
-export interface NotificationProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof notificationVariants> {
-  username: string;
-  date: Date | string;
-  projectName: string;
-  message: string;
-  avatarSrc?: string;
-  avatarFallback?: string;
-  onClick?: () => void;
-}
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { notificationVariants } from "./Notification.variants";
+import { NotificationProps } from "./Notification.types";
 
 export const Notification = ({
   className,
