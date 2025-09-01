@@ -24,6 +24,7 @@ export function Calendar({
   events = [],
   onDateClick,
   onEventClick,
+  onAddClick,
   className,
 }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(value);
@@ -145,7 +146,7 @@ export function Calendar({
             <div
               key={index}
               className={cn(
-                "text-caption-regular min-h-[100px] border-r border-b p-2 cursor-pointer hover:bg-accent/50 transition-colors",
+                "text-caption-regular min-h-[100px] border-r border-b p-2 cursor-pointer hover:bg-accent/50 transition-colors group",
                 isTopLeft && "rounded-tl-lg",
                 isTopRight && "rounded-tr-lg",
                 isBottomLeft && "rounded-bl-lg",
@@ -161,7 +162,18 @@ export function Calendar({
               }}
               onClick={() => onDateClick?.(day)}
             >
-              <div className={cn("mb-1 text-right")}>{format(day, "d")}</div>
+              <div className={cn("mb-1 flex items-start justify-between")}>
+                <button
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary/80 text-sm font-medium px-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAddClick?.(day);
+                  }}
+                >
+                  +
+                </button>
+                <span>{format(day, "d")}</span>
+              </div>
               <div className="space-y-1">
                 {dayEvents.slice(0, 3).map((event, eventIndex) => (
                   <div

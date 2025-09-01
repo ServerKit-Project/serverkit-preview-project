@@ -10,5 +10,6 @@ export interface CalendarProps {
   events?: CalendarEvent[];
   onDateClick?: (date: Date) => void;
   onEventClick?: (event: CalendarEvent) => void;
+  onAddClick?: (date: Date) => void;
   className?: string;
 }
