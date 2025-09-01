@@ -164,13 +164,13 @@ export function Calendar({
             >
               <div className={cn("mb-1 flex items-start justify-between")}>
                 <button
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary/80 text-sm font-medium px-1"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary/80 text-xs px-1"
                   onClick={(e) => {
                     e.stopPropagation();
                     onAddClick?.(day);
                   }}
                 >
-                  +
+                  Add
                 </button>
                 <span>{format(day, "d")}</span>
               </div>
